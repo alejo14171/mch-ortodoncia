@@ -1,0 +1,22 @@
+---
+import { AUTHORITY_ITEMS } from "../../content/site";
+import Icon from "../icons/Icon.astro";
+---
+
+<section class="bg-bone-soft border-y border-line">
+  <div class="container-page py-8">
+    <ul
+      class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5 text-[13px] text-ink-soft items-center justify-items-center md:justify-items-stretch"
+      aria-label="Credenciales"
+    >
+      {AUTHORITY_ITEMS.map((item) => (
+        <li class="flex items-center gap-3 md:justify-center">
+          <span class="flex-shrink-0 text-champagne">
+            <Icon name={item.icon} size={18} strokeWidth={1.5} />
+          </span>
+          <span class="leading-tight">{item.text}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

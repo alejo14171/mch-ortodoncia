@@ -1,0 +1,60 @@
+---
+// Lightweight, privacy-first cookie banner. Stores preference in localStorage.
+---
+
+<div
+  id="cookie-banner"
+  class="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:bottom-6 md:max-w-md z-[60] hidden bg-bone-soft border border-line rounded-2xl shadow-[0_25px_60px_-16px_rgba(26,34,56,0.25)] p-5 backdrop-blur-md"
+  role="dialog"
+  aria-labelledby="cookie-title"
+  aria-describedby="cookie-desc"
+>
+  <p id="cookie-title" class="font-display text-[16px] mb-1">Sobre cookies</p>
+  <p id="cookie-desc" class="text-[12px] text-ink-soft leading-[1.55] mb-4">
+    Usamos cookies funcionales (anti-spam) y analíticas anónimas (Plausible) para mejorar el sitio.
+    No usamos cookies de publicidad ni perfiles personales.
+    <a href="/aviso-cookies" class="underline hover:text-champagne-deep">Más información</a>.
+  </p>
+  <div class="flex flex-wrap gap-2">
+    <button
+      type="button"
+      data-cookie-accept="all"
+      class="flex-1 px-4 py-2.5 rounded-full bg-ink text-bone text-[13px] font-medium hover:bg-ink-soft transition-colors"
+    >
+      Entendido
+    </button>
+    <button
+      type="button"
+      data-cookie-accept="functional"
+      class="flex-1 px-4 py-2.5 rounded-full border border-ink text-ink text-[13px] font-medium hover:bg-ink hover:text-bone transition-colors"
+    >
+      Solo funcional
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var KEY = "mch_cookie_pref";
+    var banner = document.getElementById("cookie-banner");
+    if (!banner) return;
+    try {
+      var pref = localStorage.getItem(KEY);
+      if (!pref) {
+        setTimeout(function () {
+          banner.classList.remove("hidden");
+        }, 800);
+      }
+    } catch (_) {
+      banner.classList.remove("hidden");
+    }
+    banner.querySelectorAll("[data-cookie-accept]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        try {
+          localStorage.setItem(KEY, btn.getAttribute("data-cookie-accept") || "all");
+        } catch (_) {}
+        banner.classList.add("hidden");
+      });
+    });
+  })();
+</script>

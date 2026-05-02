@@ -1,0 +1,49 @@
+---
+// Hidden behind SITE.flags.showTestimonials.
+// Activate only after gathering real testimonials with written consent.
+import { SITE } from "../../content/site";
+import Eyebrow from "../ui/Eyebrow.astro";
+import Icon from "../icons/Icon.astro";
+
+if (!SITE.flags.showTestimonials) return null;
+
+interface Testimonial {
+  quote: string;
+  patient: string;
+  treatment: string;
+}
+
+// PLACEHOLDER — replace with real testimonials before enabling the flag.
+const testimonials: Testimonial[] = [
+  {
+    quote: "Quote pendiente — recopilar con consentimiento escrito.",
+    patient: "Paciente — [PENDIENTE]",
+    treatment: "Tipo de tratamiento",
+  },
+];
+---
+
+<section class="py-24 md:py-32 bg-bone-soft border-y border-line">
+  <div class="container-page">
+    <header class="max-w-2xl mb-14 reveal">
+      <Eyebrow class="mb-5">TESTIMONIOS</Eyebrow>
+      <h2 class="font-display text-[clamp(32px,4.6vw,56px)] leading-[1.08]">
+        Lo que dicen <em class="italic-accent">los pacientes.</em>
+      </h2>
+    </header>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {testimonials.map((t, i) => (
+        <figure class={`bg-white border border-line rounded-card p-7 reveal reveal-delay-${(i % 4) + 1}`}>
+          <Icon name="quote" size={28} class="text-champagne/60 mb-4" />
+          <blockquote class="font-display text-[18px] leading-snug text-ink mb-5">
+            "{t.quote}"
+          </blockquote>
+          <figcaption class="text-[12px] text-slate-warm">
+            <span class="block font-medium text-ink-soft">{t.patient}</span>
+            <span>{t.treatment}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

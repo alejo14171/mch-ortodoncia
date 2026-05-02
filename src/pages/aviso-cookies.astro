@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/nav/Header.astro";
+import Footer from "../components/nav/Footer.astro";
+
+const title = "Aviso de cookies · MCH Ortodoncia";
+const description = "Información sobre las cookies utilizadas en mch-ortodoncia.com.";
+---
+
+<BaseLayout title={title} description={description} canonical="/aviso-cookies">
+  <Header />
+  <main class="py-24 md:py-32">
+    <article class="container-page max-w-3xl">
+      <p class="eyebrow mb-4">Aviso legal</p>
+      <h1 class="font-display text-[clamp(32px,4.6vw,56px)] leading-[1.1] mb-8">
+        Aviso de cookies
+      </h1>
+
+      <div class="space-y-7 text-[16px] text-ink-soft leading-[1.75]">
+        <p>
+          Este sitio utiliza únicamente cookies estrictamente necesarias y analíticas anónimas. No usamos cookies publicitarias, de perfilamiento ni de redes sociales.
+        </p>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">Cookies funcionales</h2>
+          <ul class="list-disc list-outside pl-6 space-y-2">
+            <li><strong>Cloudflare Turnstile</strong> — protección anti-spam del formulario de contacto. No identifica al usuario.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">Analítica anónima</h2>
+          <ul class="list-disc list-outside pl-6 space-y-2">
+            <li>
+              <strong>Plausible Analytics</strong> — analítica web sin cookies que mide visitas y secciones más vistas
+              de forma agregada y anónima. No usa identificadores personales, no comparte con terceros y cumple con GDPR/CCPA.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">Tu control</h2>
+          <p>
+            Puedes elegir entre "Entendido" (acepta funcionales y analíticas) o "Solo funcional" (solo Turnstile) en el banner inferior.
+            También puedes bloquear cookies desde la configuración de tu navegador en cualquier momento.
+          </p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,71 @@
+---
+interface Props {
+  href?: string;
+  variant?: "primary" | "ghost" | "whatsapp" | "champagne" | "outline-light";
+  size?: "md" | "lg";
+  iconRight?: boolean;
+  external?: boolean;
+  type?: "button" | "submit";
+  class?: string;
+  disabled?: boolean;
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  iconRight = true,
+  external = false,
+  type = "button",
+  class: cls = "",
+  disabled = false,
+  ariaLabel,
+} = Astro.props;
+
+const base =
+  "group inline-flex items-center justify-center gap-2 rounded-full font-medium tracking-tight " +
+  "transition-all duration-300 ease-out cursor-pointer text-center " +
+  "select-none touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-3";
+
+const sizes = {
+  md: "px-5 py-3 text-[14px] min-h-[44px]",
+  lg: "px-7 py-4 text-[15px] min-h-[52px]",
+};
+
+const variants = {
+  primary:
+    "bg-ink text-bone hover:bg-ink-soft hover:shadow-[0_12px_30px_-10px_rgba(26,34,56,0.45)] hover:-translate-y-[1px]",
+  ghost:
+    "bg-transparent text-ink border border-ink/80 hover:bg-ink hover:text-bone",
+  whatsapp:
+    "bg-whatsapp text-white hover:shadow-[0_12px_24px_-10px_rgba(37,211,102,0.55)] hover:-translate-y-[1px]",
+  champagne:
+    "bg-champagne text-ink hover:bg-champagne-deep hover:text-bone hover:shadow-[0_12px_28px_-10px_rgba(184,150,90,0.6)] hover:-translate-y-[1px]",
+  "outline-light":
+    "border border-bone/30 text-bone hover:bg-bone hover:text-ink",
+};
+
+const Tag = href ? "a" : "button";
+const rel = external ? "noopener noreferrer" : undefined;
+const target = external ? "_blank" : undefined;
+---
+
+<Tag
+  href={href}
+  type={!href ? type : undefined}
+  rel={rel}
+  target={target}
+  aria-label={ariaLabel}
+  class:list={[base, sizes[size], variants[variant], cls, disabled && "opacity-60 pointer-events-none"]}
+>
+  {variant === "whatsapp" && (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.2.2-.4.2-.7 0-.3-.2-1.2-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.6.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1.1 1-1.1 2.5c0 1.5 1.1 2.9 1.2 3.1.2.2 2.1 3.3 5.2 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4z M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.3c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.1 14.9 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/>
+    </svg>
+  )}
+  <span><slot /></span>
+  {iconRight && variant !== "whatsapp" && (
+    <span class="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+  )}
+</Tag>

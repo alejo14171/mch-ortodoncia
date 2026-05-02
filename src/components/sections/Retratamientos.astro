@@ -1,0 +1,59 @@
+---
+import { RETRATAMIENTOS } from "../../content/site";
+import Button from "../ui/Button.astro";
+import Card from "../ui/Card.astro";
+import Eyebrow from "../ui/Eyebrow.astro";
+---
+
+<section id="retratamientos" class="relative bg-ink text-bone py-24 md:py-32 grain overflow-hidden">
+  <!-- Decorative elements -->
+  <div class="absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute -top-40 right-0 w-[60%] h-[80%] rounded-full opacity-30 blur-3xl"
+      style="background: radial-gradient(circle, rgba(184,150,90,0.5), transparent 60%);"
+    ></div>
+    <div
+      class="absolute -bottom-32 -left-20 w-[50%] h-[60%] rounded-full opacity-20 blur-3xl"
+      style="background: radial-gradient(circle, rgba(184,116,107,0.4), transparent 60%);"
+    ></div>
+  </div>
+
+  <div class="container-page">
+    <div class="max-w-3xl reveal">
+      <Eyebrow variant="light" class="mb-6">{RETRATAMIENTOS.eyebrow}</Eyebrow>
+      <h2 class="font-display text-[clamp(36px,5vw,64px)] leading-[1.05] text-bone">
+        {RETRATAMIENTOS.titlePre} <em class="italic-accent" style="color: var(--color-champagne);">{RETRATAMIENTOS.titleEmphasis}</em> {RETRATAMIENTOS.titlePost}
+      </h2>
+      <p class="text-[17px] md:text-[18px] leading-[1.7] text-bone/70 mt-7 max-w-[60ch]">
+        {RETRATAMIENTOS.intro}
+      </p>
+      <p class="text-[18px] md:text-[19px] leading-[1.6] text-bone mt-5 max-w-[55ch] font-display italic-accent" style="color: var(--color-champagne); font-style: italic;">
+        {RETRATAMIENTOS.closing}
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 lg:gap-7 mt-14 md:mt-20">
+      {RETRATAMIENTOS.bullets.map((b, i) => (
+        <Card variant="dark" class={`reveal reveal-delay-${i + 1}`}>
+          <div class="flex items-start gap-3 mb-4">
+            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-champagne/15 border border-champagne/40 flex items-center justify-center text-[12px] font-medium text-champagne">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+          </div>
+          <h3 class="font-display text-[22px] md:text-[24px] text-bone mb-3 leading-tight">
+            {b.title}
+          </h3>
+          <p class="text-[15px] leading-[1.65] text-bone/70">
+            {b.text}
+          </p>
+        </Card>
+      ))}
+    </div>
+
+    <div class="mt-14 reveal reveal-delay-4">
+      <Button href="#contacto" variant="champagne" size="lg">
+        {RETRATAMIENTOS.cta}
+      </Button>
+    </div>
+  </div>
+</section>

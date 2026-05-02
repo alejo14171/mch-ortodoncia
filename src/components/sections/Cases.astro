@@ -1,0 +1,78 @@
+---
+import { getCollection } from "astro:content";
+import Eyebrow from "../ui/Eyebrow.astro";
+
+const cases = (await getCollection("cases")).sort((a, b) => a.data.order - b.data.order);
+
+// Import all case SVGs as raw URLs
+const caseSvgs = import.meta.glob<{ default: string }>("../../assets/casos/*.svg", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+function getSvgUrl(file: string): string {
+  const match = Object.entries(caseSvgs).find(([k]) => k.includes(file));
+  return match ? (match[1] as unknown as string) : "";
+}
+---
+
+<section
+  id="casos"
+  class="py-24 md:py-32 bg-bone-soft border-y border-line"
+>
+  <div class="container-page">
+    <header class="max-w-2xl mb-12 reveal">
+      <Eyebrow class="mb-5">CASOS</Eyebrow>
+      <h2 class="font-display text-[clamp(32px,4.6vw,56px)] leading-[1.08]">
+        Resultados que <em class="italic-accent">se quedan.</em>
+      </h2>
+    </header>
+
+    <!-- Disclaimer -->
+    <div class="bg-white border border-line rounded-xl p-5 md:p-6 mb-12 max-w-4xl reveal">
+      <div class="flex items-start gap-3">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-champagne/15 border border-champagne/40 flex items-center justify-center text-[11px] text-champagne-deep font-semibold mt-0.5">
+          i
+        </span>
+        <p class="text-[13px] text-ink-soft leading-[1.65]">
+          <strong class="text-ink">Imágenes esquemáticas de referencia clínica.</strong>
+          Cada caso es único y los resultados varían según diagnóstico, anatomía y compromiso del paciente. Las ilustraciones se actualizarán con casos reales bajo consentimiento informado escrito.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      {cases.map((c, i) => (
+        <figure
+          class={`bg-white border border-line rounded-card overflow-hidden hover:shadow-[0_18px_50px_-16px_rgba(26,34,56,0.18)] hover:-translate-y-1 transition-all duration-500 reveal reveal-delay-${(i % 4) + 1}`}
+        >
+          <div class="p-3 bg-bone-soft/50">
+            <img
+              src={getSvgUrl(c.data.file)}
+              alt={`Caso clínico esquemático: ${c.data.title}. ${c.data.subtitle}.`}
+              loading="lazy"
+              decoding="async"
+              width="820"
+              height="380"
+              class="w-full h-auto rounded-lg"
+            />
+          </div>
+          <figcaption class="p-6 border-t border-line">
+            <div class="flex items-baseline justify-between gap-3 mb-2">
+              <span class="eyebrow text-[10px]">{c.data.subtitle}</span>
+              <span class="text-[11px] text-slate-warm">{c.data.duration}</span>
+            </div>
+            <h3 class="font-display text-[20px] mb-2 leading-tight">{c.data.title}</h3>
+            <p class="text-[13px] text-ink-soft leading-[1.6] mb-3">{c.data.outcome}</p>
+            <div class="flex items-center gap-2 text-[11px] text-slate-warm pt-3 border-t border-line/70">
+              <span class="font-medium text-ink-soft">{c.data.patient}</span>
+              <span class="opacity-50">·</span>
+              <span>{c.data.treatment}</span>
+            </div>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 110" width="480" height="110" role="img" aria-label="María Claudia Huertas — Ortodoncia Pereira">
+  <!-- Nombre principal -->
+  <g font-family="Fraunces, Georgia, serif" font-weight="300" font-size="42" letter-spacing="-0.015em">
+    <text x="20" y="56" fill="#1A2238">María Claudia <tspan font-style="italic" font-weight="400" fill="#B8965A">Huertas</tspan></text>
+  </g>
+  <!-- Filete -->
+  <line x1="20" y1="74" x2="460" y2="74" stroke="#B8965A" stroke-width="0.5" fill="none"/>
+  <!-- Tagline -->
+  <text x="20" y="92" font-family="Inter, system-ui, sans-serif" font-size="9" letter-spacing="0.32em" font-weight="500" fill="#1A2238">ORTODONCIA  ·  PEREIRA  ·  DESDE 1996</text>
+</svg>

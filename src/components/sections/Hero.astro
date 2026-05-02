@@ -1,0 +1,221 @@
+---
+import { HERO, SITE } from "../../content/site";
+import Button from "../ui/Button.astro";
+import Eyebrow from "../ui/Eyebrow.astro";
+
+const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComponent("Hola Dra. Huertas, me gustaría agendar una valoración.")}`;
+---
+
+<section id="contenido" class="relative overflow-hidden pt-12 pb-16 md:pt-20 md:pb-28 lg:pt-24 lg:pb-32">
+  <!-- Decorative background gradient -->
+  <div class="absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute -top-40 -right-32 w-[55%] h-[80%] rounded-full opacity-60 blur-3xl"
+      style="background: radial-gradient(circle at center, rgba(184,150,90,0.18), transparent 65%);"
+    ></div>
+    <div
+      class="absolute -bottom-32 -left-20 w-[45%] h-[60%] rounded-full opacity-50 blur-3xl"
+      style="background: radial-gradient(circle at center, rgba(232,213,200,0.5), transparent 65%);"
+    ></div>
+  </div>
+
+  <div class="container-page">
+    <div class="grid lg:grid-cols-[1.15fr_1fr] gap-12 lg:gap-20 items-center">
+      <!-- Left: copy -->
+      <div class="reveal">
+        <Eyebrow class="mb-7">{HERO.eyebrow}</Eyebrow>
+
+        <h1 class="font-display text-[clamp(40px,6vw,76px)] leading-[1.04] mb-7 max-w-[14ch]">
+          {HERO.titlePre}
+          <em class="italic-accent">{HERO.titleEmphasis}</em>
+          <br />
+          {HERO.titlePost}
+        </h1>
+
+        <p class="text-[17px] md:text-[19px] leading-[1.6] text-ink-soft max-w-[52ch] mb-9">
+          {HERO.subtitle}
+        </p>
+
+        <div class="flex flex-wrap gap-3 mb-5">
+          <Button href="#contacto" variant="primary" size="lg">
+            {HERO.ctaPrimary}
+          </Button>
+          <Button href={waUrl} variant="whatsapp" size="lg" external iconRight={false}>
+            {HERO.ctaSecondary}
+          </Button>
+        </div>
+
+        <p class="text-[13px] text-slate-warm flex items-center gap-2">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true"></span>
+          {HERO.microcopy}
+        </p>
+
+        <!-- Trust micro-row -->
+        <div class="mt-12 pt-8 border-t border-line/70 flex flex-wrap gap-x-8 gap-y-3">
+          <div class="flex items-baseline gap-2">
+            <span class="font-display text-3xl text-champagne-deep">30</span>
+            <span class="text-[13px] text-ink-soft tracking-wide">años de práctica</span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span class="font-display text-3xl text-champagne-deep">+5k</span>
+            <span class="text-[13px] text-ink-soft tracking-wide">pacientes atendidos<sup class="text-[9px] ml-0.5 opacity-60">*</sup></span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span class="font-display text-3xl text-champagne-deep">2</span>
+            <span class="text-[13px] text-ink-soft tracking-wide">idiomas: ES · EN</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: portrait composition -->
+      <div class="relative reveal reveal-delay-2">
+        <div class="relative aspect-[3/4] max-w-[480px] mx-auto">
+          <!-- Decorative frame: subtle gold corners -->
+          <div class="absolute -top-3 -left-3 w-12 h-12 border-t border-l border-champagne/60 rounded-tl-3xl pointer-events-none" aria-hidden="true"></div>
+          <div class="absolute -bottom-3 -right-3 w-12 h-12 border-b border-r border-champagne/60 rounded-br-3xl pointer-events-none" aria-hidden="true"></div>
+
+          <!-- Backing card -->
+          <div
+            class="absolute inset-0 translate-x-4 translate-y-4 rounded-3xl bg-clay/60"
+            aria-hidden="true"
+          ></div>
+
+          <!-- Main portrait frame -->
+          <div
+            class="relative h-full rounded-3xl overflow-hidden shadow-[0_30px_80px_-20px_rgba(26,34,56,0.25)] bg-gradient-to-br from-bone-soft via-clay/40 to-champagne/30"
+          >
+            <!-- Stylized portrait placeholder using SVG composition -->
+            <svg
+              viewBox="0 0 400 533"
+              class="w-full h-full"
+              role="img"
+              aria-label="Retrato de la Dra. María Claudia Huertas"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <defs>
+                <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#FBF8F3" />
+                  <stop offset="50%" stop-color="#E8D5C8" />
+                  <stop offset="100%" stop-color="#B8965A" stop-opacity="0.45" />
+                </linearGradient>
+                <linearGradient id="figureGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1A2238" stop-opacity="0.92" />
+                  <stop offset="100%" stop-color="#2D3450" stop-opacity="0.78" />
+                </linearGradient>
+                <radialGradient id="lightSpot" cx="0.65" cy="0.25" r="0.6">
+                  <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55" />
+                  <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="coatGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FBF8F3" />
+                  <stop offset="100%" stop-color="#E8D5C8" />
+                </linearGradient>
+              </defs>
+              <rect width="400" height="533" fill="url(#bgGrad)" />
+              <rect width="400" height="533" fill="url(#lightSpot)" />
+
+              <!-- Shoulders / coat -->
+              <path
+                d="M 60 533 L 60 460 Q 60 400 130 380 L 270 380 Q 340 400 340 460 L 340 533 Z"
+                fill="url(#coatGrad)"
+                stroke="#B8965A"
+                stroke-width="0.5"
+                stroke-opacity="0.4"
+              />
+              <!-- Coat lapels -->
+              <path
+                d="M 130 380 L 200 460 L 270 380"
+                fill="none"
+                stroke="#1A2238"
+                stroke-opacity="0.25"
+                stroke-width="1.5"
+              />
+              <!-- Neck -->
+              <rect x="180" y="320" width="40" height="70" rx="20" fill="#E8D5C8" opacity="0.95" />
+              <!-- Hair backing -->
+              <path
+                d="M 110 280 Q 90 200 130 150 Q 175 95 200 95 Q 225 95 270 150 Q 310 200 290 280 L 290 360 Q 290 340 270 330 L 130 330 Q 110 340 110 360 Z"
+                fill="#1A2238"
+                opacity="0.9"
+              />
+              <!-- Face oval -->
+              <ellipse cx="200" cy="240" rx="68" ry="88" fill="#E8D5C8" />
+              <!-- Subtle face shading -->
+              <ellipse cx="225" cy="245" rx="40" ry="80" fill="#B8746B" opacity="0.18" />
+              <!-- Hair front -->
+              <path
+                d="M 132 225 Q 145 170 200 158 Q 255 170 268 225 Q 260 195 235 185 Q 215 200 200 200 Q 185 200 165 185 Q 140 195 132 225 Z"
+                fill="#1A2238"
+              />
+              <!-- Hair side strands -->
+              <path d="M 132 225 Q 122 280 138 320" fill="none" stroke="#1A2238" stroke-width="14" stroke-linecap="round" />
+              <path d="M 268 225 Q 278 280 262 320" fill="none" stroke="#1A2238" stroke-width="14" stroke-linecap="round" />
+              <!-- Eyes -->
+              <ellipse cx="180" cy="235" rx="6" ry="2.5" fill="#1A2238" />
+              <ellipse cx="220" cy="235" rx="6" ry="2.5" fill="#1A2238" />
+              <!-- Brows -->
+              <path d="M 172 222 Q 180 218 190 222" stroke="#1A2238" stroke-width="2" fill="none" stroke-linecap="round" />
+              <path d="M 210 222 Q 220 218 228 222" stroke="#1A2238" stroke-width="2" fill="none" stroke-linecap="round" />
+              <!-- Nose -->
+              <path d="M 200 245 Q 197 268 200 278 Q 204 280 206 277" stroke="#1A2238" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.55" />
+              <!-- Smile -->
+              <path d="M 184 295 Q 200 305 216 295" stroke="#B8746B" stroke-width="2.5" fill="none" stroke-linecap="round" />
+              <path d="M 184 297 Q 200 304 216 297" stroke="#FFFFFF" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.6" />
+              <!-- Earrings -->
+              <circle cx="138" cy="265" r="3" fill="#B8965A" />
+              <circle cx="262" cy="265" r="3" fill="#B8965A" />
+
+              <!-- Stethoscope hint on coat -->
+              <path
+                d="M 165 410 Q 170 440 200 445 Q 230 440 235 410"
+                stroke="#B8965A"
+                stroke-width="2.2"
+                fill="none"
+                stroke-linecap="round"
+                opacity="0.7"
+              />
+              <circle cx="200" cy="448" r="5" fill="none" stroke="#B8965A" stroke-width="1.8" opacity="0.7" />
+            </svg>
+
+            <!-- Soft vignette overlay -->
+            <div
+              class="absolute inset-0 pointer-events-none"
+              style="background: linear-gradient(180deg, transparent 55%, rgba(26,34,56,0.18) 100%);"
+              aria-hidden="true"
+            ></div>
+          </div>
+
+          <!-- Floating credential card -->
+          <div
+            class="absolute -left-4 lg:-left-10 bottom-12 bg-bone-soft border border-champagne/30 rounded-2xl px-5 py-4 shadow-[0_20px_50px_-15px_rgba(26,34,56,0.25)] backdrop-blur-sm"
+          >
+            <div class="text-[10px] tracking-[0.18em] font-medium text-champagne-deep uppercase mb-1">
+              Desde
+            </div>
+            <div class="font-display text-[34px] leading-none text-ink">
+              19<em class="italic-accent">96</em>
+            </div>
+            <div class="text-[11px] text-slate-warm mt-1 max-w-[10ch] leading-tight">
+              Atendiendo en Pereira
+            </div>
+          </div>
+
+          <!-- Floating gold line accent -->
+          <div
+            class="absolute -right-3 top-12 w-24 h-px bg-champagne"
+            aria-hidden="true"
+          ></div>
+          <div
+            class="absolute -right-3 top-12 w-2 h-2 rounded-full bg-champagne -translate-y-1"
+            aria-hidden="true"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- footnote disclaimer -->
+    <p class="text-[10px] text-slate-warm/70 mt-12 max-w-[60ch]">
+      <sup>*</sup> Cifra estimada acumulada desde el inicio de la práctica clínica.
+    </p>
+  </div>
+</section>

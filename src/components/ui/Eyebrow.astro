@@ -1,0 +1,13 @@
+---
+interface Props {
+  variant?: "default" | "light";
+  class?: string;
+}
+const { variant = "default", class: cls = "" } = Astro.props;
+const color = variant === "light" ? "text-champagne" : "text-champagne-deep";
+---
+
+<span class:list={["eyebrow inline-flex items-center gap-3", color, cls]}>
+  <span class="inline-block w-6 h-px bg-current opacity-60" aria-hidden="true"></span>
+  <slot />
+</span>

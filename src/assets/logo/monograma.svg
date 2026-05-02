@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="120" role="img" aria-label="MCH Ortodoncia">
+  <defs>
+    <style>
+      .ink { fill: #1A2238; }
+      .gold { fill: #B8965A; }
+      .gold-stroke { stroke: #B8965A; }
+    </style>
+  </defs>
+  <!-- Monograma MCH -->
+  <g font-family="Fraunces, Georgia, serif" font-weight="300" font-size="56" letter-spacing="-0.02em">
+    <text x="14" y="64" class="ink">M</text>
+    <text x="64" y="64" class="ink" font-style="italic" font-weight="400" fill="#B8965A">C</text>
+    <text x="106" y="64" class="ink">H</text>
+  </g>
+  <!-- Filete dorado -->
+  <line x1="14" y1="80" x2="156" y2="80" class="gold-stroke" stroke-width="0.6" fill="none"/>
+  <!-- Tagline -->
+  <text x="14" y="98" font-family="Inter, system-ui, sans-serif" font-size="8" letter-spacing="0.28em" font-weight="500" class="ink">ORTODONCIA  ·  PEREIRA</text>
+</svg>

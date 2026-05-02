@@ -1,0 +1,117 @@
+---
+import { SITE } from "../../content/site";
+import Icon from "../icons/Icon.astro";
+
+const a = SITE.contact.address;
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-bone-soft border-t border-line pt-16 pb-8">
+  <div class="container-page">
+    <div class="grid md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-10 lg:gap-12 mb-14">
+      <div>
+        <a href="/" class="font-display text-[28px] tracking-tight inline-block mb-3">
+          m<em class="italic-accent">c</em>h
+        </a>
+        <p class="text-[13px] text-ink-soft leading-[1.65] max-w-[36ch]">
+          Dra. María Claudia Huertas — Ortodoncia y retratamientos en Pereira desde 1996. Atención clínica con la calidez que tu sonrisa merece.
+        </p>
+        <div class="flex items-center gap-3 mt-6">
+          <span class="chip">
+            <span class="w-1.5 h-1.5 rounded-full bg-success animate-pulse" aria-hidden="true"></span>
+            Recibiendo pacientes
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-[11px] tracking-[0.18em] uppercase text-ink font-semibold mb-4">Consultorio</h4>
+        <ul class="space-y-2 text-[14px] text-ink-soft">
+          <li>{a.street}</li>
+          <li>{a.building}</li>
+          <li>{a.floor} · {a.office}</li>
+          <li>{a.city}, {a.state}</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-[11px] tracking-[0.18em] uppercase text-ink font-semibold mb-4">Contacto</h4>
+        <ul class="space-y-2 text-[14px] text-ink-soft">
+          <li>
+            <a
+              href={`https://wa.me/${SITE.contact.whatsappDigits}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 hover:text-champagne-deep transition-colors"
+            >
+              <Icon name="phone" size={13} strokeWidth={1.6} />
+              {SITE.contact.whatsappDisplay}
+            </a>
+          </li>
+          <li>
+            <a
+              href={`mailto:${SITE.contact.email}`}
+              class="inline-flex items-center gap-2 hover:text-champagne-deep transition-colors break-all"
+            >
+              <Icon name="mail" size={13} strokeWidth={1.6} />
+              <span>Email</span>
+            </a>
+          </li>
+        </ul>
+        <h4 class="text-[11px] tracking-[0.18em] uppercase text-ink font-semibold mt-6 mb-3">Horarios</h4>
+        <ul class="space-y-1 text-[13px] text-ink-soft">
+          <li>Lun – Vie: 8 a. m. – 6 p. m.</li>
+          <li>Sáb: 8 a. m. – 12 m.</li>
+          <li class="text-slate-warm text-[12px]">Solo con cita previa</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-[11px] tracking-[0.18em] uppercase text-ink font-semibold mb-4">Información</h4>
+        <ul class="space-y-2 text-[14px] text-ink-soft">
+          <li><a href="#tratamientos" class="hover:text-champagne-deep transition-colors">Tratamientos</a></li>
+          <li><a href="#sobre" class="hover:text-champagne-deep transition-colors">Sobre la doctora</a></li>
+          <li><a href="#faq" class="hover:text-champagne-deep transition-colors">Preguntas frecuentes</a></li>
+          <li><a href="/politica-privacidad" class="hover:text-champagne-deep transition-colors">Política de privacidad</a></li>
+          <li><a href="/aviso-cookies" class="hover:text-champagne-deep transition-colors">Aviso de cookies</a></li>
+          <li><a href="/en" class="hover:text-champagne-deep transition-colors">English version</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dotted-gold mb-8 opacity-60"></div>
+
+    <div class="flex flex-wrap items-center justify-between gap-4 text-[12px] text-slate-warm">
+      <p>
+        © {year} {SITE.legal.holderName} · Persona natural · Pereira, Colombia.
+      </p>
+      <p>
+        Reg. Profesional <span class="opacity-60">[Pendiente publicación]</span>
+      </p>
+      <p class="opacity-70">
+        Sitio diseñado con cuidado clínico.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile sticky CTA -->
+<div
+  class="lg:hidden fixed bottom-3 left-3 right-3 z-40 flex gap-2 pointer-events-none"
+  aria-hidden="false"
+>
+  <a
+    href="#contacto"
+    class="pointer-events-auto flex-1 inline-flex items-center justify-center gap-2 py-3 rounded-full bg-ink text-bone text-[14px] font-medium shadow-[0_12px_30px_rgba(26,34,56,0.4)]"
+  >
+    Agendar
+  </a>
+  <a
+    href={`https://wa.me/${SITE.contact.whatsappDigits}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="pointer-events-auto flex-1 inline-flex items-center justify-center gap-2 py-3 rounded-full bg-whatsapp text-white text-[14px] font-medium shadow-[0_12px_30px_rgba(37,211,102,0.4)]"
+  >
+    WhatsApp
+  </a>
+</div>

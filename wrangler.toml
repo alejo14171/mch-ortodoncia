@@ -1,0 +1,11 @@
+name = "mch-ortodoncia"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "dist"
+
+[vars]
+PUBLIC_SITE_URL = "https://mch-ortodoncia.com"
+PUBLIC_ENABLE_ANALYTICS = "true"
+PUBLIC_ENABLE_CAL_EMBED = "false"
+
+# Set secrets via: wrangler pages secret put VAR_NAME
+# RESEND_API_KEY, TURNSTILE_SECRET_KEY, WHATSAPP_WEBHOOK_URL

@@ -1,0 +1,47 @@
+---
+import { getCollection } from "astro:content";
+import Eyebrow from "../ui/Eyebrow.astro";
+
+const faqs = (await getCollection("faqs")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="faq" class="py-24 md:py-32 bg-bone-soft border-y border-line">
+  <div class="container-page">
+    <header class="max-w-2xl mb-14 reveal">
+      <Eyebrow class="mb-5">PREGUNTAS FRECUENTES</Eyebrow>
+      <h2 class="font-display text-[clamp(32px,4.6vw,56px)] leading-[1.08]">
+        Lo que más nos <em class="italic-accent">preguntan.</em>
+      </h2>
+      <p class="text-[17px] text-ink-soft leading-[1.65] mt-6 max-w-[58ch]">
+        Respuestas honestas a lo que la mayoría de pacientes preguntan antes de venir.
+      </p>
+    </header>
+
+    <div class="max-w-3xl">
+      {faqs.map((f, i) => (
+        <details
+          class={`group border-b border-line py-6 last:border-b-0 reveal reveal-delay-${(i % 4) + 1}`}
+          open={i === 0}
+        >
+          <summary class="flex items-start justify-between gap-4 cursor-pointer list-none">
+            <h3 class="font-display text-[18px] md:text-[20px] leading-snug pr-4 group-hover:text-champagne-deep transition-colors">
+              {f.data.q}
+            </h3>
+            <span
+              class="flex-shrink-0 w-8 h-8 rounded-full border border-champagne/40 text-champagne-deep flex items-center justify-center transition-all duration-300 group-open:rotate-45 group-open:bg-champagne group-open:text-ink"
+              aria-hidden="true"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </span>
+          </summary>
+          <div class="text-[15px] text-ink-soft leading-[1.75] pt-4 pr-12">
+            {f.body?.trim()}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

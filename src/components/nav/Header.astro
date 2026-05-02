@@ -1,0 +1,127 @@
+---
+import { NAV_LINKS, SITE } from "../../content/site";
+import Button from "../ui/Button.astro";
+import Icon from "../icons/Icon.astro";
+
+const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComponent("Hola Dra. Huertas, me gustaría agendar una valoración.")}`;
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-line/50 bg-bone/85 backdrop-blur-xl transition-all duration-300"
+>
+  <div class="container-page flex items-center justify-between py-5 md:py-6">
+    <a href="/" class="group flex items-center gap-3" aria-label="Inicio · MCH Ortodoncia">
+      <span class="font-display text-2xl md:text-[26px] leading-none tracking-tight">
+        m<em class="italic-accent">c</em>h
+      </span>
+      <span class="hidden sm:flex items-center gap-2 pl-3 border-l border-line/80">
+        <span class="text-[10px] tracking-[0.22em] font-medium text-ink/65 uppercase">
+          Ortodoncia · Pereira
+        </span>
+      </span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-8" aria-label="Navegación principal">
+      {NAV_LINKS.map((l) => (
+        <a
+          href={l.href}
+          class="relative text-[14px] text-ink/80 hover:text-ink transition-colors group"
+        >
+          {l.label}
+          <span class="absolute -bottom-1 left-0 right-0 h-px bg-champagne scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <Button href="#contacto" variant="primary" size="md" iconRight={false} class="!hidden md:!inline-flex">
+        Agendar valoración
+      </Button>
+      <Button
+        href={waUrl}
+        variant="whatsapp"
+        size="md"
+        external
+        iconRight={false}
+        ariaLabel="Escribir por WhatsApp"
+      >
+        <span class="hidden sm:inline">WhatsApp</span>
+        <span class="sm:hidden">Chat</span>
+      </Button>
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="lg:hidden p-2 -mr-2 text-ink hover:text-champagne-deep transition-colors"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <Icon name="menu" size={26} />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden absolute left-0 right-0 top-full bg-bone border-b border-line shadow-soft hidden"
+  >
+    <nav class="container-page py-6 flex flex-col gap-4">
+      {NAV_LINKS.map((l) => (
+        <a
+          href={l.href}
+          class="block py-2 text-[16px] font-medium text-ink/85 hover:text-champagne-deep border-b border-line/60"
+          data-mobile-link
+        >
+          {l.label}
+        </a>
+      ))}
+      <Button href="#contacto" variant="primary" size="lg" class="mt-2 w-full justify-center">
+        Agendar valoración
+      </Button>
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById("mobile-menu-btn");
+    var menu = document.getElementById("mobile-menu");
+    var header = document.getElementById("site-header");
+    if (!btn || !menu || !header) return;
+
+    btn.addEventListener("click", function () {
+      var isOpen = !menu.classList.contains("hidden");
+      menu.classList.toggle("hidden");
+      btn.setAttribute("aria-expanded", String(!isOpen));
+    });
+
+    document.querySelectorAll("[data-mobile-link]").forEach(function (a) {
+      a.addEventListener("click", function () {
+        menu.classList.add("hidden");
+        btn.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // Subtle shadow when scrolled
+    var lastY = 0;
+    window.addEventListener(
+      "scroll",
+      function () {
+        var y = window.scrollY;
+        if (y > 24) {
+          header.classList.add("shadow-[0_2px_24px_-12px_rgba(26,34,56,0.18)]");
+          header.classList.add("bg-bone/95");
+          header.classList.remove("bg-bone/85");
+        } else {
+          header.classList.remove("shadow-[0_2px_24px_-12px_rgba(26,34,56,0.18)]");
+          header.classList.add("bg-bone/85");
+          header.classList.remove("bg-bone/95");
+        }
+        lastY = y;
+      },
+      { passive: true }
+    );
+  })();
+</script>

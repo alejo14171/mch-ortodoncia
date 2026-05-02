@@ -1,0 +1,163 @@
+---
+import "../styles/global.css";
+import { SITE } from "../content/site";
+import {
+  dentistSchema,
+  personSchema,
+  faqPageSchema,
+  websiteSchema,
+  breadcrumbSchema,
+} from "../lib/schema";
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  lang?: string;
+  faqs?: { question: string; answer: string }[];
+  services?: { name: string; description: string }[];
+  alternateEn?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = "/og-default.svg",
+  lang = "es-CO",
+  faqs,
+  services,
+  alternateEn,
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = (import.meta.env.PUBLIC_SITE_URL || Astro.site?.toString() || "https://mch-ortodoncia.com").replace(/\/$/, "");
+const canonicalUrl = canonical ? `${siteUrl}${canonical}` : `${siteUrl}${Astro.url.pathname.replace(/\/$/, "") || "/"}`;
+const ogImageUrl = ogImage.startsWith("http") ? ogImage : `${siteUrl}${ogImage}`;
+
+const enableAnalytics = SITE.flags.enableAnalytics;
+const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+
+const ldDentist = services ? dentistSchema(siteUrl, services) : null;
+const ldPerson = personSchema(siteUrl);
+const ldWebsite = websiteSchema(siteUrl);
+const ldFaq = faqs && faqs.length ? faqPageSchema(faqs) : null;
+const ldBreadcrumb = breadcrumbSchema(siteUrl, [
+  { name: "Inicio", url: `${siteUrl}/` },
+  ...(canonical && canonical !== "/" ? [{ name: title, url: canonicalUrl }] : []),
+]);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1A2238" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {alternateEn && <link rel="alternate" hreflang="en" href={`${siteUrl}${alternateEn}`} />}
+    <link rel="alternate" hreflang="es-co" href={canonicalUrl} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.doctorFullName} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Geo tags -->
+    <meta name="geo.region" content="CO-RIS" />
+    <meta name="geo.placename" content="Pereira" />
+    <meta name="geo.position" content={`${SITE.contact.address.coordinates.lat};${SITE.contact.address.coordinates.lng}`} />
+    <meta name="ICBM" content={`${SITE.contact.address.coordinates.lat}, ${SITE.contact.address.coordinates.lng}`} />
+
+    <!-- JSON-LD Structured Data -->
+    {ldDentist && (
+      <script type="application/ld+json" set:html={JSON.stringify(ldDentist)} />
+    )}
+    <script type="application/ld+json" set:html={JSON.stringify(ldPerson)} />
+    <script type="application/ld+json" set:html={JSON.stringify(ldWebsite)} />
+    <script type="application/ld+json" set:html={JSON.stringify(ldBreadcrumb)} />
+    {ldFaq && <script type="application/ld+json" set:html={JSON.stringify(ldFaq)} />}
+
+    <!-- Plausible analytics (privacy-respecting) -->
+    {enableAnalytics && plausibleDomain && (
+      <script
+        defer
+        is:inline
+        data-domain={plausibleDomain}
+        src="https://plausible.io/js/script.js"
+      ></script>
+    )}
+  </head>
+  <body>
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-ink focus:text-bone focus:rounded-md"
+    >
+      Saltar al contenido principal
+    </a>
+
+    <slot />
+
+    <!-- Global reveal-on-scroll observer (progressive enhancement) -->
+    <script is:inline>
+      (function () {
+        if (typeof window === "undefined") return;
+        document.documentElement.classList.add("js-ready");
+        var prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReduce) {
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            el.classList.add("is-visible");
+          });
+          return;
+        }
+        // Eagerly reveal anything already in view on first paint (above the fold)
+        function revealInView() {
+          var vh = window.innerHeight || document.documentElement.clientHeight;
+          document.querySelectorAll(".reveal:not(.is-visible)").forEach(function (el) {
+            var rect = el.getBoundingClientRect();
+            if (rect.top < vh * 0.95) {
+              el.classList.add("is-visible");
+            }
+          });
+        }
+        revealInView();
+
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+        );
+        document.querySelectorAll(".reveal:not(.is-visible)").forEach(function (el) {
+          io.observe(el);
+        });
+      })();
+    </script>
+  </body>
+</html>

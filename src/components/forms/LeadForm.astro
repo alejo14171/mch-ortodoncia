@@ -1,0 +1,279 @@
+---
+import { SITE } from "../../content/site";
+import Button from "../ui/Button.astro";
+import Icon from "../icons/Icon.astro";
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const calLink = import.meta.env.PUBLIC_CAL_COM_LINK || "mch-ortodoncia/valoracion";
+const enableCal = import.meta.env.PUBLIC_ENABLE_CAL_EMBED === "true";
+---
+
+<form
+  id="lead-form"
+  action="/api/lead"
+  method="POST"
+  novalidate
+  class="grid grid-cols-1 md:grid-cols-2 gap-5"
+>
+  <div class="md:col-span-2">
+    <label for="lf-name" class="block text-[13px] font-medium text-ink mb-2">
+      Nombre completo <span class="text-rosewood">*</span>
+    </label>
+    <input
+      id="lf-name"
+      name="name"
+      type="text"
+      required
+      autocomplete="name"
+      minlength="2"
+      maxlength="120"
+      class="w-full px-4 py-3 rounded-lg border border-line bg-bone-soft text-ink placeholder:text-slate-warm/70 focus:border-champagne focus:ring-2 focus:ring-champagne/20 outline-none transition-all"
+      placeholder="Como aparece en tu cédula"
+    />
+  </div>
+
+  <div>
+    <label for="lf-whatsapp" class="block text-[13px] font-medium text-ink mb-2">
+      WhatsApp <span class="text-rosewood">*</span>
+    </label>
+    <input
+      id="lf-whatsapp"
+      name="whatsapp"
+      type="tel"
+      required
+      autocomplete="tel"
+      pattern="^(\+?57)?\s?3\d{2}\s?\d{3}\s?\d{4}$"
+      class="w-full px-4 py-3 rounded-lg border border-line bg-bone-soft text-ink placeholder:text-slate-warm/70 focus:border-champagne focus:ring-2 focus:ring-champagne/20 outline-none transition-all"
+      placeholder="+57 314 000 0000"
+    />
+  </div>
+
+  <div>
+    <label for="lf-email" class="block text-[13px] font-medium text-ink mb-2">
+      Correo electrónico <span class="text-rosewood">*</span>
+    </label>
+    <input
+      id="lf-email"
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      class="w-full px-4 py-3 rounded-lg border border-line bg-bone-soft text-ink placeholder:text-slate-warm/70 focus:border-champagne focus:ring-2 focus:ring-champagne/20 outline-none transition-all"
+      placeholder="tu@correo.com"
+    />
+  </div>
+
+  <div>
+    <label for="lf-for" class="block text-[13px] font-medium text-ink mb-2">
+      ¿Para quién es la consulta?
+    </label>
+    <select
+      id="lf-for"
+      name="forWhom"
+      class="w-full px-4 py-3 rounded-lg border border-line bg-bone-soft text-ink focus:border-champagne focus:ring-2 focus:ring-champagne/20 outline-none transition-all"
+    >
+      <option value="self">Para mí</option>
+      <option value="child">Mi hijo/a</option>
+      <option value="family">Otro familiar</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="lf-age" class="block text-[13px] font-medium text-ink mb-2">
+      Edad del paciente <span class="text-rosewood">*</span>
+    </label>
+    <input
+      id="lf-age"
+      name="patientAge"
+      type="number"
+      required
+      min="3"
+      max="100"
+      class="w-full px-4 py-3 rounded-lg border border-line bg-bone-soft text-ink placeholder:text-slate-warm/70 focus:border-champagne focus:ring-2 focus:ring-champagne/20 outline-none transition-all"
+      placeholder="Ej: 32"
+    />
+  </div>
+
+  <div class="md:col-span-2">
+    <label for="lf-interest" class="block text-[13px] font-medium text-ink mb-2">
+      Tipo de tratamiento de interés
+    </label>
+    <select
+      id="lf-interest"
+      name="interest"
+      class="w-full px-4 py-3 rounded-lg border border-line bg-bone-soft text-ink focus:border-champagne focus:ring-2 focus:ring-champagne/20 outline-none transition-all"
+    >
+      <option value="not-sure">No estoy seguro/a</option>
+      <option value="brackets">Brackets</option>
+      <option value="alineadores">Alineadores invisibles</option>
+      <option value="retratamiento">Retratamiento</option>
+      <option value="ortopedia">Ortopedia maxilar (niños)</option>
+      <option value="other">Otro</option>
+    </select>
+  </div>
+
+  <div class="md:col-span-2">
+    <label for="lf-reason" class="block text-[13px] font-medium text-ink mb-2">
+      Cuéntame tu caso <span class="text-slate-warm font-normal">(opcional)</span>
+    </label>
+    <textarea
+      id="lf-reason"
+      name="reason"
+      rows="4"
+      maxlength="300"
+      class="w-full px-4 py-3 rounded-lg border border-line bg-bone-soft text-ink placeholder:text-slate-warm/70 focus:border-champagne focus:ring-2 focus:ring-champagne/20 outline-none transition-all resize-none"
+      placeholder="¿Qué te trae al consultorio? Si tuviste tratamiento previo, cuéntame brevemente."
+    ></textarea>
+    <div class="text-[11px] text-slate-warm mt-1 text-right">
+      <span id="lf-reason-count">0</span>/300
+    </div>
+  </div>
+
+  <div class="md:col-span-2 flex items-start gap-3 pt-2">
+    <input
+      id="lf-consent"
+      name="consent"
+      type="checkbox"
+      required
+      class="mt-1 flex-shrink-0 w-4 h-4 accent-champagne-deep cursor-pointer"
+    />
+    <label for="lf-consent" class="text-[12px] text-ink-soft leading-[1.55] cursor-pointer">
+      Autorizo el tratamiento de mis datos personales para el agendamiento de la consulta y comunicación, según la
+      <a href="/politica-privacidad" class="underline hover:text-champagne-deep" target="_blank" rel="noopener">
+        Política de Privacidad
+      </a>
+      (Ley 1581 de 2012). <span class="text-rosewood">*</span>
+    </label>
+  </div>
+
+  {turnstileSiteKey && (
+    <div class="md:col-span-2">
+      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light"></div>
+    </div>
+  )}
+
+  <input type="hidden" name="hp" value="" tabindex="-1" autocomplete="off" />
+
+  <div class="md:col-span-2 flex flex-wrap items-center gap-4 pt-2">
+    <Button type="submit" variant="primary" size="lg">
+      Enviar mensaje
+    </Button>
+    <p class="text-[12px] text-slate-warm flex items-center gap-2">
+      <Icon name="clock" size={13} strokeWidth={1.6} />
+      Respondo personalmente en menos de 24 h hábiles.
+    </p>
+  </div>
+
+  <div
+    id="lf-success"
+    class="md:col-span-2 hidden bg-success/10 border border-success/30 text-success rounded-xl p-5"
+    role="status"
+    aria-live="polite"
+  >
+    <div class="flex items-start gap-3">
+      <span class="flex-shrink-0 w-7 h-7 rounded-full bg-success text-bone flex items-center justify-center">
+        <Icon name="check" size={16} strokeWidth={2.4} />
+      </span>
+      <div>
+        <p class="font-medium text-ink">Recibí tu mensaje.</p>
+        <p class="text-[14px] text-ink-soft mt-1">
+          Te responderé personalmente por WhatsApp en menos de 24 horas hábiles.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="lf-error"
+    class="md:col-span-2 hidden bg-rosewood/10 border border-rosewood/30 text-rosewood rounded-xl p-5"
+    role="alert"
+  >
+    <p class="font-medium">No pudimos enviar tu mensaje.</p>
+    <p id="lf-error-msg" class="text-[14px] text-ink-soft mt-1">
+      Verifica tus datos e inténtalo de nuevo, o escríbeme directo por WhatsApp.
+    </p>
+  </div>
+</form>
+
+{enableCal && calLink && (
+  <div class="mt-12 pt-10 border-t border-line">
+    <p class="text-[14px] text-ink-soft mb-4">¿Prefieres elegir tú la fecha y hora?</p>
+    <a
+      data-cal-link={calLink}
+      data-cal-config='{"layout":"month_view"}'
+      class="inline-flex items-center gap-2 text-champagne-deep font-medium hover:text-ink transition-colors cursor-pointer"
+    >
+      Ver disponibilidad en calendario →
+    </a>
+  </div>
+)}
+
+{turnstileSiteKey && (
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+)}
+
+<script is:inline>
+  (function () {
+    var form = document.getElementById("lead-form");
+    if (!form) return;
+    var success = document.getElementById("lf-success");
+    var errorBox = document.getElementById("lf-error");
+    var errorMsg = document.getElementById("lf-error-msg");
+    var counter = document.getElementById("lf-reason-count");
+    var reason = document.getElementById("lf-reason");
+
+    if (reason && counter) {
+      reason.addEventListener("input", function () {
+        counter.textContent = String(reason.value.length);
+      });
+    }
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      success.classList.add("hidden");
+      errorBox.classList.add("hidden");
+
+      var fd = new FormData(form);
+      // Honeypot check
+      if (fd.get("hp")) return;
+
+      var submitBtn = form.querySelector("button[type=submit]");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Enviando…";
+      }
+
+      try {
+        var resp = await fetch("/api/lead", {
+          method: "POST",
+          body: fd,
+          headers: { Accept: "application/json" },
+        });
+        var data = await resp.json().catch(function () {
+          return {};
+        });
+        if (resp.ok && data.ok) {
+          form.reset();
+          success.classList.remove("hidden");
+          success.scrollIntoView({ behavior: "smooth", block: "center" });
+          if (window.plausible) window.plausible("Lead Submitted");
+        } else {
+          errorBox.classList.remove("hidden");
+          if (data && data.error && errorMsg) errorMsg.textContent = data.error;
+        }
+      } catch (err) {
+        errorBox.classList.remove("hidden");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Enviar mensaje";
+        }
+      }
+    });
+  })();
+</script>

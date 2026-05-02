@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="MCH">
+  <circle cx="100" cy="100" r="98" fill="#F7F2EA" stroke="#B8965A" stroke-width="0.8"/>
+  <circle cx="100" cy="100" r="92" fill="none" stroke="#B8965A" stroke-width="0.4" stroke-dasharray="0.5 2"/>
+  <g font-family="Fraunces, Georgia, serif" font-weight="300" font-size="64" letter-spacing="-0.02em" text-anchor="middle">
+    <text x="100" y="118" fill="#1A2238">m<tspan font-style="italic" font-weight="400" fill="#B8965A">c</tspan>h</text>
+  </g>
+  <text x="100" y="148" font-family="Inter, system-ui, sans-serif" font-size="6.5" letter-spacing="0.32em" font-weight="500" fill="#1A2238" text-anchor="middle">ORTODONCIA</text>
+</svg>

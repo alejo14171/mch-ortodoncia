@@ -1,0 +1,95 @@
+---
+import { CTA_FINAL, SITE } from "../../content/site";
+import LeadForm from "../forms/LeadForm.astro";
+import Button from "../ui/Button.astro";
+import Eyebrow from "../ui/Eyebrow.astro";
+import Icon from "../icons/Icon.astro";
+
+const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComponent("Hola Dra. Huertas, me gustaría agendar una valoración.")}`;
+---
+
+<section id="contacto" class="relative bg-ink text-bone py-24 md:py-32 grain overflow-hidden">
+  <div class="absolute inset-0 -z-10" aria-hidden="true">
+    <div
+      class="absolute top-0 left-0 w-[60%] h-[80%] rounded-full opacity-25 blur-3xl"
+      style="background: radial-gradient(circle, rgba(184,150,90,0.5), transparent 60%);"
+    ></div>
+    <div
+      class="absolute -bottom-20 right-0 w-[50%] h-[60%] rounded-full opacity-20 blur-3xl"
+      style="background: radial-gradient(circle, rgba(232,213,200,0.3), transparent 60%);"
+    ></div>
+  </div>
+
+  <div class="container-page">
+    <div class="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-20 items-start">
+      <!-- Left: messaging -->
+      <div class="reveal">
+        <Eyebrow variant="light" class="mb-6">CONTACTO</Eyebrow>
+
+        <h2 class="font-display text-[clamp(36px,5vw,64px)] leading-[1.05] text-bone mb-6">
+          {CTA_FINAL.titlePre}
+          <em class="italic-accent" style="color: var(--color-champagne);">{CTA_FINAL.titleEmphasis}</em>
+          {CTA_FINAL.titlePost}
+        </h2>
+        <p class="text-[17px] leading-[1.7] text-bone/72 max-w-[52ch] mb-10">
+          {CTA_FINAL.subtitle}
+        </p>
+
+        <div class="space-y-5 mb-10">
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center gap-4 p-5 rounded-2xl bg-white/[0.05] border border-champagne/20 hover:border-champagne/60 hover:bg-white/[0.08] transition-all"
+          >
+            <span class="w-11 h-11 rounded-full bg-whatsapp flex items-center justify-center flex-shrink-0 text-white">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.2.2-.4.2-.7 0-.3-.2-1.2-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.6.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1.1 1-1.1 2.5c0 1.5 1.1 2.9 1.2 3.1.2.2 2.1 3.3 5.2 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4z M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.3c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.1 14.9 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg>
+            </span>
+            <div class="flex-1 min-w-0">
+              <div class="text-[11px] tracking-[0.2em] text-champagne uppercase">WhatsApp directo</div>
+              <div class="font-display text-[20px] text-bone group-hover:text-champagne transition-colors">
+                {SITE.contact.whatsappDisplay}
+              </div>
+            </div>
+            <Icon name="arrow-right" size={18} class="text-bone/60 group-hover:text-champagne group-hover:translate-x-1 transition-all" />
+          </a>
+
+          <a
+            href={`mailto:${SITE.contact.email}`}
+            class="group flex items-center gap-4 p-5 rounded-2xl bg-white/[0.05] border border-champagne/20 hover:border-champagne/60 hover:bg-white/[0.08] transition-all"
+          >
+            <span class="w-11 h-11 rounded-full bg-champagne/15 flex items-center justify-center flex-shrink-0 text-champagne">
+              <Icon name="mail" size={20} strokeWidth={1.6} />
+            </span>
+            <div class="flex-1 min-w-0">
+              <div class="text-[11px] tracking-[0.2em] text-champagne uppercase">Email</div>
+              <div class="font-display text-[18px] text-bone group-hover:text-champagne transition-colors break-all">
+                {SITE.contact.email}
+              </div>
+            </div>
+            <Icon name="arrow-right" size={18} class="text-bone/60 group-hover:text-champagne group-hover:translate-x-1 transition-all" />
+          </a>
+        </div>
+
+        <div class="text-[12px] text-bone/55 pt-6 border-t border-bone/15">
+          <p class="mb-1 text-bone/70">Horario de atención</p>
+          <p>Lunes – Viernes: 8 a. m. – 6 p. m.</p>
+          <p>Sábados: 8 a. m. – 12 m.</p>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="reveal reveal-delay-2">
+        <div class="bg-bone text-ink rounded-3xl p-7 md:p-10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.4)]">
+          <h3 class="font-display text-[26px] md:text-[30px] mb-2">
+            Cuéntame de tu caso
+          </h3>
+          <p class="text-[14px] text-ink-soft mb-7">
+            Te respondo personalmente — no es un formulario que va a un call center.
+          </p>
+          <LeadForm />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,120 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/nav/Header.astro";
+import Footer from "../components/nav/Footer.astro";
+import { SITE } from "../content/site";
+
+const title = "Política de Privacidad · MCH Ortodoncia";
+const description =
+  "Política de tratamiento de datos personales según la Ley 1581 de 2012 y el Decreto 1377 de 2013 de Colombia.";
+const a = SITE.contact.address;
+---
+
+<BaseLayout title={title} description={description} canonical="/politica-privacidad">
+  <Header />
+  <main class="py-24 md:py-32">
+    <article class="container-page max-w-3xl prose-mch">
+      <p class="eyebrow mb-4">Aviso legal</p>
+      <h1 class="font-display text-[clamp(32px,4.6vw,56px)] leading-[1.1] mb-3">
+        Política de privacidad
+      </h1>
+      <p class="text-[14px] text-slate-warm mb-10">
+        Versión {SITE.legal.privacyPolicyVersion} · Vigente desde {SITE.legal.privacyPolicyDate}
+      </p>
+
+      <div class="space-y-7 text-[16px] text-ink-soft leading-[1.75]">
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">1. Responsable del tratamiento</h2>
+          <p>
+            <strong>{SITE.legal.holderName}</strong>, persona natural con domicilio profesional en
+            {a.street}, {a.building}, {a.floor}, {a.office}, {a.city}, {a.state}, Colombia.
+            Correo de contacto: <a class="underline hover:text-champagne-deep" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a>.
+            Teléfono / WhatsApp: <a class="underline hover:text-champagne-deep" href={`https://wa.me/${SITE.contact.whatsappDigits}`}>{SITE.contact.whatsappDisplay}</a>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">2. Marco legal</h2>
+          <p>
+            Esta política se ajusta a la <strong>Ley 1581 de 2012</strong>, el <strong>Decreto 1377 de 2013</strong> y demás normativa colombiana sobre protección de datos personales.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">3. Finalidades del tratamiento</h2>
+          <p>Los datos personales que recolectamos a través del formulario de contacto, WhatsApp y correo electrónico son utilizados para:</p>
+          <ul class="list-disc list-outside pl-6 mt-3 space-y-2">
+            <li>Agendar y confirmar citas de valoración y controles ortodóncicos.</li>
+            <li>Brindar atención clínica y registrar la historia clínica del paciente.</li>
+            <li>Comunicar información relacionada con tratamientos en curso, recordatorios y novedades del consultorio.</li>
+            <li>Cumplir con obligaciones legales y profesionales aplicables a la práctica odontológica.</li>
+          </ul>
+          <p class="mt-3">
+            No utilizamos los datos para publicidad de terceros, ni los compartimos con fines comerciales fuera del alcance de la atención clínica.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">4. Datos recolectados</h2>
+          <ul class="list-disc list-outside pl-6 space-y-2">
+            <li>Datos de identificación: nombre, edad.</li>
+            <li>Datos de contacto: número de WhatsApp, correo electrónico.</li>
+            <li>Información clínica: motivo de consulta, antecedentes ortodóncicos, exámenes y plan de tratamiento (durante la atención clínica).</li>
+            <li>Datos técnicos: dirección IP y registros analíticos anonimizados (Plausible Analytics).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">5. Derechos del titular</h2>
+          <p>
+            Como titular de los datos, usted tiene derecho a <strong>conocer, actualizar, rectificar y suprimir</strong> sus datos personales (derechos ARCO),
+            así como a <strong>revocar la autorización</strong> y solicitar prueba de la misma. Adicionalmente, puede presentar quejas ante la
+            <a class="underline hover:text-champagne-deep" href="https://www.sic.gov.co/" target="_blank" rel="noopener noreferrer">Superintendencia de Industria y Comercio</a>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">6. Procedimiento para ejercer derechos</h2>
+          <p>
+            Para ejercer cualquiera de los derechos anteriores, escriba a <a class="underline hover:text-champagne-deep" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a>
+            indicando claramente su solicitud, nombre completo y un medio de contacto. Las solicitudes se atienden dentro de los plazos legales
+            (10 días hábiles para consultas y 15 días hábiles para reclamos, prorrogables según ley).
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">7. Conservación y seguridad</h2>
+          <p>
+            La historia clínica se conserva conforme a la normativa odontológica vigente (mínimo 15 años desde la última atención).
+            Los datos de contacto se conservan mientras exista relación profesional o consentimiento del titular.
+            Aplicamos medidas razonables de seguridad técnica y administrativa para proteger la información.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">8. Cookies y analítica</h2>
+          <p>
+            Utilizamos cookies estrictamente funcionales (anti-spam Cloudflare Turnstile) y analíticas anónimas (Plausible).
+            No usamos cookies publicitarias ni de perfilamiento. Más información en
+            <a class="underline hover:text-champagne-deep" href="/aviso-cookies">Aviso de cookies</a>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-[24px] text-ink mb-3">9. Vigencia y cambios</h2>
+          <p>
+            Esta política puede actualizarse para reflejar cambios legales o del consultorio. La versión vigente es la publicada en este sitio.
+            Cualquier cambio sustancial se notificará por los canales habituales.
+          </p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .prose-mch :global(a) {
+    color: var(--color-champagne-deep);
+  }
+</style>

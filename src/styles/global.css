@@ -1,0 +1,222 @@
+@import "tailwindcss";
+@import "@fontsource/fraunces/300.css";
+@import "@fontsource/fraunces/400.css";
+@import "@fontsource/fraunces/500.css";
+@import "@fontsource/fraunces/300-italic.css";
+@import "@fontsource/fraunces/400-italic.css";
+@import "@fontsource/inter/300.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+
+@theme {
+  --color-bone: #f7f2ea;
+  --color-bone-soft: #fbf8f3;
+  --color-bone-deep: #efe6d4;
+  --color-ink: #1a2238;
+  --color-ink-soft: #2d3450;
+  --color-ink-mute: #4a5170;
+  --color-champagne: #b8965a;
+  --color-champagne-deep: #8e6f3e;
+  --color-champagne-soft: #d9c197;
+  --color-rosewood: #b8746b;
+  --color-clay: #e8d5c8;
+  --color-slate-warm: #6b7280;
+  --color-line: #e5ddd0;
+  --color-line-soft: #efe9dc;
+  --color-success: #4a6741;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  --radius-card: 16px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 8px 30px -8px rgb(26 34 56 / 0.12);
+  --shadow-card: 0 1px 3px rgb(26 34 56 / 0.05), 0 8px 24px -12px rgb(26 34 56 / 0.08);
+  --shadow-lift: 0 18px 50px -16px rgb(26 34 56 / 0.18);
+
+  --ease-elegant: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bone);
+    color: var(--color-ink);
+    line-height: 1.65;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
+  }
+  /* Reserve space at bottom on mobile so the sticky CTA doesn't overlap content */
+  @media (max-width: 1023px) {
+    body {
+      padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+    main {
+      padding-bottom: 76px;
+    }
+  }
+  ::selection {
+    background: var(--color-champagne);
+    color: var(--color-ink);
+  }
+  img,
+  svg {
+    max-width: 100%;
+    display: block;
+  }
+  a {
+    color: inherit;
+  }
+
+  /* Focus visible for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--color-champagne-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Display type — refined Fraunces with italic accent in champagne */
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+  .font-display em,
+  .font-display .italic-accent {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-champagne-deep);
+  }
+
+  /* Container with breathing room */
+  .container-page {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.25rem);
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-champagne-deep);
+    font-weight: 500;
+  }
+
+  /* Reveal on scroll (uses IntersectionObserver in client).
+     Progressive enhancement: only hides if `js-ready` is on <html>.
+     If JS is disabled, content stays visible. */
+  .js-ready .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.9s var(--ease-elegant),
+      transform 0.9s var(--ease-elegant);
+    will-change: opacity, transform;
+  }
+  .js-ready .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-delay-1 {
+    transition-delay: 0.08s;
+  }
+  .reveal-delay-2 {
+    transition-delay: 0.16s;
+  }
+  .reveal-delay-3 {
+    transition-delay: 0.24s;
+  }
+  .reveal-delay-4 {
+    transition-delay: 0.32s;
+  }
+
+  /* Subtle grain overlay for the dark sections */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.05;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 0;
+  }
+  .grain > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hairline gold rule */
+  .rule-gold {
+    border-image: linear-gradient(90deg, transparent, var(--color-champagne) 30%, var(--color-champagne) 70%, transparent) 1;
+    border-bottom: 1px solid;
+  }
+
+  /* Chip / badge */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: rgb(184 150 90 / 0.1);
+    border: 1px solid rgb(184 150 90 / 0.32);
+    color: var(--color-champagne-deep);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+
+  /* WhatsApp brand color helper */
+  .bg-whatsapp {
+    background-color: #25d366;
+  }
+  .bg-whatsapp:hover {
+    background-color: #1eb759;
+  }
+
+  /* Subtle dotted gold divider */
+  .dotted-gold {
+    background-image: radial-gradient(var(--color-champagne) 1px, transparent 1px);
+    background-size: 14px 1px;
+    background-repeat: repeat-x;
+    background-position: center;
+    height: 1px;
+  }
+}

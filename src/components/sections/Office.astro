@@ -1,0 +1,174 @@
+---
+import { OFFICE, SITE } from "../../content/site";
+import Eyebrow from "../ui/Eyebrow.astro";
+import Icon from "../icons/Icon.astro";
+
+const a = SITE.contact.address;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${a.coordinates.lat},${a.coordinates.lng}`;
+const mapsEmbed = `https://maps.google.com/maps?q=${a.coordinates.lat},${a.coordinates.lng}&z=16&output=embed`;
+---
+
+<section class="py-24 md:py-32 bg-bone" aria-labelledby="consultorio-heading">
+  <div class="container-page">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+      <div class="reveal flex flex-col justify-center">
+        <Eyebrow class="mb-5">{OFFICE.eyebrow}</Eyebrow>
+        <h2 id="consultorio-heading" class="font-display text-[clamp(32px,4.4vw,52px)] leading-[1.08] mb-6">
+          {OFFICE.title}
+        </h2>
+
+        <address class="not-italic text-[16px] text-ink-soft leading-[1.75] mb-7">
+          <div class="flex items-start gap-3">
+            <span class="flex-shrink-0 mt-1 text-champagne-deep">
+              <Icon name="map-pin" size={18} strokeWidth={1.6} />
+            </span>
+            <div>
+              <p class="text-ink font-medium">{a.street}</p>
+              <p>{a.building} · {a.floor} · {a.office}</p>
+              <p>{a.city}, {a.state}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 mt-5">
+            <span class="flex-shrink-0 mt-1 text-champagne-deep">
+              <Icon name="clock" size={18} strokeWidth={1.6} />
+            </span>
+            <div>
+              <p class="text-ink font-medium">Lunes – Viernes</p>
+              <p>8:00 a. m. – 6:00 p. m.</p>
+              <p class="text-ink font-medium mt-2">Sábados</p>
+              <p>8:00 a. m. – 12:00 m.</p>
+            </div>
+          </div>
+        </address>
+
+        <ul class="grid grid-cols-2 gap-x-5 gap-y-3 mb-8">
+          {OFFICE.features.map((f) => (
+            <li class="flex items-center gap-2 text-[13px] text-ink-soft">
+              <span class="text-success flex-shrink-0">
+                <Icon name="check" size={15} strokeWidth={2.2} />
+              </span>
+              {f}
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-2 self-start text-champagne-deep font-medium text-[14px] hover:text-ink transition-colors"
+        >
+          <span>{OFFICE.cta}</span>
+          <Icon name="external" size={14} strokeWidth={1.6} class="group-hover:translate-x-0.5 transition-transform" />
+        </a>
+      </div>
+
+      <div class="reveal reveal-delay-2 relative">
+        <div
+          id="map-frame"
+          class="relative aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[480px] rounded-card overflow-hidden border border-line shadow-[0_18px_50px_-16px_rgba(26,34,56,0.18)] bg-bone-soft"
+        >
+          <!-- Static map placeholder (always visible) -->
+          <div class="absolute inset-0 flex flex-col">
+            <!-- Decorative map drawing -->
+            <svg
+              viewBox="0 0 600 480"
+              class="w-full h-full"
+              role="img"
+              aria-label={`Mapa de la ubicación: ${a.street}, ${a.city}`}
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <defs>
+                <linearGradient id="mapBg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#FBF8F3" />
+                  <stop offset="100%" stop-color="#EFE6D4" />
+                </linearGradient>
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#E5DDD0" stroke-width="0.6" />
+                </pattern>
+              </defs>
+              <rect width="600" height="480" fill="url(#mapBg)" />
+              <rect width="600" height="480" fill="url(#grid)" />
+
+              <!-- Streets (Pereira centro plaza pattern) -->
+              <g stroke="#D9C197" stroke-width="14" stroke-linecap="round" opacity="0.55">
+                <line x1="0" y1="180" x2="600" y2="220" />
+                <line x1="0" y1="280" x2="600" y2="320" />
+                <line x1="180" y1="0" x2="220" y2="480" />
+                <line x1="380" y1="0" x2="420" y2="480" />
+              </g>
+              <g stroke="#FBF8F3" stroke-width="11" stroke-linecap="round">
+                <line x1="0" y1="180" x2="600" y2="220" />
+                <line x1="0" y1="280" x2="600" y2="320" />
+                <line x1="180" y1="0" x2="220" y2="480" />
+                <line x1="380" y1="0" x2="420" y2="480" />
+              </g>
+
+              <!-- Side streets -->
+              <g stroke="#E5DDD0" stroke-width="3" opacity="0.7">
+                <line x1="0" y1="80" x2="600" y2="100" />
+                <line x1="0" y1="380" x2="600" y2="400" />
+                <line x1="80" y1="0" x2="100" y2="480" />
+                <line x1="280" y1="0" x2="300" y2="480" />
+                <line x1="500" y1="0" x2="520" y2="480" />
+              </g>
+
+              <!-- Plaza Bolívar hint -->
+              <rect x="240" y="160" width="120" height="120" fill="#E8D5C8" opacity="0.5" rx="6" />
+              <text x="300" y="225" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280" letter-spacing="0.2em">PLAZA</text>
+
+              <!-- Marker -->
+              <g transform="translate(300 230)">
+                <circle r="38" fill="#B8965A" opacity="0.18">
+                  <animate attributeName="r" from="22" to="44" dur="2.4s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" from="0.4" to="0" dur="2.4s" repeatCount="indefinite" />
+                </circle>
+                <circle r="22" fill="#B8965A" opacity="0.3" />
+                <path
+                  d="M 0 -14 a 14 14 0 1 1 -0.01 0 z M 0 14 v 18"
+                  fill="#1A2238"
+                  stroke="#FBF8F3"
+                  stroke-width="2"
+                />
+                <circle r="5" cx="0" cy="-2" fill="#B8965A" />
+              </g>
+
+              <!-- Compass -->
+              <g transform="translate(540 50)" opacity="0.5">
+                <circle r="22" fill="#FBF8F3" stroke="#B8965A" stroke-width="0.8" />
+                <path d="M 0 -16 L 4 0 L 0 16 L -4 0 Z" fill="#1A2238" />
+                <text y="-25" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" fill="#6B7280" font-weight="600">N</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Address card overlay -->
+          <div class="absolute left-4 bottom-4 right-4 md:left-6 md:bottom-6 md:right-auto md:max-w-xs bg-bone border border-line rounded-xl p-4 shadow-[0_14px_40px_-12px_rgba(26,34,56,0.25)]">
+            <div class="text-[10px] tracking-[0.2em] font-medium text-champagne-deep uppercase mb-1.5">
+              Consultorio
+            </div>
+            <p class="font-display text-[18px] leading-tight text-ink mb-1">
+              {a.street}
+            </p>
+            <p class="text-[12px] text-ink-soft leading-snug">
+              {a.building} · {a.floor} · {a.office}
+            </p>
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 mt-3 text-[12px] font-medium text-champagne-deep hover:text-ink transition-colors"
+            >
+              Abrir en Google Maps
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

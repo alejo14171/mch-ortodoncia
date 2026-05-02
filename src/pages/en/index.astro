@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { SITE } from "../../content/site";
+import Button from "../../components/ui/Button.astro";
+import Eyebrow from "../../components/ui/Eyebrow.astro";
+import Icon from "../../components/icons/Icon.astro";
+
+const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComponent("Hello Dr. Huertas, I would like to schedule a consultation.")}`;
+const a = SITE.contact.address;
+
+const title = "Dr. María Claudia Huertas · Orthodontist in Pereira, Colombia";
+const description =
+  "30 years of orthodontic practice in Pereira. Specialist in retreatments and maxillary orthopedics. English-speaking patients welcome.";
+---
+
+<BaseLayout title={title} description={description} canonical="/en" lang="en-US" alternateEn="/en">
+  <header class="sticky top-0 z-50 border-b border-line/50 bg-bone/85 backdrop-blur-xl">
+    <div class="container-page flex items-center justify-between py-5">
+      <a href="/en" class="flex items-center gap-3">
+        <span class="font-display text-2xl tracking-tight">m<em class="italic-accent">c</em>h</span>
+        <span class="hidden sm:inline text-[10px] tracking-[0.22em] font-medium text-ink/65 uppercase pl-3 border-l border-line">
+          Orthodontics · Pereira
+        </span>
+      </a>
+      <div class="flex items-center gap-2">
+        <a href="/" class="hidden md:inline text-[13px] text-ink/70 hover:text-ink">Versión en español</a>
+        <Button href={waUrl} variant="whatsapp" size="md" external iconRight={false}>WhatsApp</Button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="relative pt-16 pb-20 md:pt-24 md:pb-28 overflow-hidden">
+      <div class="absolute inset-0 -z-10" aria-hidden="true">
+        <div class="absolute -top-32 -right-20 w-[55%] h-[80%] rounded-full opacity-50 blur-3xl"
+          style="background: radial-gradient(circle, rgba(184,150,90,0.18), transparent 65%);"></div>
+      </div>
+      <div class="container-page max-w-3xl">
+        <Eyebrow class="mb-6">ORTHODONTICS · PEREIRA · SINCE 1996</Eyebrow>
+        <h1 class="font-display text-[clamp(40px,6vw,68px)] leading-[1.05] mb-7">
+          Smiles that <em class="italic-accent">breathe</em><br />confidence.
+        </h1>
+        <p class="text-[18px] text-ink-soft leading-[1.6] mb-9 max-w-[58ch]">
+          Three decades of clinical practice in Pereira, Colombia. Specialist in orthodontic <strong>retreatments</strong> and <strong>maxillary orthopedics</strong> — the cases that other colleagues refer. English-speaking patients welcome, including travelers and international families.
+        </p>
+        <div class="flex flex-wrap gap-3 mb-7">
+          <Button href={waUrl} variant="whatsapp" size="lg" external iconRight={false}>Message on WhatsApp</Button>
+          <Button href={`mailto:${SITE.contact.email}`} variant="ghost" size="lg" iconRight={false}>Send email</Button>
+        </div>
+        <p class="text-[13px] text-slate-warm flex items-center gap-2">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-success"></span>
+          Initial consultation is credited toward your treatment if you decide to start.
+        </p>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="bg-bone-soft border-y border-line py-20">
+      <div class="container-page max-w-3xl">
+        <Eyebrow class="mb-5">ABOUT</Eyebrow>
+        <h2 class="font-display text-[clamp(28px,4vw,42px)] leading-[1.1] mb-5">Dr. María Claudia Huertas</h2>
+        <p class="text-[15px] tracking-wide text-champagne-deep mb-6">
+          Orthodontist · Universidad Nacional de Colombia · Universidad El Bosque · Member of the Colombian Society of Orthodontics (SCO)
+        </p>
+        <div class="space-y-4 text-[16px] text-ink-soft leading-[1.75]">
+          <p>Three decades of practice in Pereira. Postgraduate specialization in Orthodontics from Universidad El Bosque (Bogotá) and continuous professional education through the Colombian Society of Orthodontics.</p>
+          <p>Her practice has become the place where colleagues refer cases that need more time, more experience, or a fresh approach after treatments that didn't work as expected.</p>
+          <p>She works with local patients, regional patients, and Colombians living abroad — including patients in the United States, Canada and Europe who travel for treatment with longer-spaced visits.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- What I treat -->
+    <section class="py-20">
+      <div class="container-page max-w-4xl">
+        <Eyebrow class="mb-5">WHAT I TREAT</Eyebrow>
+        <h2 class="font-display text-[clamp(28px,4vw,42px)] leading-[1.1] mb-10">Each plan is designed for your case.</h2>
+
+        <div class="grid md:grid-cols-2 gap-5">
+          {[
+            { t: "Orthodontic Retreatments", d: "Relapses, incomplete treatments and orthodontics that didn't reach long-term stability." },
+            { t: "Maxillary Orthopedics", d: "Correction of jaw growth in children and adolescents — different from tooth-only orthodontics." },
+            { t: "Metal & Ceramic Braces", d: "Conventional and aesthetic options — same proven mechanics, different visibility." },
+            { t: "Clear Aligners", d: "Removable, nearly invisible series of trays for mild-to-moderate cases." },
+            { t: "Pre-surgical Orthodontics", d: "Coordinated with maxillofacial surgeons for severe skeletal cases." },
+            { t: "International Travel Plans", d: "Treatment plans designed with longer-spaced visits for Colombians abroad and international patients." },
+          ].map((s) => (
+            <div class="bg-bone-soft border border-line/80 rounded-card p-7">
+              <h3 class="font-display text-[20px] mb-2">{s.t}</h3>
+              <p class="text-[14px] text-ink-soft leading-[1.65]">{s.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="bg-ink text-bone py-20 grain">
+      <div class="container-page max-w-3xl">
+        <Eyebrow variant="light" class="mb-6">GET IN TOUCH</Eyebrow>
+        <h2 class="font-display text-[clamp(32px,4.5vw,48px)] leading-[1.05] text-bone mb-8">
+          Your smile deserves <em class="italic-accent" style="color: var(--color-champagne);">time,</em> not shortcuts.
+        </h2>
+
+        <div class="space-y-4 mb-10">
+          <a href={waUrl} target="_blank" rel="noopener noreferrer"
+            class="group flex items-center gap-4 p-5 rounded-2xl bg-white/[0.05] border border-champagne/20 hover:border-champagne/60 hover:bg-white/[0.08] transition-all">
+            <span class="w-11 h-11 rounded-full bg-whatsapp flex items-center justify-center text-white">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.2.2-.4.2-.7 0-.3-.2-1.2-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.6.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4s-1.1 1-1.1 2.5c0 1.5 1.1 2.9 1.2 3.1.2.2 2.1 3.3 5.2 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4z M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.3c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.1 14.9 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg>
+            </span>
+            <div>
+              <div class="text-[11px] tracking-[0.2em] text-champagne uppercase">WhatsApp</div>
+              <div class="font-display text-[18px] text-bone">{SITE.contact.whatsappDisplay}</div>
+            </div>
+          </a>
+          <a href={`mailto:${SITE.contact.email}`}
+            class="group flex items-center gap-4 p-5 rounded-2xl bg-white/[0.05] border border-champagne/20 hover:border-champagne/60 transition-all">
+            <span class="w-11 h-11 rounded-full bg-champagne/15 flex items-center justify-center text-champagne">
+              <Icon name="mail" size={20} strokeWidth={1.6} />
+            </span>
+            <div>
+              <div class="text-[11px] tracking-[0.2em] text-champagne uppercase">Email</div>
+              <div class="font-display text-[18px] text-bone break-all">{SITE.contact.email}</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="text-[13px] text-bone/60 border-t border-bone/15 pt-6">
+          <p class="text-bone/80 mb-1">Office</p>
+          <p>{a.street} · {a.building}, {a.floor} · {a.office}</p>
+          <p>{a.city}, {a.state}, Colombia</p>
+          <p class="mt-3 text-bone/80">Hours</p>
+          <p>Mon – Fri: 8 a.m. – 6 p.m. · Sat: 8 a.m. – 12 p.m.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-bone-soft border-t border-line py-10">
+    <div class="container-page text-center text-[12px] text-slate-warm">
+      <p>© {new Date().getFullYear()} {SITE.legal.holderName} · Pereira, Colombia.</p>
+      <p class="mt-2">
+        <a href="/" class="underline hover:text-champagne-deep">Versión en español</a>
+        <span class="opacity-40 mx-2">·</span>
+        <a href="/politica-privacidad" class="underline hover:text-champagne-deep">Privacy</a>
+      </p>
+    </div>
+  </footer>
+</BaseLayout>
