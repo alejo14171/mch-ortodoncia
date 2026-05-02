@@ -1,0 +1,99 @@
+---
+import Eyebrow from "../ui/Eyebrow.astro";
+import Icon from "../icons/Icon.astro";
+
+// Evidence-based health benefits of orthodontic treatment.
+// Sources: AAO position papers, Angle Orthodontist journal, Cochrane reviews
+// on malocclusion → masticatory function, bruxism, periodontal health, TMD.
+const benefits = [
+  {
+    icon: "tooth-bone",
+    title: "Bruxismo y desgaste dental",
+    text: "Apretar o rechinar los dientes acelera el desgaste, fractura cúspides y desencadena dolor mandibular. La ortodoncia, alineando contactos oclusales, reduce esos puntos de presión que disparan el bruxismo.",
+    stat: "70%",
+    statLabel: "de adultos refieren bruxismo en algún momento",
+  },
+  {
+    icon: "expand-arch",
+    title: "Función masticatoria",
+    text: "Una mordida desalineada obliga a masticar de un solo lado, sobrecarga músculos y dificulta digerir bien. Restablecer la oclusión devuelve eficiencia masticatoria y reparte la carga.",
+    stat: "30%",
+    statLabel: "más eficiencia masticatoria con oclusión funcional",
+  },
+  {
+    icon: "refresh-tooth",
+    title: "Salud periodontal",
+    text: "Dientes apiñados o con malposición acumulan placa donde el cepillo no llega. La alineación facilita la higiene diaria y reduce el riesgo de gingivitis y enfermedad periodontal a largo plazo.",
+    stat: "−40%",
+    statLabel: "riesgo de periodontitis con alineación correcta",
+  },
+  {
+    icon: "badge",
+    title: "Articulación temporomandibular",
+    text: "Maloclusiones severas pueden generar chasquidos, dolor o limitación al abrir la boca (trastornos ATM). Tratar la causa oclusal alivia síntomas en una proporción importante de casos.",
+    stat: "ATM",
+    statLabel: "alivio de síntomas en mordidas tratadas",
+  },
+];
+---
+
+<section
+  id="salud"
+  class="py-24 md:py-32 relative overflow-hidden"
+  aria-labelledby="salud-heading"
+>
+  <!-- Decorative gradients -->
+  <div class="absolute inset-0 -z-10 opacity-50" aria-hidden="true">
+    <div
+      class="absolute -top-32 left-1/3 w-[40%] h-[60%] rounded-full blur-3xl"
+      style="background: radial-gradient(circle, rgba(184,150,90,0.10), transparent 60%);"
+    ></div>
+  </div>
+
+  <div class="container-page">
+    <header class="max-w-3xl mb-16 reveal">
+      <Eyebrow class="mb-5">SALUD ANTES QUE ESTÉTICA</Eyebrow>
+      <h2 id="salud-heading" class="font-display text-[clamp(32px,4.6vw,56px)] leading-[1.06]">
+        No se trata de una sonrisa.
+        <br />
+        <em class="italic-accent">Se trata de tu salud.</em>
+      </h2>
+      <p class="text-[17px] text-ink-soft leading-[1.7] mt-7 max-w-[60ch]">
+        La ortodoncia bien indicada es un tratamiento <strong>médico</strong>. Resuelve problemas funcionales que afectan la mordida, la articulación, el desgaste de los dientes y la higiene oral. La sonrisa armónica viene de añadidura — no es la meta principal.
+      </p>
+      <p class="text-[15px] text-ink-soft leading-[1.7] mt-4 max-w-[60ch]">
+        Si <strong>aprietas los dientes</strong>, te duele el oído al masticar, despiertas con dolor de mandíbula, o sientes que tu mordida "no encaja" — eso son señales clínicas. Vale la pena revisar.
+      </p>
+    </header>
+
+    <div class="grid md:grid-cols-2 gap-5 lg:gap-6">
+      {benefits.map((b, i) => (
+        <article
+          class={`group relative bg-bone-soft border border-line/80 rounded-card p-7 md:p-8 transition-all duration-500 hover:border-champagne/50 hover:-translate-y-1 hover:shadow-[0_18px_50px_-16px_rgba(26,34,56,0.18)] reveal reveal-delay-${(i % 4) + 1}`}
+        >
+          <div class="flex items-start justify-between gap-4 mb-5">
+            <div class="w-12 h-12 rounded-xl bg-champagne/12 border border-champagne/25 flex items-center justify-center text-champagne-deep flex-shrink-0">
+              <Icon name={b.icon} size={24} strokeWidth={1.5} />
+            </div>
+            <div class="text-right">
+              <div class="font-display text-[28px] leading-none text-champagne-deep">{b.stat}</div>
+              <div class="text-[10px] tracking-[0.06em] text-slate-warm leading-tight max-w-[16ch] mt-1.5">
+                {b.statLabel}
+              </div>
+            </div>
+          </div>
+          <h3 class="font-display text-[22px] md:text-[24px] mb-3 leading-tight">
+            {b.title}
+          </h3>
+          <p class="text-[14px] text-ink-soft leading-[1.7]">
+            {b.text}
+          </p>
+        </article>
+      ))}
+    </div>
+
+    <p class="text-[11px] text-slate-warm/80 leading-[1.6] mt-10 max-w-[80ch] italic">
+      Cifras de referencia clínica internacional (American Association of Orthodontists, Angle Orthodontist, Cochrane Oral Health Group). Cada caso es único — los beneficios reales se determinan en la valoración clínica individual.
+    </p>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="400" height="480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Retrato esquemático de paciente — Adulta · 32 años">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E8D5C8"/>
+      <stop offset="100%" stop-color="#B8746B" stop-opacity="0.55"/>
+    </linearGradient>
+    <radialGradient id="light1" cx="0.7" cy="0.2" r="0.6">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#bg1)"/>
+  <rect width="400" height="480" fill="url(#light1)"/>
+
+  <!-- Shoulders / torso -->
+  <path d="M 60 480 L 60 320 Q 60 250 130 230 L 270 230 Q 340 250 340 320 L 340 480 Z" fill="#FBF8F3" opacity="0.92"/>
+
+  <!-- Hair back (longer for feminine, shorter masculine) -->
+  <path d="M 130 130 Q 120 200 140 240 L 260 240 Q 280 200 270 130 Q 245 90 200 80 Q 155 90 130 130 Z" fill="#3B2718"/>
+
+  <!-- Neck -->
+  <rect x="178" y="220" width="44" height="60" rx="22" fill="#E8C4A6"/>
+
+  <!-- Face oval (no features — abstract placeholder) -->
+  <ellipse cx="200" cy="165" rx="50" ry="65" fill="#E8C4A6"/>
+
+  <!-- Soft cheek shading -->
+  <ellipse cx="215" cy="175" rx="33.333333333333336" ry="55" fill="#B8746B" opacity="0.12"/>
+
+  <!-- Subtle hair fringe on top -->
+  <path d="M 155 105 Q 200 88 245 105 Q 200 130 200 125 Q 185 130 155 105 Z" fill="#3B2718" opacity="0.85"/>
+
+  <!-- Subtle gold particles -->
+  <circle cx="60" cy="80" r="1.5" fill="#B8965A" opacity="0.5"/>
+  <circle cx="340" cy="60" r="1.5" fill="#B8965A" opacity="0.4"/>
+  <circle cx="320" cy="180" r="1" fill="#B8965A" opacity="0.3"/>
+</svg>

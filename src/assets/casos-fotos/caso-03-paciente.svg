@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="400" height="480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Retrato esquemático de paciente — Niño · 9 años">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FBF8F3"/>
+      <stop offset="100%" stop-color="#D9C197" stop-opacity="0.55"/>
+    </linearGradient>
+    <radialGradient id="light3" cx="0.7" cy="0.2" r="0.6">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#bg3)"/>
+  <rect width="400" height="480" fill="url(#light3)"/>
+
+  <!-- Shoulders / torso -->
+  <path d="M 60 480 L 60 320 Q 60 250 130 230 L 270 230 Q 340 250 340 320 L 340 480 Z" fill="#FBF8F3" opacity="0.92"/>
+
+  <!-- Hair back (longer for feminine, shorter masculine) -->
+  <path d="M 152 125 Q 157 95 200 85 Q 243 95 248 125 Q 235 110 200 105 Q 165 110 152 125 Z" fill="#3B2718"/>
+
+  <!-- Neck -->
+  <rect x="178" y="200" width="44" height="60" rx="22" fill="#F0D8B8"/>
+
+  <!-- Face oval (no features — abstract placeholder) -->
+  <ellipse cx="200" cy="155" rx="43" ry="55" fill="#F0D8B8"/>
+
+  <!-- Soft cheek shading -->
+  <ellipse cx="215" cy="165" rx="28.666666666666668" ry="45" fill="#D9C197" opacity="0.12"/>
+
+  <!-- Subtle hair fringe on top -->
+  
+
+  <!-- Subtle gold particles -->
+  <circle cx="60" cy="80" r="1.5" fill="#B8965A" opacity="0.5"/>
+  <circle cx="340" cy="60" r="1.5" fill="#B8965A" opacity="0.4"/>
+  <circle cx="320" cy="180" r="1" fill="#B8965A" opacity="0.3"/>
+</svg>

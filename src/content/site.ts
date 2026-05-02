@@ -74,6 +74,7 @@ export type Site = typeof SITE;
 
 export const NAV_LINKS = [
   { href: "#retratamientos", label: "Retratamientos" },
+  { href: "#salud", label: "Salud" },
   { href: "#tratamientos", label: "Tratamientos" },
   { href: "#casos", label: "Casos" },
   { href: "#sobre", label: "Sobre la doctora" },
@@ -86,39 +87,43 @@ export const HERO = {
   titleEmphasis: "respiran",
   titlePost: "tranquilidad.",
   subtitle:
-    "Treinta años atendiendo los casos que otros colegas refieren: retratamientos, ortopedia maxilar y ortodoncia compleja. Aquí tu caso recibe el tiempo que merece.",
+    "Casi tres décadas atendiendo casos complejos que otros colegas refieren: retratamientos, ortopedia maxilar y ortodoncia compleja. Aquí tu caso recibe el tiempo que merece.",
   ctaPrimary: "Agendar valoración",
   ctaSecondary: "WhatsApp directo",
   microcopy: "La consulta inicial se descuenta de tu tratamiento.",
 } as const;
 
 export const AUTHORITY_ITEMS = [
-  { icon: "calendar", text: "30 años en Pereira" },
-  { icon: "graduation-cap", text: "Universidad Nacional · El Bosque" },
-  { icon: "badge", text: "Miembro SCO — Sociedad Colombiana de Ortodoncia" },
+  { icon: "graduation-cap", text: "Odontóloga · Universidad Nacional" },
+  { icon: "graduation-cap", text: "Ortodoncista · Universidad El Bosque" },
+  { icon: "badge", text: "Miembro SCO — Soc. Colombiana de Ortodoncia" },
   { icon: "globe", text: "Atención en español e inglés" },
 ] as const;
 
 export const RETRATAMIENTOS = {
   eyebrow: "ESPECIALIDAD",
-  titlePre: "Cuando otra ortodoncia",
+  titlePre: "Cuando tu ortodoncia",
   titleEmphasis: "no",
   titlePost: "funcionó.",
   intro:
-    "El alambre fijo se retiró y los dientes inferiores volvieron a torcerse. Una mordida que se abrió de nuevo. Un caso detenido a la mitad por un cambio de ciudad o de doctor. Tratamientos previos que prometieron mucho y dejaron poco. Estos son los casos que llegan a este consultorio.",
+    "Una ortodoncia donde te sacaron dientes y se te volvieron a abrir los espacios. Un alambre fijo retirado y los dientes inferiores que se torcieron. Una mordida que se abrió de nuevo. Un caso detenido a la mitad por un cambio de ciudad o de doctor.",
   closing: "Si tu boca ya tiene historia clínica, aquí escribimos un mejor capítulo.",
   bullets: [
     {
       title: "Recidivas post-ortodoncia",
-      text: "Apiñamiento que volvió tras retirar el retenedor. Solucionable en muchos casos en menos de un año.",
+      text: "Apiñamiento o espacios que volvieron después de retirar el retenedor. Solucionable en muchos casos en menos de un año.",
     },
     {
       title: "Tratamientos detenidos",
       text: "Casos que quedaron a la mitad por mudanza, cambio de doctor o pérdida de seguimiento.",
     },
     {
-      title: "Ortodoncia sin estabilidad",
-      text: "Mordidas que cambiaron, retenciones que fallaron, resultados que se perdieron en pocos años.",
+      title: "Espacios que se reabrieron",
+      text: "Ortodoncias con extracciones donde los espacios se volvieron a abrir años después. Se vuelven a cerrar con un plan estable.",
+    },
+    {
+      title: "Cirugía ortognática postergada",
+      text: "¿Te recomendaron cirugía y no pudiste hacerla? Revisemos tu caso. Hay rutas no quirúrgicas para muchos casos.",
     },
   ],
   cta: "Agenda una valoración honesta",
