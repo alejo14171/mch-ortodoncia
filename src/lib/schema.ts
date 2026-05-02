@@ -39,7 +39,7 @@ export function dentistSchema(siteUrl: string, services: ServiceEntry[]) {
     name: SITE.doctorFullName,
     alternateName: SITE.name,
     url: siteUrl,
-    image: `${siteUrl}/og-default.svg`,
+    image: `${siteUrl}/og-default.png`,
     logo: `${siteUrl}/favicon.svg`,
     telephone: SITE.contact.whatsapp,
     email: SITE.contact.email,

@@ -6,8 +6,11 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/gen-og-png.mjs",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "gen:og": "node scripts/gen-og-png.mjs",
+    "gen:cases": "node scripts/rebuild-cases.mjs && node scripts/gen-case-portraits.mjs",
     "astro": "astro"
   },
   "dependencies": {

@@ -11,7 +11,7 @@ const DEFAULTS = {
   title: "Dra. María Claudia Huertas · Ortodoncia y Retratamientos en Pereira",
   description:
     "Ortodoncista en Pereira con 30 años de experiencia. Especialista en retratamientos y ortopedia maxilar. Agenda tu valoración.",
-  ogImage: "/og-default.svg",
+  ogImage: "/og-default.png",
   lang: "es-CO",
 };
 
