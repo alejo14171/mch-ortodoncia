@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import { HERO, SITE } from "../../content/site";
 import Button from "../ui/Button.astro";
 import Eyebrow from "../ui/Eyebrow.astro";
+import portraitImg from "../../assets/doctora/portrait.png";
 
 const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComponent("Hola Dra. Huertas, me gustaría agendar una valoración.")}`;
 ---
@@ -82,100 +84,20 @@ const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComp
 
           <!-- Main portrait frame -->
           <div
-            class="relative h-full rounded-3xl overflow-hidden shadow-[0_30px_80px_-20px_rgba(26,34,56,0.25)] bg-gradient-to-br from-bone-soft via-clay/40 to-champagne/30"
+            class="relative h-full rounded-3xl overflow-hidden shadow-[0_30px_80px_-20px_rgba(26,34,56,0.25)] bg-bone-soft"
           >
-            <!-- Stylized portrait placeholder using SVG composition -->
-            <svg
-              viewBox="0 0 400 533"
-              class="w-full h-full"
-              role="img"
-              aria-label="Retrato de la Dra. María Claudia Huertas"
-              preserveAspectRatio="xMidYMid slice"
-            >
-              <defs>
-                <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#FBF8F3" />
-                  <stop offset="50%" stop-color="#E8D5C8" />
-                  <stop offset="100%" stop-color="#B8965A" stop-opacity="0.45" />
-                </linearGradient>
-                <linearGradient id="figureGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#1A2238" stop-opacity="0.92" />
-                  <stop offset="100%" stop-color="#2D3450" stop-opacity="0.78" />
-                </linearGradient>
-                <radialGradient id="lightSpot" cx="0.65" cy="0.25" r="0.6">
-                  <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55" />
-                  <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
-                </radialGradient>
-                <linearGradient id="coatGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#FBF8F3" />
-                  <stop offset="100%" stop-color="#E8D5C8" />
-                </linearGradient>
-              </defs>
-              <rect width="400" height="533" fill="url(#bgGrad)" />
-              <rect width="400" height="533" fill="url(#lightSpot)" />
-
-              <!-- Shoulders / coat -->
-              <path
-                d="M 60 533 L 60 460 Q 60 400 130 380 L 270 380 Q 340 400 340 460 L 340 533 Z"
-                fill="url(#coatGrad)"
-                stroke="#B8965A"
-                stroke-width="0.5"
-                stroke-opacity="0.4"
-              />
-              <!-- Coat lapels -->
-              <path
-                d="M 130 380 L 200 460 L 270 380"
-                fill="none"
-                stroke="#1A2238"
-                stroke-opacity="0.25"
-                stroke-width="1.5"
-              />
-              <!-- Neck -->
-              <rect x="180" y="320" width="40" height="70" rx="20" fill="#E8D5C8" opacity="0.95" />
-              <!-- Hair backing -->
-              <path
-                d="M 110 280 Q 90 200 130 150 Q 175 95 200 95 Q 225 95 270 150 Q 310 200 290 280 L 290 360 Q 290 340 270 330 L 130 330 Q 110 340 110 360 Z"
-                fill="#1A2238"
-                opacity="0.9"
-              />
-              <!-- Face oval -->
-              <ellipse cx="200" cy="240" rx="68" ry="88" fill="#E8D5C8" />
-              <!-- Subtle face shading -->
-              <ellipse cx="225" cy="245" rx="40" ry="80" fill="#B8746B" opacity="0.18" />
-              <!-- Hair front -->
-              <path
-                d="M 132 225 Q 145 170 200 158 Q 255 170 268 225 Q 260 195 235 185 Q 215 200 200 200 Q 185 200 165 185 Q 140 195 132 225 Z"
-                fill="#1A2238"
-              />
-              <!-- Hair side strands -->
-              <path d="M 132 225 Q 122 280 138 320" fill="none" stroke="#1A2238" stroke-width="14" stroke-linecap="round" />
-              <path d="M 268 225 Q 278 280 262 320" fill="none" stroke="#1A2238" stroke-width="14" stroke-linecap="round" />
-              <!-- Eyes -->
-              <ellipse cx="180" cy="235" rx="6" ry="2.5" fill="#1A2238" />
-              <ellipse cx="220" cy="235" rx="6" ry="2.5" fill="#1A2238" />
-              <!-- Brows -->
-              <path d="M 172 222 Q 180 218 190 222" stroke="#1A2238" stroke-width="2" fill="none" stroke-linecap="round" />
-              <path d="M 210 222 Q 220 218 228 222" stroke="#1A2238" stroke-width="2" fill="none" stroke-linecap="round" />
-              <!-- Nose -->
-              <path d="M 200 245 Q 197 268 200 278 Q 204 280 206 277" stroke="#1A2238" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.55" />
-              <!-- Smile -->
-              <path d="M 184 295 Q 200 305 216 295" stroke="#B8746B" stroke-width="2.5" fill="none" stroke-linecap="round" />
-              <path d="M 184 297 Q 200 304 216 297" stroke="#FFFFFF" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.6" />
-              <!-- Earrings -->
-              <circle cx="138" cy="265" r="3" fill="#B8965A" />
-              <circle cx="262" cy="265" r="3" fill="#B8965A" />
-
-              <!-- Stethoscope hint on coat -->
-              <path
-                d="M 165 410 Q 170 440 200 445 Q 230 440 235 410"
-                stroke="#B8965A"
-                stroke-width="2.2"
-                fill="none"
-                stroke-linecap="round"
-                opacity="0.7"
-              />
-              <circle cx="200" cy="448" r="5" fill="none" stroke="#B8965A" stroke-width="1.8" opacity="0.7" />
-            </svg>
+            <Image
+              src={portraitImg}
+              alt="Dra. María Claudia Huertas, ortodoncista en Pereira con casi tres décadas de experiencia."
+              widths={[480, 720, 960]}
+              sizes="(min-width: 1024px) 480px, (min-width: 768px) 60vw, 90vw"
+              loading="eager"
+              decoding="sync"
+              fetchpriority="high"
+              format="webp"
+              quality={82}
+              class="w-full h-full object-cover object-center"
+            />
 
             <!-- Soft vignette overlay -->
             <div

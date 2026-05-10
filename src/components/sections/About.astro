@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import { ABOUT } from "../../content/site";
 import Eyebrow from "../ui/Eyebrow.astro";
 import Icon from "../icons/Icon.astro";
+import portraitImg from "../../assets/doctora/portrait.png";
 ---
 
 <section
@@ -25,88 +27,25 @@ import Icon from "../icons/Icon.astro";
             aria-hidden="true"
           ></div>
           <div
-            class="relative h-full rounded-2xl overflow-hidden shadow-[0_25px_70px_-20px_rgba(26,34,56,0.2)]"
+            class="relative h-full rounded-2xl overflow-hidden shadow-[0_25px_70px_-20px_rgba(26,34,56,0.2)] bg-bone-soft"
           >
-            <svg
-              viewBox="0 0 400 500"
-              class="w-full h-full"
-              role="img"
-              aria-label="Retrato editorial de la Dra. María Claudia Huertas en su consultorio"
-              preserveAspectRatio="xMidYMid slice"
-            >
-              <defs>
-                <linearGradient id="aboutBg" x1="0" y1="0" x2="0.5" y2="1">
-                  <stop offset="0%" stop-color="#1A2238" />
-                  <stop offset="60%" stop-color="#2D3450" />
-                  <stop offset="100%" stop-color="#1A2238" />
-                </linearGradient>
-                <radialGradient id="aboutLight" cx="0.6" cy="0.3" r="0.7">
-                  <stop offset="0%" stop-color="#B8965A" stop-opacity="0.35" />
-                  <stop offset="100%" stop-color="#B8965A" stop-opacity="0" />
-                </radialGradient>
-                <linearGradient id="aboutCoat" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#FBF8F3" />
-                  <stop offset="100%" stop-color="#E5DDD0" />
-                </linearGradient>
-              </defs>
-              <rect width="400" height="500" fill="url(#aboutBg)" />
-              <rect width="400" height="500" fill="url(#aboutLight)" />
-
-              <!-- Soft window light -->
-              <rect x="280" y="40" width="100" height="200" fill="#FBF8F3" opacity="0.06" rx="4" />
-
-              <!-- Coat / shoulders -->
-              <path
-                d="M 50 500 L 50 420 Q 50 360 130 340 L 270 340 Q 350 360 350 420 L 350 500 Z"
-                fill="url(#aboutCoat)"
-              />
-              <path d="M 130 340 L 200 430 L 270 340" fill="none" stroke="#1A2238" stroke-opacity="0.2" stroke-width="1.5" />
-
-              <!-- Neck -->
-              <rect x="180" y="280" width="40" height="70" rx="20" fill="#E8D5C8" />
-
-              <!-- Hair back -->
-              <path
-                d="M 110 240 Q 90 165 130 115 Q 175 60 200 60 Q 225 60 270 115 Q 310 165 290 240 L 290 320 Q 290 295 270 290 L 130 290 Q 110 295 110 320 Z"
-                fill="#1A2238"
-              />
-              <!-- Face -->
-              <ellipse cx="200" cy="200" rx="70" ry="92" fill="#E8D5C8" />
-              <!-- Subtle face shading -->
-              <ellipse cx="180" cy="205" rx="42" ry="80" fill="#F0DDC8" opacity="0.6" />
-              <!-- Hair front -->
-              <path
-                d="M 130 195 Q 145 135 200 122 Q 255 135 270 195 Q 260 165 235 152 Q 215 165 200 165 Q 185 165 165 152 Q 140 165 130 195 Z"
-                fill="#1A2238"
-              />
-              <!-- Hair sides -->
-              <path d="M 130 195 Q 118 260 138 305" fill="none" stroke="#1A2238" stroke-width="16" stroke-linecap="round" />
-              <path d="M 270 195 Q 282 260 262 305" fill="none" stroke="#1A2238" stroke-width="16" stroke-linecap="round" />
-
-              <!-- Eyes (closed lashes — gentle smile) -->
-              <path d="M 173 198 Q 180 195 188 198" stroke="#1A2238" stroke-width="2.2" fill="none" stroke-linecap="round" />
-              <path d="M 212 198 Q 220 195 228 198" stroke="#1A2238" stroke-width="2.2" fill="none" stroke-linecap="round" />
-              <!-- Brows -->
-              <path d="M 170 184 Q 180 180 192 184" stroke="#1A2238" stroke-width="2" fill="none" stroke-linecap="round" />
-              <path d="M 210 184 Q 220 180 230 184" stroke="#1A2238" stroke-width="2" fill="none" stroke-linecap="round" />
-              <!-- Nose -->
-              <path d="M 200 208 Q 197 232 200 244 Q 204 246 207 242" stroke="#1A2238" stroke-width="1.2" fill="none" opacity="0.5" stroke-linecap="round" />
-              <!-- Smile (warmer) -->
-              <path d="M 178 262 Q 200 278 222 262" stroke="#B8746B" stroke-width="3" fill="none" stroke-linecap="round" />
-              <path d="M 178 264 Q 200 277 222 264" stroke="#FFFFFF" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.65" />
-
-              <!-- Earrings -->
-              <circle cx="135" cy="225" r="3.5" fill="#B8965A" />
-              <circle cx="265" cy="225" r="3.5" fill="#B8965A" />
-
-              <!-- Lapel pin / badge hint -->
-              <circle cx="155" cy="385" r="4" fill="none" stroke="#B8965A" stroke-width="1.5" />
-
-              <!-- Subtle gold particles -->
-              <circle cx="60" cy="100" r="1.5" fill="#B8965A" opacity="0.5" />
-              <circle cx="320" cy="80" r="1.5" fill="#B8965A" opacity="0.5" />
-              <circle cx="350" cy="200" r="1" fill="#B8965A" opacity="0.4" />
-            </svg>
+            <Image
+              src={portraitImg}
+              alt="Dra. María Claudia Huertas en su consultorio en Pereira"
+              widths={[440, 660, 880]}
+              sizes="(min-width: 1024px) 440px, (min-width: 768px) 50vw, 90vw"
+              loading="lazy"
+              decoding="async"
+              format="webp"
+              quality={82}
+              class="w-full h-full object-cover object-center"
+            />
+            <!-- Subtle bottom gradient for credential badge legibility -->
+            <div
+              class="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+              style="background: linear-gradient(180deg, transparent, rgba(26,34,56,0.25));"
+              aria-hidden="true"
+            ></div>
           </div>
           <!-- Floating credential -->
           <div
