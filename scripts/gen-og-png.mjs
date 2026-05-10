@@ -30,7 +30,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
 
   <!-- Eyebrow -->
   <text x="80" y="105" font-family="Arial, Helvetica, sans-serif" font-size="17" letter-spacing="4" font-weight="500" fill="#B8965A">
-    ORTODONCIA · PEREIRA · DESDE 1996
+    ORTODONCIA · PEREIRA · DESDE 2000
   </text>
 
   <!-- Headline (3 stacked lines for legibility) -->
@@ -46,7 +46,7 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
     Dra. María Claudia Huertas — Ortodoncia y retratamientos.
   </text>
   <text x="80" y="430" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#F7F2EA" opacity="0.8">
-    Pereira, Colombia · Casi 3 décadas atendiendo casos complejos.
+    Pereira, Colombia · Más de 25 años atendiendo casos complejos.
   </text>
 
   <!-- Bottom hairline rule -->

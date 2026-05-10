@@ -1,6 +1,6 @@
 # MCH Ortodoncia — Landing page
 
-Sitio web profesional de la **Dra. María Claudia Huertas**, ortodoncista en Pereira (Colombia) con 30 años de experiencia. Especialidad: retratamientos y ortopedia maxilar.
+Sitio web profesional de la **Dra. María Claudia Huertas**, ortodoncista en Pereira (Colombia) con más de 25 años de experiencia. Especialidad: retratamientos y ortopedia maxilar.
 
 > **Posicionamiento:** *"La ortodoncista a la que llegan los casos difíciles."*
 > **Tagline:** *"Sonrisas que respiran tranquilidad."*

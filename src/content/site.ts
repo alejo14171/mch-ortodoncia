@@ -7,8 +7,8 @@ export const SITE = {
   doctorShort: "Dra. Huertas",
   tagline: "Sonrisas que respiran tranquilidad",
   positioning: "La ortodoncista a la que llegan los casos difíciles",
-  yearsExperience: 30,
-  practiceSince: 1996,
+  yearsExperience: 25,
+  practiceSince: 2000,
   city: "Pereira",
   region: "Risaralda",
   country: "CO",
@@ -82,12 +82,12 @@ export const NAV_LINKS = [
 ] as const;
 
 export const HERO = {
-  eyebrow: "ORTODONCIA · PEREIRA · DESDE 1996",
+  eyebrow: "ORTODONCIA · PEREIRA · DESDE 2000",
   titlePre: "Sonrisas que",
   titleEmphasis: "respiran",
   titlePost: "tranquilidad.",
   subtitle:
-    "Casi tres décadas atendiendo casos complejos que otros colegas refieren: retratamientos, ortopedia maxilar y ortodoncia compleja. Aquí tu caso recibe el tiempo que merece.",
+    "Más de 25 años atendiendo casos complejos que otros colegas refieren: retratamientos, ortopedia maxilar y ortodoncia compleja. Aquí tu caso recibe el tiempo que merece.",
   ctaPrimary: "Agendar valoración",
   ctaSecondary: "WhatsApp directo",
   microcopy: "La consulta inicial se descuenta de tu tratamiento.",
@@ -157,7 +157,7 @@ export const ABOUT = {
   title: "María Claudia Huertas",
   subtitle: "Ortodoncista · U. Nacional · U. El Bosque · Miembro SCO",
   paragraphs: [
-    "Tres décadas en Pereira. Pregrado en la Universidad Nacional de Colombia, especialización en Ortodoncia en la Universidad El Bosque, y formación continua a través de la Sociedad Colombiana de Ortodoncia.",
+    "Más de 25 años en Pereira. Pregrado en la Universidad Nacional de Colombia, especialización en Ortodoncia en la Universidad El Bosque, y formación continua a través de la Sociedad Colombiana de Ortodoncia.",
     "Con los años, su consultorio se ha convertido en el lugar al que colegas refieren los casos que requieren más tiempo, más experiencia, o un nuevo abordaje después de tratamientos que no funcionaron como se esperaba.",
     "Atiende pacientes locales, de la región, y de otras ciudades del país y del exterior. Trabaja en español y en inglés.",
   ],
@@ -181,7 +181,7 @@ export const CTA_FINAL = {
   titleEmphasis: "tiempo,",
   titlePost: "no atajos.",
   subtitle:
-    "Treinta años atendiendo casos uno por uno. Si tu caso tiene historia, o si vienes por primera vez, mereces un diagnóstico completo y un plan diseñado para ti.",
+    "Más de 25 años atendiendo casos uno por uno. Si tu caso tiene historia, o si vienes por primera vez, mereces un diagnóstico completo y un plan diseñado para ti.",
   ctaPrimary: "Agendar valoración",
   ctaSecondary: "Escribir por WhatsApp",
 } as const;

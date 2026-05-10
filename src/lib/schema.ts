@@ -44,7 +44,7 @@ export function dentistSchema(siteUrl: string, services: ServiceEntry[]) {
     telephone: SITE.contact.whatsapp,
     email: SITE.contact.email,
     description:
-      "Ortodoncista en Pereira con 30 años de experiencia. Especialista en retratamientos y ortopedia maxilar.",
+      "Ortodoncista en Pereira con más de 25 años de experiencia. Especialista en retratamientos y ortopedia maxilar.",
     medicalSpecialty: "Orthodontics",
     priceRange: "$$",
     address: {
