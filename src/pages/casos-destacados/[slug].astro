@@ -1,0 +1,238 @@
+---
+import { Image } from "astro:assets";
+import { getCollection, render } from "astro:content";
+import type { ImageMetadata } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/nav/Header.astro";
+import Footer from "../../components/nav/Footer.astro";
+import Eyebrow from "../../components/ui/Eyebrow.astro";
+import Button from "../../components/ui/Button.astro";
+import BeforeAfterPair from "../../components/ui/BeforeAfterPair.astro";
+
+export async function getStaticPaths() {
+  const featured = await getCollection("featuredCases");
+  return featured
+    .filter((c) => c.data.published)
+    .map((c) => ({ params: { slug: c.data.slug }, props: { entry: c } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// Resolve all image pairs.
+const photos = import.meta.glob<ImageMetadata>(
+  "../../assets/casos-destacados/**/*.jpg",
+  { eager: true, import: "default" }
+);
+function findPhoto(dir: string, phase: "antes" | "despues", key: string): ImageMetadata | null {
+  const target = `casos-destacados/${dir}/${phase}/${key}.jpg`;
+  const e = Object.entries(photos).find(([k]) => k.includes(target));
+  return e ? e[1] : null;
+}
+
+const pairs = entry.data.pairs.map((p) => ({
+  ...p,
+  antes: findPhoto(entry.data.photos_dir, "antes", p.key),
+  despues: findPhoto(entry.data.photos_dir, "despues", p.key),
+}));
+
+const heroAntes = findPhoto(entry.data.photos_dir, "antes", entry.data.hero_pair);
+const heroDespues = findPhoto(entry.data.photos_dir, "despues", entry.data.hero_pair);
+
+const title = `${entry.data.patient} — Caso destacado · MCH Ortodoncia`;
+const description = entry.data.summary;
+---
+
+<BaseLayout title={title} description={description} canonical={`/casos-destacados/${entry.data.slug}`}>
+  <Header />
+  <main>
+    <!-- Breadcrumb + Hero -->
+    <section class="pt-12 md:pt-16 pb-8 bg-bone">
+      <div class="container-page max-w-5xl">
+        <nav class="text-[12px] text-slate-warm mb-6" aria-label="Breadcrumb">
+          <a href="/" class="hover:text-champagne-deep">Inicio</a>
+          <span class="opacity-50 mx-2">/</span>
+          <a href="/casos-destacados" class="hover:text-champagne-deep">Casos destacados</a>
+          <span class="opacity-50 mx-2">/</span>
+          <span class="text-ink">{entry.data.patient}</span>
+        </nav>
+
+        <div class="grid lg:grid-cols-[1fr_1.2fr] gap-10 lg:gap-16 items-start">
+          <div>
+            <Eyebrow class="mb-5">CASO DESTACADO · SIN CIRUGÍA</Eyebrow>
+            <h1 class="font-display text-[clamp(32px,4.6vw,52px)] leading-[1.06] mb-6">
+              {entry.data.patient}
+            </h1>
+            <p class="text-[16px] text-ink-soft leading-[1.65] mb-7">
+              {entry.data.summary}
+            </p>
+
+            <dl class="grid grid-cols-2 gap-x-6 gap-y-5 text-[13px] mb-8 pb-8 border-b border-line">
+              <div>
+                <dt class="eyebrow text-[10px] mb-1">Diagnóstico</dt>
+                <dd class="text-ink-soft leading-snug">{entry.data.diagnosis}</dd>
+              </div>
+              <div>
+                <dt class="eyebrow text-[10px] mb-1">Tratamiento</dt>
+                <dd class="text-ink-soft leading-snug">{entry.data.treatment}</dd>
+              </div>
+              <div>
+                <dt class="eyebrow text-[10px] mb-1">Edad inicio · fin</dt>
+                <dd class="text-ink-soft leading-snug">{entry.data.age_at_start} → {entry.data.age_at_end} años</dd>
+              </div>
+              <div>
+                <dt class="eyebrow text-[10px] mb-1">Duración</dt>
+                <dd class="text-ink-soft leading-snug">{entry.data.duration_months} meses</dd>
+              </div>
+            </dl>
+
+            <!-- Consent attestation -->
+            <div class="bg-bone-soft border border-line rounded-xl p-5">
+              <div class="flex items-start gap-3">
+                <span class="flex-shrink-0 w-6 h-6 rounded-full bg-success/15 border border-success/40 flex items-center justify-center text-success text-[12px] font-semibold mt-0.5">
+                  ✓
+                </span>
+                <div class="text-[12px] text-ink-soft leading-[1.65]">
+                  <strong class="text-ink">Caso publicado con consentimiento.</strong>
+                  Existe consentimiento informado escrito{entry.data.consent_video && (<> y autorización en video</>)}{" "}
+                  del paciente y de su representante legal, conforme a la Ley 1581 de 2012.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero pair -->
+          {heroAntes && heroDespues && (
+            <div class="grid grid-cols-2 gap-2 md:gap-3">
+              <div class="relative rounded-xl overflow-hidden bg-bone-soft aspect-[3/4] shadow-[0_25px_60px_-20px_rgba(26,34,56,0.25)]">
+                <Image
+                  src={heroAntes}
+                  alt={`Antes — ${entry.data.patient}, ${entry.data.diagnosis}`}
+                  widths={[480, 720, 960]}
+                  sizes="(min-width: 1024px) 320px, 50vw"
+                  loading="eager"
+                  decoding="sync"
+                  fetchpriority="high"
+                  format="webp"
+                  quality={86}
+                  class="w-full h-full object-cover"
+                />
+                <span class="absolute top-3 left-3 inline-flex items-center px-2.5 py-1 rounded-full bg-ink/90 text-bone text-[10px] font-medium tracking-[0.2em] uppercase backdrop-blur-md">
+                  Antes
+                </span>
+              </div>
+              <div class="relative rounded-xl overflow-hidden bg-bone-soft aspect-[3/4] shadow-[0_25px_60px_-20px_rgba(26,34,56,0.25)]">
+                <Image
+                  src={heroDespues}
+                  alt={`Después — ${entry.data.patient}, oclusión y armonía facial restablecidas`}
+                  widths={[480, 720, 960]}
+                  sizes="(min-width: 1024px) 320px, 50vw"
+                  loading="eager"
+                  decoding="sync"
+                  fetchpriority="high"
+                  format="webp"
+                  quality={86}
+                  class="w-full h-full object-cover"
+                />
+                <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/95 text-bone text-[10px] font-medium tracking-[0.2em] uppercase backdrop-blur-md">
+                  <span class="w-1 h-1 rounded-full bg-champagne"></span>
+                  Después
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- All pairs -->
+    <section class="py-20 md:py-24 bg-bone-soft border-y border-line">
+      <div class="container-page max-w-5xl">
+        <header class="mb-14 max-w-2xl">
+          <Eyebrow class="mb-4">VISTA COMPLETA</Eyebrow>
+          <h2 class="font-display text-[clamp(28px,3.6vw,40px)] leading-[1.1]">
+            Los ocho ángulos del cambio.
+          </h2>
+          <p class="text-[15px] text-ink-soft leading-[1.65] mt-4">
+            Cada par muestra la misma vista clínica antes y después del tratamiento. Ningún retoque digital sobre las fotografías.
+          </p>
+        </header>
+
+        <div class="space-y-14 md:space-y-16">
+          {pairs.map((p, i) => p.antes && p.despues && (
+            <BeforeAfterPair
+              antes={p.antes}
+              despues={p.despues}
+              title={p.title}
+              description={p.description}
+              patient={entry.data.patient}
+              eager={i === 0}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Long-form body (markdown) -->
+    <section class="py-20 md:py-24 bg-bone">
+      <div class="container-page max-w-3xl">
+        <article class="prose-mch text-[16px] text-ink-soft leading-[1.8]">
+          <Content />
+        </article>
+
+        <div class="mt-14 pt-10 border-t border-line">
+          <p class="text-[10px] text-slate-warm/80 leading-[1.6] italic">
+            Cada caso es único. Los resultados mostrados corresponden a este paciente específico, su anatomía, su edad al inicio del tratamiento y su nivel de compromiso con las indicaciones clínicas. Una valoración individualizada es la única forma de saber si tu caso responde a un tratamiento similar.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 md:py-24 bg-ink text-bone grain">
+      <div class="container-page max-w-3xl text-center">
+        <Eyebrow variant="light" class="mb-5">¿RECONOCES TU CASO?</Eyebrow>
+        <h2 class="font-display text-[clamp(28px,4vw,44px)] leading-[1.1] text-bone mb-6">
+          La valoración te dirá si <em class="italic-accent" style="color: var(--color-champagne);">aún estás a tiempo.</em>
+        </h2>
+        <p class="text-[16px] text-bone/70 leading-[1.65] mb-8 max-w-xl mx-auto">
+          Si tu hijo o hija tiene mordida cruzada, mandíbula adelantada, o "perfil cóncavo" — el momento del diagnóstico hace toda la diferencia.
+        </p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <Button href="/#contacto" variant="champagne" size="lg">
+            Agendar valoración
+          </Button>
+          <Button href="/casos-destacados" variant="outline-light" size="lg" iconRight={false}>
+            ← Ver más casos
+          </Button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .prose-mch :global(h2) {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .prose-mch :global(h3) {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--color-ink);
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose-mch :global(p) { margin-bottom: 1rem; }
+  .prose-mch :global(ul) { padding-left: 1.25rem; margin-bottom: 1.25rem; }
+  .prose-mch :global(li) { list-style: disc; margin-bottom: 0.4rem; }
+  .prose-mch :global(strong) { color: var(--color-ink); font-weight: 500; }
+</style>

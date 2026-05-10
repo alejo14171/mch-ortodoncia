@@ -1,0 +1,164 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import type { ImageMetadata } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/nav/Header.astro";
+import Footer from "../../components/nav/Footer.astro";
+import Eyebrow from "../../components/ui/Eyebrow.astro";
+import Icon from "../../components/icons/Icon.astro";
+import Button from "../../components/ui/Button.astro";
+
+const photos = import.meta.glob<ImageMetadata>(
+  "../../assets/casos-destacados/**/*.jpg",
+  { eager: true, import: "default" }
+);
+
+function findPhoto(dir: string, phase: "antes" | "despues", key: string): ImageMetadata | null {
+  const target = `casos-destacados/${dir}/${phase}/${key}.jpg`;
+  const entry = Object.entries(photos).find(([k]) => k.includes(target));
+  return entry ? entry[1] : null;
+}
+
+const featured = (await getCollection("featuredCases"))
+  .filter((c) => c.data.published)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const title = "Casos destacados sin cirugía · Dra. María Claudia Huertas";
+const description =
+  "Casos clínicos reales de transformación ortodóncica resueltos sin cirugía gracias al diagnóstico oportuno y a la ortopedia maxilar durante el crecimiento. Publicados con consentimiento informado.";
+---
+
+<BaseLayout title={title} description={description} canonical="/casos-destacados">
+  <Header />
+  <main>
+    <!-- Page intro -->
+    <section class="pt-16 md:pt-24 pb-16 md:pb-20 bg-bone">
+      <div class="container-page max-w-4xl">
+        <nav class="text-[12px] text-slate-warm mb-6" aria-label="Breadcrumb">
+          <a href="/" class="hover:text-champagne-deep">Inicio</a>
+          <span class="opacity-50 mx-2">/</span>
+          <span class="text-ink">Casos destacados</span>
+        </nav>
+        <Eyebrow class="mb-5">CASOS SIN CIRUGÍA</Eyebrow>
+        <h1 class="font-display text-[clamp(36px,5vw,64px)] leading-[1.05] mb-6">
+          Cuando la edad <em class="italic-accent">es la oportunidad.</em>
+        </h1>
+        <p class="text-[18px] text-ink-soft leading-[1.65] max-w-[60ch] mb-5">
+          Casos reales tratados en el consultorio de la <strong>Dra. María Claudia Huertas</strong> en Pereira. Pacientes que en edad adulta habrían recibido indicación de <strong>cirugía ortognática</strong>, resueltos sin cirugía gracias al diagnóstico oportuno y al uso de <strong>ortopedia maxilar</strong> durante el crecimiento.
+        </p>
+        <p class="text-[14px] text-slate-warm leading-[1.65] max-w-[60ch]">
+          Cada caso publicado en esta página cuenta con <strong class="text-ink-soft">consentimiento informado escrito</strong> y autorización en video del paciente y de su representante legal, conforme a la Ley 1581 de 2012 y el código deontológico de la Sociedad Colombiana de Ortodoncia.
+        </p>
+      </div>
+    </section>
+
+    <!-- Cases grid -->
+    <section class="pb-24 md:pb-32 bg-bone-soft border-t border-line">
+      <div class="container-page">
+        <ul class="grid lg:grid-cols-2 gap-8 lg:gap-10 pt-16 md:pt-20" role="list">
+          {featured.map((c) => {
+            const antes = findPhoto(c.data.photos_dir, "antes", c.data.hero_pair);
+            const despues = findPhoto(c.data.photos_dir, "despues", c.data.hero_pair);
+            if (!antes || !despues) return null;
+            return (
+              <li class="group">
+                <a
+                  href={`/casos-destacados/${c.data.slug}`}
+                  class="block bg-white rounded-card overflow-hidden border border-line hover:border-champagne/50 hover:shadow-[0_18px_50px_-16px_rgba(26,34,56,0.18)] hover:-translate-y-1 transition-all duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne"
+                >
+                  <div class="grid grid-cols-2 gap-1">
+                    <div class="relative aspect-[3/4] overflow-hidden bg-bone-soft">
+                      <Image
+                        src={antes}
+                        alt={`Antes — ${c.data.patient}`}
+                        widths={[400, 600, 800]}
+                        sizes="(min-width: 1024px) 320px, 50vw"
+                        loading="lazy"
+                        decoding="async"
+                        format="webp"
+                        quality={84}
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      />
+                      <span class="absolute top-3 left-3 inline-flex items-center px-2 py-1 rounded-full bg-ink/85 text-bone text-[9px] font-medium tracking-[0.18em] uppercase backdrop-blur-md">
+                        Antes
+                      </span>
+                    </div>
+                    <div class="relative aspect-[3/4] overflow-hidden bg-bone-soft">
+                      <Image
+                        src={despues}
+                        alt={`Después — ${c.data.patient}`}
+                        widths={[400, 600, 800]}
+                        sizes="(min-width: 1024px) 320px, 50vw"
+                        loading="lazy"
+                        decoding="async"
+                        format="webp"
+                        quality={84}
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      />
+                      <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-success/95 text-bone text-[9px] font-medium tracking-[0.18em] uppercase backdrop-blur-md">
+                        <span class="w-1 h-1 rounded-full bg-champagne"></span>
+                        Después
+                      </span>
+                    </div>
+                  </div>
+                  <div class="p-6 md:p-7">
+                    <p class="text-[10px] tracking-[0.22em] uppercase text-champagne-deep mb-2">
+                      Caso · Sin cirugía
+                    </p>
+                    <h2 class="font-display text-[22px] md:text-[24px] leading-tight mb-2 group-hover:text-champagne-deep transition-colors">
+                      {c.data.patient}
+                    </h2>
+                    <p class="text-[14px] text-ink-soft leading-snug mb-4">
+                      {c.data.diagnosis}
+                    </p>
+                    <p class="text-[13px] text-slate-warm leading-[1.65] mb-5">
+                      {c.data.summary}
+                    </p>
+                    <div class="flex items-center justify-between text-[12px] text-slate-warm pt-4 border-t border-line/70">
+                      <span>
+                        {c.data.duration_months} meses · {c.data.age_at_start}–{c.data.age_at_end} años
+                      </span>
+                      <span class="inline-flex items-center gap-1.5 text-champagne-deep font-medium">
+                        Ver caso completo
+                        <Icon name="arrow-right" size={12} strokeWidth={2.2} />
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+
+        {featured.length === 0 && (
+          <p class="text-[14px] text-slate-warm text-center py-12">
+            Próximamente publicaremos más casos.
+          </p>
+        )}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 bg-ink text-bone">
+      <div class="container-page max-w-3xl text-center">
+        <Eyebrow variant="light" class="mb-5">¿RECONOCES TU CASO?</Eyebrow>
+        <h2 class="font-display text-[clamp(28px,4vw,42px)] leading-[1.1] text-bone mb-6">
+          La valoración te dirá si <em class="italic-accent" style="color: var(--color-champagne);">aún estás a tiempo.</em>
+        </h2>
+        <p class="text-[16px] text-bone/70 leading-[1.65] mb-8 max-w-xl mx-auto">
+          Si tu hijo o hija tiene mordida cruzada, mandíbula adelantada, o el "perfil cóncavo" — el momento del diagnóstico hace toda la diferencia. Una valoración temprana puede evitar la cirugía.
+        </p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <Button href="/#contacto" variant="champagne" size="lg">
+            Agendar valoración
+          </Button>
+          <Button href="/" variant="outline-light" size="lg" iconRight={false}>
+            ← Volver al inicio
+          </Button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

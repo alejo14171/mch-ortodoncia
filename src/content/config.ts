@@ -37,4 +37,31 @@ const faqs = defineCollection({
   }),
 });
 
-export const collections = { services, cases, faqs };
+const featuredCases = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/casos-destacados" }),
+  schema: z.object({
+    slug: z.string(),
+    patient: z.string(),
+    age_at_start: z.number(),
+    age_at_end: z.number(),
+    duration_months: z.number(),
+    diagnosis: z.string(),
+    treatment: z.string(),
+    summary: z.string(),
+    consent_signed: z.boolean(),
+    consent_video: z.boolean(),
+    photos_dir: z.string(),
+    hero_pair: z.string().default("sonrisa"),
+    pairs: z.array(
+      z.object({
+        key: z.string(),
+        title: z.string(),
+        description: z.string().optional(),
+      })
+    ),
+    order: z.number(),
+    published: z.boolean().default(true),
+  }),
+});
+
+export const collections = { services, cases, faqs, featuredCases };

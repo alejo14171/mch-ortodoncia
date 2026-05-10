@@ -1,0 +1,83 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  antes: ImageMetadata;
+  despues: ImageMetadata;
+  title: string;
+  description?: string;
+  patient: string;
+  /** When true, label badges are inset over the image (compact); otherwise rendered above. */
+  compact?: boolean;
+  /** When true, image is loaded eager (use only for above-the-fold cases). */
+  eager?: boolean;
+}
+
+const {
+  antes,
+  despues,
+  title,
+  description,
+  patient,
+  compact = false,
+  eager = false,
+} = Astro.props;
+
+const widths = [600, 900, 1200];
+const sizes =
+  "(min-width: 1024px) 540px, (min-width: 768px) 45vw, 90vw";
+---
+
+<figure class="group">
+  {!compact && (
+    <figcaption class="mb-3 flex items-baseline justify-between gap-3">
+      <h3 class="font-display text-[18px] md:text-[20px] leading-tight text-ink">
+        {title}
+      </h3>
+      <span class="text-[10px] tracking-[0.18em] uppercase text-slate-warm">
+        Antes · Después
+      </span>
+    </figcaption>
+  )}
+
+  <div class="grid grid-cols-2 gap-2 md:gap-3">
+    <div class="relative rounded-lg overflow-hidden bg-bone-soft aspect-[3/4]">
+      <Image
+        src={antes}
+        alt={`Antes — ${title}. Caso clínico real de ${patient} (con consentimiento del paciente y de su representante legal).`}
+        widths={widths}
+        sizes={sizes}
+        loading={eager ? "eager" : "lazy"}
+        decoding={eager ? "sync" : "async"}
+        format="webp"
+        quality={84}
+        class="w-full h-full object-cover"
+      />
+      <span class="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-ink/85 text-bone text-[9px] font-medium tracking-[0.18em] uppercase backdrop-blur-md">
+        Antes
+      </span>
+    </div>
+    <div class="relative rounded-lg overflow-hidden bg-bone-soft aspect-[3/4]">
+      <Image
+        src={despues}
+        alt={`Después — ${title}. Caso clínico real de ${patient} (con consentimiento del paciente y de su representante legal).`}
+        widths={widths}
+        sizes={sizes}
+        loading={eager ? "eager" : "lazy"}
+        decoding={eager ? "sync" : "async"}
+        format="webp"
+        quality={84}
+        class="w-full h-full object-cover"
+      />
+      <span class="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-success/95 text-bone text-[9px] font-medium tracking-[0.18em] uppercase backdrop-blur-md">
+        <span class="w-1 h-1 rounded-full bg-champagne"></span>
+        Después
+      </span>
+    </div>
+  </div>
+
+  {description && (
+    <p class="mt-3 text-[13px] text-ink-soft leading-[1.6]">{description}</p>
+  )}
+</figure>

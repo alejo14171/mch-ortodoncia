@@ -1,0 +1,156 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Eyebrow from "../ui/Eyebrow.astro";
+import Button from "../ui/Button.astro";
+import Icon from "../icons/Icon.astro";
+
+import type { ImageMetadata } from "astro";
+
+// Eager-import every case photo so we can resolve them by path at build time.
+const photos = import.meta.glob<ImageMetadata>(
+  "../../assets/casos-destacados/**/*.jpg",
+  { eager: true, import: "default" }
+);
+
+function findPhoto(dir: string, phase: "antes" | "despues", key: string): ImageMetadata | null {
+  const target = `casos-destacados/${dir}/${phase}/${key}.jpg`;
+  const entry = Object.entries(photos).find(([k]) => k.includes(target));
+  return entry ? entry[1] : null;
+}
+
+const featured = (await getCollection("featuredCases"))
+  .filter((c) => c.data.published)
+  .sort((a, b) => a.data.order - b.data.order);
+const hero = featured[0];
+
+const heroAntes = hero ? findPhoto(hero.data.photos_dir, "antes", hero.data.hero_pair) : null;
+const heroDespues = hero ? findPhoto(hero.data.photos_dir, "despues", hero.data.hero_pair) : null;
+---
+
+{hero && heroAntes && heroDespues && (
+  <section
+    id="casos-destacados"
+    class="relative py-24 md:py-32 bg-ink text-bone overflow-hidden grain"
+    aria-labelledby="casos-destacados-heading"
+  >
+    <!-- Decorative gradients -->
+    <div class="absolute inset-0 -z-10" aria-hidden="true">
+      <div
+        class="absolute -top-40 -right-32 w-[55%] h-[80%] rounded-full opacity-30 blur-3xl"
+        style="background: radial-gradient(circle, rgba(184,150,90,0.5), transparent 60%);"
+      ></div>
+      <div
+        class="absolute -bottom-32 -left-20 w-[45%] h-[60%] rounded-full opacity-20 blur-3xl"
+        style="background: radial-gradient(circle, rgba(232,213,200,0.4), transparent 60%);"
+      ></div>
+    </div>
+
+    <div class="container-page">
+      <div class="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-20 items-center">
+        <!-- Left: messaging -->
+        <div class="reveal">
+          <Eyebrow variant="light" class="mb-6">CASOS SIN CIRUGÍA</Eyebrow>
+          <h2
+            id="casos-destacados-heading"
+            class="font-display text-[clamp(34px,4.8vw,58px)] leading-[1.06] text-bone mb-6"
+          >
+            Cuando la edad <em class="italic-accent" style="color: var(--color-champagne);">es la oportunidad.</em>
+          </h2>
+          <p class="text-[17px] leading-[1.7] text-bone/72 max-w-[54ch] mb-5">
+            Casos que en edad adulta tendrían indicación quirúrgica pueden resolverse <strong class="text-bone">sin cirugía</strong> si se diagnostican durante el crecimiento. La ortopedia maxilar trabaja sobre los huesos mientras todavía responden — entre los 7 y los 14 años, esa ventana está abierta.
+          </p>
+          <p class="text-[15px] leading-[1.7] text-bone/65 max-w-[52ch] mb-8">
+            Estos son casos reales tratados en este consultorio, publicados con <strong class="text-bone/85">consentimiento informado escrito y autorización en video</strong> del paciente y de su representante legal.
+          </p>
+
+          <div class="flex flex-wrap gap-3">
+            <Button href="/casos-destacados" variant="champagne" size="lg">
+              Ver casos completos
+            </Button>
+            <Button href="#contacto" variant="outline-light" size="lg" iconRight={false}>
+              Agendar valoración
+            </Button>
+          </div>
+
+          <!-- Stats strip -->
+          <div class="mt-12 pt-8 border-t border-bone/15 grid grid-cols-3 gap-6 max-w-md">
+            <div>
+              <div class="font-display text-[28px] text-champagne leading-none">{hero.data.duration_months}</div>
+              <div class="text-[11px] text-bone/60 mt-1.5 leading-tight">meses de tratamiento</div>
+            </div>
+            <div>
+              <div class="font-display text-[28px] text-champagne leading-none">0</div>
+              <div class="text-[11px] text-bone/60 mt-1.5 leading-tight">cirugías</div>
+            </div>
+            <div>
+              <div class="font-display text-[28px] text-champagne leading-none">{hero.data.age_at_start}</div>
+              <div class="text-[11px] text-bone/60 mt-1.5 leading-tight">años al inicio</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: featured pair -->
+        <div class="reveal reveal-delay-2">
+          <a
+            href={`/casos-destacados/${hero.data.slug}`}
+            class="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-champagne rounded-xl"
+            aria-label={`Ver caso completo: ${hero.data.diagnosis}`}
+          >
+            <div class="grid grid-cols-2 gap-2 md:gap-3 rounded-xl overflow-hidden">
+              <div class="relative aspect-[3/4] bg-bone-soft/10 rounded-lg overflow-hidden ring-1 ring-bone/10 group-hover:ring-champagne/40 transition-all duration-500">
+                <Image
+                  src={heroAntes}
+                  alt={`Antes — ${hero.data.patient}, ${hero.data.diagnosis}`}
+                  widths={[400, 600, 900]}
+                  sizes="(min-width: 1024px) 280px, 45vw"
+                  loading="lazy"
+                  decoding="async"
+                  format="webp"
+                  quality={84}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                />
+                <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-ink/90 text-bone text-[10px] font-medium tracking-[0.18em] uppercase backdrop-blur-md">
+                  Antes
+                </span>
+              </div>
+              <div class="relative aspect-[3/4] bg-bone-soft/10 rounded-lg overflow-hidden ring-1 ring-bone/10 group-hover:ring-champagne/40 transition-all duration-500">
+                <Image
+                  src={heroDespues}
+                  alt={`Después — ${hero.data.patient}, ${hero.data.diagnosis}`}
+                  widths={[400, 600, 900]}
+                  sizes="(min-width: 1024px) 280px, 45vw"
+                  loading="lazy"
+                  decoding="async"
+                  format="webp"
+                  quality={84}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                />
+                <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/95 text-bone text-[10px] font-medium tracking-[0.18em] uppercase backdrop-blur-md">
+                  <span class="w-1 h-1 rounded-full bg-champagne"></span>
+                  Después
+                </span>
+              </div>
+            </div>
+            <div class="mt-5 flex items-start justify-between gap-4">
+              <div class="min-w-0">
+                <p class="text-[10px] tracking-[0.22em] uppercase text-champagne mb-1.5">
+                  Caso destacado
+                </p>
+                <p class="font-display text-[18px] text-bone leading-snug">
+                  {hero.data.patient}
+                </p>
+                <p class="text-[12px] text-bone/60 mt-1 leading-snug">
+                  {hero.data.diagnosis}
+                </p>
+              </div>
+              <span class="flex-shrink-0 mt-1 w-9 h-9 rounded-full border border-champagne/40 text-champagne flex items-center justify-center transition-all duration-500 group-hover:bg-champagne group-hover:text-ink group-hover:translate-x-1">
+                <Icon name="arrow-right" size={14} strokeWidth={2.2} />
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+)}

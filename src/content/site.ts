@@ -73,12 +73,12 @@ export const SITE = {
 export type Site = typeof SITE;
 
 export const NAV_LINKS = [
-  { href: "#retratamientos", label: "Retratamientos" },
-  { href: "#salud", label: "Salud" },
-  { href: "#tratamientos", label: "Tratamientos" },
-  { href: "#casos", label: "Casos" },
-  { href: "#sobre", label: "Sobre la doctora" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#retratamientos", label: "Retratamientos" },
+  { href: "/#salud", label: "Salud" },
+  { href: "/casos-destacados", label: "Casos sin cirugía" },
+  { href: "/#tratamientos", label: "Tratamientos" },
+  { href: "/#sobre", label: "Sobre la doctora" },
+  { href: "/#faq", label: "FAQ" },
 ] as const;
 
 export const HERO = {
