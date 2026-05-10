@@ -5,21 +5,33 @@ import Icon from "../icons/Icon.astro";
 
 const cases = (await getCollection("cases")).sort((a, b) => a.data.order - b.data.order);
 
-// Eager-import all case SVGs (illustrations + AI portraits) as URLs.
+// Eager-import case schematics (always SVG) and patient portraits (real photos
+// take priority over AI-generated SVG placeholders by extension order: png > jpg > webp > svg).
 const illustrations = import.meta.glob<{ default: string }>("../../assets/casos/*.svg", {
   eager: true,
   query: "?url",
   import: "default",
 });
-const portraits = import.meta.glob<{ default: string }>("../../assets/casos-fotos/*.svg", {
-  eager: true,
-  query: "?url",
-  import: "default",
-});
+const portraits = import.meta.glob<{ default: string }>(
+  "../../assets/casos-fotos/*.{png,jpg,jpeg,webp,svg}",
+  { eager: true, query: "?url", import: "default" }
+);
 
 function findUrl(map: Record<string, unknown>, needle: string): string {
-  const found = Object.entries(map).find(([k]) => k.includes(needle));
-  return found ? (found[1] as string) : "";
+  // Prefer raster (real photo) over SVG (AI placeholder) when both exist.
+  const matches = Object.entries(map).filter(([k]) => k.includes(needle));
+  if (matches.length === 0) return "";
+  const priority = [".png", ".jpg", ".jpeg", ".webp", ".svg"];
+  matches.sort(([a], [b]) => {
+    const ai = priority.findIndex((ext) => a.endsWith(ext));
+    const bi = priority.findIndex((ext) => b.endsWith(ext));
+    return ai - bi;
+  });
+  return matches[0]![1] as string;
+}
+
+function isRealPhoto(url: string): boolean {
+  return /\.(png|jpe?g|webp)(\?.*)?$/i.test(url);
 }
 ---
 
@@ -54,6 +66,7 @@ function findUrl(map: Record<string, unknown>, needle: string): string {
       {cases.map((c, i) => {
         const illoUrl = findUrl(illustrations, c.data.file);
         const portraitUrl = findUrl(portraits, `caso-${String(c.data.order).padStart(2, "0")}-paciente`);
+        const isReal = isRealPhoto(portraitUrl);
         return (
           <details
             class={`group/case bg-white border border-line rounded-card overflow-hidden transition-all duration-500 hover:shadow-[0_18px_50px_-16px_rgba(26,34,56,0.18)] reveal reveal-delay-${(i % 4) + 1}`}
@@ -66,18 +79,29 @@ function findUrl(map: Record<string, unknown>, needle: string): string {
                 >
                   <img
                     src={portraitUrl}
-                    alt={`Retrato esquemático del paciente — ${c.data.patient}`}
+                    alt={
+                      isReal
+                        ? `Caso clínico real — ${c.data.title} (${c.data.patient})`
+                        : `Retrato esquemático del paciente — ${c.data.patient}`
+                    }
                     width="400"
                     height="480"
                     loading="lazy"
                     decoding="async"
                     class="w-full h-full object-cover object-[center_30%] group-open/case:object-[center_top]"
                   />
-                  <!-- AI Badge -->
-                  <div class="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-ink/85 text-bone text-[10px] font-medium tracking-wider uppercase backdrop-blur-md">
-                    <span class="w-1.5 h-1.5 rounded-full bg-champagne"></span>
-                    Generado con IA
-                  </div>
+                  {!isReal && (
+                    <div class="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-ink/85 text-bone text-[10px] font-medium tracking-wider uppercase backdrop-blur-md">
+                      <span class="w-1.5 h-1.5 rounded-full bg-champagne"></span>
+                      Generado con IA
+                    </div>
+                  )}
+                  {isReal && (
+                    <div class="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success/95 text-bone text-[10px] font-medium tracking-wider uppercase backdrop-blur-md">
+                      <span class="w-1.5 h-1.5 rounded-full bg-champagne"></span>
+                      Caso real
+                    </div>
+                  )}
                   <!-- Soft fade overlay at bottom for legibility -->
                   <div
                     class="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
@@ -109,19 +133,17 @@ function findUrl(map: Record<string, unknown>, needle: string): string {
 
             <!-- EXPANDED content -->
             <div class="px-6 pb-7 pt-2 border-t border-line/60">
-              <!-- Schematic before/after -->
+              <!-- Schematic before/after (vertical stack) -->
               <figure class="mt-5">
-                <figcaption class="flex items-center justify-between text-[10px] tracking-[0.22em] uppercase text-slate-warm mb-2 px-2">
-                  <span>Antes</span>
-                  <span class="opacity-40">→</span>
-                  <span>Después</span>
+                <figcaption class="text-[10px] tracking-[0.22em] uppercase text-slate-warm mb-2 px-2">
+                  Esquema clínico
                 </figcaption>
-                <div class="bg-bone-soft rounded-lg p-3 border border-line/70">
+                <div class="bg-bone-soft rounded-lg p-3 border border-line/70 max-w-[360px] mx-auto">
                   <img
                     src={illoUrl}
                     alt={`Esquema del caso ${c.data.order}: ${c.data.title} — antes y después`}
-                    width="800"
-                    height="240"
+                    width="400"
+                    height="580"
                     loading="lazy"
                     decoding="async"
                     class="w-full h-auto"
