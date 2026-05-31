@@ -1,6 +1,6 @@
 ---
 slug: joel
-patient: "Joel S. — Adolescente"
+patient: "Paciente I"
 age_at_start: 12
 age_at_end: 15
 duration_months: 30
@@ -14,28 +14,28 @@ hero_pair: sonrisa
 pairs:
   - key: sonrisa
     title: "Sonrisa"
-    description: "El cambio más visible — mordida y línea media restablecidas, sonrisa armónica."
+    description: "El cambio más visible. En el antes, los dientes inferiores ocultan a los superiores al sonreír — el sello característico de la mordida cruzada. En el después, la relación incisiva es normal: los superiores cubren ligeramente a los inferiores y la línea media está centrada con la cara."
   - key: frente
-    title: "Frente — reposo"
-    description: "Equilibrio facial recuperado en posición de reposo."
+    title: "Vista frontal — reposo"
+    description: "Sin la tensión de mantener la mordida cerrada de forma forzada, los labios reposan en posición natural y el tercio inferior de la cara recupera proporción. La armonía facial en reposo es uno de los mejores indicadores de que el tratamiento alcanzó equilibrio funcional."
   - key: perfil
     title: "Perfil"
-    description: "Mejor relación entre maxilar y mandíbula sin necesidad de cirugía. Buena parte del cambio responde al manejo del crecimiento."
+    description: "El cambio de perfil tiene dos componentes: el manejo ortopédico del crecimiento del maxilar superior y el crecimiento natural del paciente entre los 12 y 15 años. La ortodoncia por sí sola no modifica tanto el perfil — fue el momento del diagnóstico lo que abrió esta posibilidad."
   - key: mordida
-    title: "Mordida — vista frontal"
-    description: "De mordida cruzada anterior (dientes inferiores por delante de los superiores) a relación incisiva normal."
+    title: "Mordida — vista intraoral frontal"
+    description: "Esta es la imagen diagnóstica clave. En el antes se observa cómo los incisivos inferiores quedan por delante de los superiores (mordida cruzada anterior). En el después, la relación es la fisiológica: superiores cubriendo a los inferiores 1–2 mm."
   - key: lateral-derecho
-    title: "Vista intraoral — lateral derecho"
-    description: "Caninos y molares en clase normal."
+    title: "Vista intraoral lateral derecha"
+    description: "Relación canina y molar en clase normal del lado derecho. Las cúspides de los premolares y molares engranan correctamente, distribuyendo la carga masticatoria de manera fisiológica."
   - key: lateral-izquierdo
-    title: "Vista intraoral — lateral izquierdo"
-    description: "Oclusión simétrica restablecida en ambos lados."
+    title: "Vista intraoral lateral izquierda"
+    description: "Misma normalización del lado izquierdo. La simetría de la oclusión entre ambos lados es esencial: previene desgastes asimétricos, dolor mandibular unilateral y problemas de articulación temporomandibular a futuro."
   - key: arcada-superior
     title: "Arcada superior — vista oclusal"
-    description: "Forma de arco normalizada y alineación de dientes superiores."
+    description: "La forma del arco maxilar superior se normalizó: pasó de un arco contraído (uno de los componentes de la clase III esquelética) a una forma parabólica con ancho transversal adecuado. Este cambio se logró con el expansor palatino al inicio del tratamiento."
   - key: arcada-inferior
     title: "Arcada inferior — vista oclusal"
-    description: "Apiñamiento corregido con plan de retención definitivo."
+    description: "El apiñamiento inferior leve se resolvió alineando los dientes y manteniéndolos con un retenedor fijo (alambre por lingual). La retención permanente es la única forma confiable de mantener la alineación inferior a largo plazo."
 order: 1
 published: true
 ---
