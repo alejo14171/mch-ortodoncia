@@ -1,74 +1,157 @@
-// Privacy-preserving anonymization for clinical photos.
-// Applies an in-place blur over the eye region of frontal/profile photos
-// so the patient cannot be identified from the published images. Intraoral
-// photos (mordida, arcadas, laterales) need no blur — they don't show the
-// face/eyes.
+// Privacy-preserving anonymization + framing normalization for clinical photos.
+// Workflow per face photo:
+//   1. Read the un-anonymized original from /_assets/assets_joel/{antes|despues}/...
+//   2. CROP to a tight portrait framing so face fills the frame consistently
+//      across antes/después (the two shoots used different distances).
+//   3. BLUR the eye band heavily (sigma 55, idempotent on re-runs).
+//   4. Write JPEG quality 92 into src/assets/casos-destacados/joel/...
 //
-// IMPORTANT: this script OVERWRITES the file in src/assets/.../joel/.
-// The un-anonymized originals live outside the project tree
-// (/c/Users/alejo/website_mch/_assets/assets_joel/) and should never be
-// committed. The script is idempotent — re-running it on an already
-// blurred image just adds an imperceptible additional blur pass.
+// Intraoral photos (mordida/arcadas/laterales) need no blur and no recrop
+// — they're copied straight through.
+//
+// IMPORTANT: this script ALWAYS reads from the un-anonymized originals so
+// you can adjust crop/blur parameters and re-run cleanly. The originals
+// live OUTSIDE the project tree (in /_assets/) and are never committed.
 //
 // Run:  node scripts/anonymize-case.mjs
 import sharp from "sharp";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const caseDir = join(here, "..", "src", "assets", "casos-destacados", "joel");
+const projectRoot = join(here, "..", "..");
+const srcRoot = join(projectRoot, "_assets", "assets_joel");
+const outRoot = join(here, "..", "src", "assets", "casos-destacados", "joel");
 
-// Eye region per (phase, photo type), expressed as fractions of width/height.
-// Antes/después shoots were framed differently so coordinates differ.
-// Numbers are generous to cover brows + small framing variations.
-const EYE_BANDS = {
+// Map clean keys → original filenames (original names are messy).
+const NAMES = {
   antes: {
-    frente: { x: 0.08, y: 0.30, w: 0.84, h: 0.15 },
-    sonrisa: { x: 0.08, y: 0.30, w: 0.84, h: 0.15 },
-    // Profile: eye is around y=42-48% in this framing.
-    perfil: { x: 0.42, y: 0.38, w: 0.55, h: 0.14 },
+    frente: "JOEL SANTIAGO MOYA BAQUERO TI.1014871454 FRENTE.jpg",
+    sonrisa: "JOEL SANTIAGO MOYA BAQUERO TI1014871454 SONRISA..jpg",
+    perfil: "JOEL SANTIAGO MOYA BAQUERO TI.10104871454 PERFIL.jpg",
+    mordida: "JOEL SANTIAGO MOYA BAQUERO TI 1014871454 MORDIDA.jpg",
+    "lateral-derecho": "JOEL SANTIAGO  MOYA BAQUERO TI.1014871454 LATERAL DERCHO.jpg",
+    "lateral-izquierdo": "JOEL SANTIAGO MOYA BAQUERO LATERAL IZ TI.1014871454.jpg",
+    "arcada-superior": "JOEL SANTIAGO MOYA BAQUERO MOLDE SUP  TI.jpg",
+    "arcada-inferior": "JOEL SANTIAGO MOYA BAQUERO ARCADA INF TI.1014871454.jpg",
   },
   despues: {
-    // 'Después' set is framed lower — eyes around y=42-50%.
-    frente: { x: 0.08, y: 0.39, w: 0.84, h: 0.15 },
-    sonrisa: { x: 0.08, y: 0.39, w: 0.84, h: 0.15 },
-    perfil: { x: 0.40, y: 0.40, w: 0.55, h: 0.14 },
+    frente: "JOEL SANTIAGO MOYA- TI 1014871454- FOTO DE FRENTE .jpg",
+    sonrisa: "JOEL SANTIAGO MOYA- TI 1014871454- FOTO SONRIENDO .jpg",
+    perfil: "JOEL SANTIAGO MOYA- TI 1014871454- FOTO PERFIL .jpg",
+    mordida: "JOEL SANTIAGO MOYA- TI 1014871454- FOTO MORDIDA.jpg",
+    "lateral-derecho": "JOEL SANTIAGO MOYA -TI 1014871454- FOTO LATERAL DERECHO .jpg",
+    "lateral-izquierdo": "JOEL SANTIAGO MOYA - TI 1014871454- FOTO LATERAL IZQUIERDO .jpg",
+    "arcada-superior": "JOEL SANTIAGO MOYA- TI 1014871454- FOTO ARCADA SUPERIOR.jpg",
+    "arcada-inferior": "JOEL SANTIAGO MOTA- TI 1014871454- FOTO ARCADA INFERIOR .jpg",
   },
 };
 
-async function blurEyes(filePath, phase, key) {
-  const band = EYE_BANDS[phase]?.[key];
-  if (!band) return; // not a face photo or no band configured
+// Crop box per (phase, key) as fractions of original w/h.
+// Goal: face fills similar proportion in antes vs después.
+// Antes shoot framed face higher in frame → zoom in by trimming top hair + bottom shoulders.
+// Despues framing already tight enough — minimal trim.
+const CROPS = {
+  antes: {
+    frente: { x: 0.05, y: 0.07, w: 0.90, h: 0.78 },
+    sonrisa: { x: 0.05, y: 0.07, w: 0.90, h: 0.78 },
+    perfil: { x: 0.05, y: 0.10, w: 0.90, h: 0.78 },
+  },
+  despues: {
+    frente: { x: 0.05, y: 0.10, w: 0.90, h: 0.80 },
+    sonrisa: { x: 0.05, y: 0.10, w: 0.90, h: 0.80 },
+    perfil: { x: 0.05, y: 0.10, w: 0.90, h: 0.80 },
+  },
+};
 
-  const buf = readFileSync(filePath);
-  const meta = await sharp(buf).metadata();
-  if (!meta.width || !meta.height) {
-    console.warn(`⚠ skipped ${filePath} — no dimensions`);
-    return;
-  }
-  const region = {
-    left: Math.round(meta.width * band.x),
-    top: Math.round(meta.height * band.y),
-    width: Math.round(meta.width * band.w),
-    height: Math.round(meta.height * band.h),
-  };
+// Eye region as fractions of the CROPPED image (not the original).
+const EYE_BANDS = {
+  // After cropping antes, eyes land ~y=38-50% of the cropped frame.
+  antes: {
+    frente: { x: 0.06, y: 0.30, w: 0.88, h: 0.18 },
+    sonrisa: { x: 0.06, y: 0.30, w: 0.88, h: 0.18 },
+    perfil: { x: 0.42, y: 0.32, w: 0.55, h: 0.16 },
+  },
+  // Despues already framed tightly → eyes ~y=38-52% of the cropped frame.
+  despues: {
+    frente: { x: 0.05, y: 0.36, w: 0.90, h: 0.18 },
+    sonrisa: { x: 0.05, y: 0.36, w: 0.90, h: 0.18 },
+    perfil: { x: 0.35, y: 0.36, w: 0.60, h: 0.18 },
+  },
+};
 
-  // Extract the eye band, blur it heavily, then composite back.
-  // sigma 35 makes eyes unrecognizable while keeping the image pleasant.
-  const blurred = await sharp(buf).extract(region).blur(35).toBuffer();
-  const out = await sharp(buf)
-    .composite([{ input: blurred, left: region.left, top: region.top }])
-    .jpeg({ quality: 92, mozjpeg: true })
-    .toBuffer();
-  writeFileSync(filePath, out);
-  console.log(`✓ ${phase}/${key}  band ${region.width}×${region.height} at (${region.left},${region.top})`);
+// Sigma scales with the band height so the blur is equally effective on
+// the 702-px-tall 'antes' shots and the 2551-px-tall 'despues' shots.
+// Two blur passes give a wider, smoother kernel than a single pass at the
+// same sigma — eyes become a soft skin-toned smear instead of a recognizable
+// shape. Minimum sigma 25 so the small antes images still get strong blur.
+function blurSigmaFor(bandHeightPx) {
+  return Math.max(25, Math.round(bandHeightPx / 5));
 }
 
-for (const phase of Object.keys(EYE_BANDS)) {
-  for (const key of Object.keys(EYE_BANDS[phase])) {
-    const file = join(caseDir, phase, `${key}.jpg`);
-    await blurEyes(file, phase, key);
+async function process(phase, key, originalFile, outFile) {
+  const buf = readFileSync(originalFile);
+  let pipeline = sharp(buf);
+  let meta = await pipeline.metadata();
+  if (!meta.width || !meta.height) {
+    console.warn(`⚠ skipped ${outFile} — no dimensions`);
+    return;
+  }
+
+  // ── 1. CROP if configured (face photos only) ────────────────────────────
+  const crop = CROPS[phase]?.[key];
+  if (crop) {
+    const region = {
+      left: Math.round(meta.width * crop.x),
+      top: Math.round(meta.height * crop.y),
+      width: Math.round(meta.width * crop.w),
+      height: Math.round(meta.height * crop.h),
+    };
+    pipeline = pipeline.extract(region);
+    meta = { width: region.width, height: region.height };
+  }
+
+  // ── 2. EYE BLUR if configured (face photos only) ────────────────────────
+  const band = EYE_BANDS[phase]?.[key];
+  if (band) {
+    const region = {
+      left: Math.round(meta.width * band.x),
+      top: Math.round(meta.height * band.y),
+      width: Math.round(meta.width * band.w),
+      height: Math.round(meta.height * band.h),
+    };
+    // Materialize the cropped buffer first, then composite blurred band.
+    // Apply two blur passes so the eye region becomes a smooth skin-toned
+    // smear rather than a recognizable but fuzzy eye shape.
+    const sigma = blurSigmaFor(region.height);
+    const cropped = await pipeline.jpeg().toBuffer();
+    const pass1 = await sharp(cropped).extract(region).blur(sigma).toBuffer();
+    const blurred = await sharp(pass1).blur(Math.round(sigma / 2)).toBuffer();
+    pipeline = sharp(cropped).composite([
+      { input: blurred, left: region.left, top: region.top },
+    ]);
+    meta = { width: meta.width, height: meta.height };
+    console.log(`   blur sigma=${sigma}+${Math.round(sigma/2)} on ${region.width}×${region.height}`);
+  }
+
+  const out = await pipeline.jpeg({ quality: 92, mozjpeg: true }).toBuffer();
+  writeFileSync(outFile, out);
+  const note = crop && band ? "crop+blur" : crop ? "crop" : band ? "blur" : "passthrough";
+  console.log(`✓ ${phase}/${key.padEnd(18)} ${meta.width}×${meta.height}  [${note}]`);
+}
+
+for (const phase of ["antes", "despues"]) {
+  const outDir = join(outRoot, phase);
+  if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
+  for (const [key, filename] of Object.entries(NAMES[phase])) {
+    const src = join(srcRoot, phase, filename);
+    if (!existsSync(src)) {
+      console.warn(`⚠ missing source: ${src}`);
+      continue;
+    }
+    const out = join(outDir, `${key}.jpg`);
+    await process(phase, key, src, out);
   }
 }
 
