@@ -191,7 +191,7 @@ file: caso-NN-nombre
 title: Título del caso
 subtitle: Categoría clínica
 patient: "Adulta · 35 años"
-treatment: "Brackets autoligado + alineadores"
+treatment: "Brackets autoligado"
 duration: "14 meses"
 outcome: Descripción del resultado.
 order: 7

@@ -15,7 +15,7 @@ export const leadSchema = z.object({
   forWhom: z.enum(["self", "child", "family"]).default("self"),
   patientAge: z.coerce.number().int().min(3).max(100),
   interest: z
-    .enum(["not-sure", "brackets", "alineadores", "retratamiento", "ortopedia", "other"])
+    .enum(["not-sure", "brackets", "retratamiento", "ortopedia", "prequirurgica", "other"])
     .default("not-sure"),
   reason: z.string().max(300).optional().default(""),
   consent: z.union([z.literal("on"), z.literal("true"), z.boolean()]).transform(() => true),
@@ -40,9 +40,9 @@ export interface LeadResult {
 const INTEREST_LABEL: Record<LeadInput["interest"], string> = {
   "not-sure": "No está seguro/a",
   brackets: "Brackets",
-  alineadores: "Alineadores invisibles",
   retratamiento: "Retratamiento",
   ortopedia: "Ortopedia maxilar (niños)",
+  prequirurgica: "Ortodoncia prequirúrgica",
   other: "Otro",
 };
 const FOR_WHOM_LABEL: Record<LeadInput["forWhom"], string> = {

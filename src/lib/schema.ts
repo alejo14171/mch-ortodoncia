@@ -102,7 +102,6 @@ export function personSchema(siteUrl: string) {
       "Ortopedia maxilar",
       "Brackets metálicos",
       "Brackets estéticos",
-      "Alineadores invisibles",
       "Ortodoncia prequirúrgica",
     ],
   };

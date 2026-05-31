@@ -137,8 +137,8 @@ export const PROCESS_STEPS = [
   },
   {
     n: "02",
-    title: "Diagnóstico clínico",
-    desc: "45–60 minutos. Examen oral, fotografías y, si aplica, modelos digitales y radiografías.",
+    title: "Valoración",
+    desc: "20 minutos. Examen oral inicial, solicitud de ayudas diagnósticas (radiografías y modelos cuando aplican) y entrega de presupuesto.",
   },
   {
     n: "03",
