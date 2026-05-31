@@ -7,8 +7,7 @@ duration_months: 30
 diagnosis: "Mordida cruzada anterior con tendencia a Clase III esquelética. Caso candidato a evaluación quirúrgica si se hubiera diagnosticado en edad adulta."
 treatment: "Ortopedia maxilar con expansión y máscara facial durante el pico de crecimiento puberal, seguido de ortodoncia con brackets metálicos. Sin cirugía ortognática."
 summary: "Caso de mordida cruzada y tendencia clase III resuelto sin cirugía gracias al diagnóstico oportuno y al uso de ortopedia maxilar durante la ventana de crecimiento."
-consent_signed: true
-consent_video: true
+consent_informed: true
 photos_dir: joel
 hero_pair: sonrisa
 pairs:

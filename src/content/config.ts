@@ -48,8 +48,7 @@ const featuredCases = defineCollection({
     diagnosis: z.string(),
     treatment: z.string(),
     summary: z.string(),
-    consent_signed: z.boolean(),
-    consent_video: z.boolean(),
+    consent_informed: z.boolean().default(true),
     photos_dir: z.string(),
     hero_pair: z.string().default("sonrisa"),
     pairs: z.array(

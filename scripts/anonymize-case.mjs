@@ -66,28 +66,32 @@ const CROPS = {
 };
 
 // Eye region as fractions of the CROPPED image (not the original).
+// Bands intentionally OVER-cover: better a slightly bigger blur than
+// pupils leaking out the bottom of the bar.
 const EYE_BANDS = {
-  // After cropping antes, eyes land ~y=38-50% of the cropped frame.
+  // After cropping antes, eyes land ~y=42-50% of the cropped frame.
   antes: {
-    frente: { x: 0.06, y: 0.30, w: 0.88, h: 0.18 },
-    sonrisa: { x: 0.06, y: 0.30, w: 0.88, h: 0.18 },
-    perfil: { x: 0.42, y: 0.32, w: 0.55, h: 0.16 },
+    frente: { x: 0.04, y: 0.32, w: 0.92, h: 0.24 },
+    sonrisa: { x: 0.04, y: 0.32, w: 0.92, h: 0.22 },
+    // Profile: eye is lower than I had it — push band down ~10%.
+    perfil: { x: 0.40, y: 0.42, w: 0.58, h: 0.20 },
   },
-  // Despues already framed tightly → eyes ~y=38-52% of the cropped frame.
+  // Despues framed tighter and high-res — band extends well past eyes
+  // to allow heavy blur without pupils peeking out at the seam.
   despues: {
-    frente: { x: 0.05, y: 0.36, w: 0.90, h: 0.18 },
-    sonrisa: { x: 0.05, y: 0.36, w: 0.90, h: 0.18 },
-    perfil: { x: 0.35, y: 0.36, w: 0.60, h: 0.18 },
+    frente: { x: 0.03, y: 0.34, w: 0.94, h: 0.22 },
+    sonrisa: { x: 0.03, y: 0.34, w: 0.94, h: 0.22 },
+    perfil: { x: 0.33, y: 0.34, w: 0.64, h: 0.22 },
   },
 };
 
 // Sigma scales with the band height so the blur is equally effective on
 // the 702-px-tall 'antes' shots and the 2551-px-tall 'despues' shots.
-// Two blur passes give a wider, smoother kernel than a single pass at the
-// same sigma — eyes become a soft skin-toned smear instead of a recognizable
-// shape. Minimum sigma 25 so the small antes images still get strong blur.
+// Three blur passes turn the eye region into a uniform skin-toned smear
+// with no recognizable pupil/iris contours, even on the high-res photos.
+// Minimum sigma 30 so even the tiny antes bands get a solid blur.
 function blurSigmaFor(bandHeightPx) {
-  return Math.max(25, Math.round(bandHeightPx / 5));
+  return Math.max(30, Math.round(bandHeightPx / 4));
 }
 
 async function process(phase, key, originalFile, outFile) {
@@ -121,18 +125,20 @@ async function process(phase, key, originalFile, outFile) {
       width: Math.round(meta.width * band.w),
       height: Math.round(meta.height * band.h),
     };
-    // Materialize the cropped buffer first, then composite blurred band.
-    // Apply two blur passes so the eye region becomes a smooth skin-toned
-    // smear rather than a recognizable but fuzzy eye shape.
+    // Materialize the cropped buffer, then extract the eye band and
+    // hit it with THREE blur passes (full sigma → half → quarter).
+    // The compounding effect collapses iris/pupil contrast to near
+    // uniform skin tone while still letting the brow line breathe.
     const sigma = blurSigmaFor(region.height);
     const cropped = await pipeline.jpeg().toBuffer();
     const pass1 = await sharp(cropped).extract(region).blur(sigma).toBuffer();
-    const blurred = await sharp(pass1).blur(Math.round(sigma / 2)).toBuffer();
+    const pass2 = await sharp(pass1).blur(Math.round(sigma / 2)).toBuffer();
+    const blurred = await sharp(pass2).blur(Math.round(sigma / 4)).toBuffer();
     pipeline = sharp(cropped).composite([
       { input: blurred, left: region.left, top: region.top },
     ]);
     meta = { width: meta.width, height: meta.height };
-    console.log(`   blur sigma=${sigma}+${Math.round(sigma/2)} on ${region.width}×${region.height}`);
+    console.log(`   blur 3×: σ=${sigma}+${Math.round(sigma/2)}+${Math.round(sigma/4)} on ${region.width}×${region.height}`);
   }
 
   const out = await pipeline.jpeg({ quality: 92, mozjpeg: true }).toBuffer();
