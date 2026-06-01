@@ -1,0 +1,403 @@
+---
+// Carrusel de reseñas — auto-scroll + drag (mouse + touch).
+//
+// Implementación: contenedor con overflow-x:auto (touch swipe nativo) +
+// handler de pointer events para click-drag con mouse. Auto-scroll por
+// requestAnimationFrame que incrementa scrollLeft 1px/frame. Loop infinito
+// duplicando las tarjetas y restando scrollWidth/2 al cruzar el medio.
+//
+// Pausa: cuando arrastras, cuando estás encima con el cursor, o cuando
+// el usuario prefiere reduced-motion (en ese caso queda como scroll manual).
+//
+// MUESTRA: textos representativos hasta tener reseñas reales con consentimiento.
+import Eyebrow from "../ui/Eyebrow.astro";
+
+const IS_SAMPLE = true;
+
+type Review = {
+  initials: string;
+  name: string;
+  treatment: string;
+  city: string;
+  quote: string;
+  rating: 4 | 5;
+  palette: string;
+};
+
+const reviews: Review[] = [
+  {
+    initials: "CM",
+    name: "Carolina M.",
+    treatment: "Brackets metálicos",
+    city: "Pereira",
+    quote:
+      "Llegué con una ortodoncia previa que no me había dejado satisfecha. La doctora se tomó el tiempo de explicarme qué había pasado y qué se podía hacer. Hoy mi sonrisa por fin es mía.",
+    rating: 5,
+    palette: "bg-champagne/20 text-champagne-deep",
+  },
+  {
+    initials: "DR",
+    name: "Diego R.",
+    treatment: "Retratamiento",
+    city: "Manizales",
+    quote:
+      "Viajé desde Manizales después de leer su enfoque con retratamientos. Vale cada kilómetro. Por primera vez sentí que el tratamiento iba a estar bien hecho.",
+    rating: 5,
+    palette: "bg-clay/40 text-ink",
+  },
+  {
+    initials: "LV",
+    name: "Laura V.",
+    treatment: "Ortopedia maxilar (hijo de 11)",
+    city: "Pereira",
+    quote:
+      "A mi hijo le diagnosticaron mordida cruzada y otros colegas hablaban de cirugía a futuro. Aquí abordamos el problema con ortopedia a tiempo. Su perfil cambió completamente.",
+    rating: 5,
+    palette: "bg-bone-soft text-champagne-deep",
+  },
+  {
+    initials: "AP",
+    name: "Andrés P.",
+    treatment: "Ortodoncia adulta",
+    city: "Pereira",
+    quote:
+      "Empecé a los 38 años. Pensé que era tarde. La doctora fue clara con lo que se podía y no se podía lograr, sin promesas mágicas. Resultado real y honesto.",
+    rating: 5,
+    palette: "bg-champagne-deep/15 text-ink",
+  },
+  {
+    initials: "CQ",
+    name: "Camila Q.",
+    treatment: "Ortopedia (hija de 9)",
+    city: "Armenia",
+    quote:
+      "Vinimos desde Armenia para la valoración. La diferencia con otros consultorios fue que aquí nos explicaron paso a paso por qué la edad importaba. Plan claro y precio claro.",
+    rating: 5,
+    palette: "bg-clay/30 text-ink",
+  },
+  {
+    initials: "FJ",
+    name: "Felipe J.",
+    treatment: "Brackets estéticos",
+    city: "Pereira",
+    quote:
+      "Tres ortodoncistas me habían dicho cosas distintas. La Dra. Huertas fue la primera que me hizo un diagnóstico completo antes de cotizar. La diferencia se nota desde la primera cita.",
+    rating: 4,
+    palette: "bg-bone-soft text-champagne-deep",
+  },
+  {
+    initials: "MS",
+    name: "Mónica S.",
+    treatment: "Retratamiento post-extracciones",
+    city: "Bogotá",
+    quote:
+      "Hace 12 años me hicieron una ortodoncia con extracciones y los espacios se reabrieron. Ya tenía 45 años cuando consulté. Resolvió el caso con un plan que ningún otro había planteado.",
+    rating: 5,
+    palette: "bg-champagne/25 text-champagne-deep",
+  },
+  {
+    initials: "JR",
+    name: "Juan R.",
+    treatment: "Ortopedia infantil",
+    city: "Pereira",
+    quote:
+      "Mi hija nunca había estado en un consultorio donde le hablaran a ella, no solo a mí. La trataron como paciente, no como niña. Eso para nosotros vale tanto como el resultado clínico.",
+    rating: 5,
+    palette: "bg-clay/40 text-ink",
+  },
+];
+
+// Duplicamos para que el loop sea sin costuras al hacer wrap del scrollLeft.
+const looped = [...reviews, ...reviews];
+---
+
+<section
+  id="reviews"
+  class="relative py-20 md:py-28 bg-bone overflow-hidden"
+  aria-labelledby="reviews-heading"
+>
+  <div class="absolute inset-0 -z-10 opacity-50" aria-hidden="true">
+    <div
+      class="absolute top-1/4 -right-32 w-[40%] h-[60%] rounded-full blur-3xl"
+      style="background: radial-gradient(circle, rgba(184,150,90,0.12), transparent 60%);"
+    ></div>
+  </div>
+
+  <div class="container-page">
+    <header class="max-w-2xl mb-10 md:mb-14 reveal">
+      <div class="flex flex-wrap items-center gap-3 mb-5">
+        <Eyebrow>VOCES DE PACIENTES</Eyebrow>
+        {IS_SAMPLE && (
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-champagne/15 border border-champagne/40 text-champagne-deep text-[10px] font-medium tracking-[0.14em] uppercase">
+            <span class="w-1.5 h-1.5 rounded-full bg-champagne-deep animate-pulse"></span>
+            Reseñas en construcción
+          </span>
+        )}
+      </div>
+      <h2
+        id="reviews-heading"
+        class="font-display text-[clamp(30px,4.4vw,52px)] leading-[1.08]"
+      >
+        Quienes ya pasaron por <em class="italic-accent">este consultorio.</em>
+      </h2>
+      {IS_SAMPLE && (
+        <p class="text-[14px] text-ink-soft leading-[1.65] mt-5 max-w-[58ch]">
+          Estamos recopilando reseñas reales con consentimiento informado de pacientes. Los textos mostrados a continuación son <strong class="text-ink">ejemplos representativos</strong> del tipo de motivo de consulta y resultado típico, no testimonios verbatim. Esta sección se actualizará progresivamente.
+        </p>
+      )}
+    </header>
+  </div>
+
+  <!-- Carousel: scroll container, full-bleed -->
+  <div
+    id="reviews-scroller"
+    class="reviews-scroller reveal"
+    role="region"
+    aria-label="Carrusel de reseñas, arrastra para navegar"
+    tabindex="0"
+  >
+    <div class="reviews-track">
+      {looped.map((r, i) => (
+        <article
+          class="reviews-card"
+          aria-hidden={i >= reviews.length ? "true" : "false"}
+        >
+          <div class="flex items-start gap-4 mb-4">
+            <span
+              class:list={[
+                "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-display text-[15px] font-medium tracking-tight select-none",
+                r.palette,
+              ]}
+              aria-hidden="true"
+            >
+              {r.initials}
+            </span>
+            <div class="flex-1 min-w-0">
+              <div class="font-display text-[15px] text-ink leading-tight">
+                {r.name}
+              </div>
+              <div class="text-[11px] text-slate-warm tracking-wide mt-0.5">
+                {r.treatment} · {r.city}
+              </div>
+            </div>
+            <div class="flex-shrink-0 flex gap-0.5" aria-label={`Calificación ${r.rating} de 5`}>
+              {Array.from({ length: 5 }).map((_, k) => (
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill={k < r.rating ? "currentColor" : "none"}
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  class={k < r.rating ? "text-champagne-deep" : "text-champagne-deep/30"}
+                  aria-hidden="true"
+                >
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" />
+                </svg>
+              ))}
+            </div>
+          </div>
+          <p class="text-[14px] leading-[1.65] text-ink-soft select-none">
+            "{r.quote}"
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <p class="container-page text-[11px] text-slate-warm/80 mt-8 max-w-2xl reveal">
+    <strong>Nota:</strong> Las iniciales y ciudades preservan la privacidad. Las reseñas reales se publicarán únicamente con consentimiento informado del paciente (Ley 1581 de 2012).
+  </p>
+</section>
+
+<style>
+  .reviews-scroller {
+    /* Native horizontal scroll: handles touch swipe out of the box.
+       JS layer adds: auto-scroll, mouse-drag, infinite loop. */
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: auto; /* JS controls scroll, no smooth interfering */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    cursor: grab;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 6%,
+      #000 94%,
+      transparent 100%
+    );
+            mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 6%,
+      #000 94%,
+      transparent 100%
+    );
+    padding-block: 0.5rem;
+  }
+  .reviews-scroller::-webkit-scrollbar { display: none; }
+  .reviews-scroller.is-dragging { cursor: grabbing; }
+  .reviews-scroller.is-dragging .reviews-card { pointer-events: none; }
+
+  .reviews-track {
+    display: flex;
+    gap: 1.25rem;
+    width: max-content;
+    padding-inline: 1.5rem; /* edge breathing room */
+  }
+
+  .reviews-card {
+    flex-shrink: 0;
+    width: 340px;
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 14px 36px -18px rgba(26, 34, 56, 0.18);
+    /* avoid native drag on the card itself */
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .reviews-card * { -webkit-user-drag: none; }
+</style>
+
+<script is:inline>
+  (function () {
+    var scroller = document.getElementById("reviews-scroller");
+    if (!scroller) return;
+    var track = scroller.querySelector(".reviews-track");
+    if (!track) return;
+
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Compute the loop midpoint: the cards are duplicated, so half the
+    // track width corresponds to one full set. Crossing that boundary
+    // means we can subtract half to land on the visually identical spot
+    // without the user noticing.
+    function halfWidth() {
+      // Use track.scrollWidth / 2 since the children are perfectly mirrored.
+      return track.scrollWidth / 2;
+    }
+
+    // Start scrollLeft at 0 (beginning of first set).
+    scroller.scrollLeft = 0;
+
+    // ── Auto-scroll loop ────────────────────────────────────────────────
+    var SPEED_PX_PER_FRAME = 0.6; // ~36px/s at 60fps; tuned to read comfortably
+    var rafId = null;
+    var paused = false;
+
+    function tick() {
+      if (!paused) {
+        scroller.scrollLeft += SPEED_PX_PER_FRAME;
+        var h = halfWidth();
+        if (h > 0 && scroller.scrollLeft >= h) {
+          // Seamless wrap: jump back by half the track width.
+          scroller.scrollLeft -= h;
+        }
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startAuto() {
+      if (reduced) return; // user prefers no motion → leave it manual
+      if (rafId == null) rafId = requestAnimationFrame(tick);
+    }
+    function stopAuto() {
+      if (rafId != null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }
+
+    // ── Hover pause (desktop) ──────────────────────────────────────────
+    scroller.addEventListener("mouseenter", function () { paused = true; });
+    scroller.addEventListener("mouseleave", function () { paused = false; });
+
+    // ── Drag with mouse / pointer (works for touch too, but touch already
+    //    scrolls natively, so we let it pass through on coarse pointers) ──
+    var isDown = false;
+    var startX = 0;
+    var startScroll = 0;
+    var resumeTimeout = null;
+
+    scroller.addEventListener("pointerdown", function (e) {
+      // Only intercept primary button (mouse left, touch, pen).
+      if (e.button !== 0 && e.pointerType === "mouse") return;
+      // Let touch use native momentum scrolling; only hijack mouse/pen.
+      if (e.pointerType === "touch") {
+        paused = true;
+        return;
+      }
+      isDown = true;
+      startX = e.clientX;
+      startScroll = scroller.scrollLeft;
+      paused = true;
+      scroller.classList.add("is-dragging");
+      try { scroller.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+
+    scroller.addEventListener("pointermove", function (e) {
+      if (!isDown) return;
+      e.preventDefault();
+      var delta = e.clientX - startX;
+      scroller.scrollLeft = startScroll - delta;
+      // Maintain the seamless loop while dragging too.
+      var h = halfWidth();
+      if (h > 0) {
+        if (scroller.scrollLeft >= h) {
+          scroller.scrollLeft -= h;
+          startScroll -= h;
+        } else if (scroller.scrollLeft < 0) {
+          scroller.scrollLeft += h;
+          startScroll += h;
+        }
+      }
+    });
+
+    function endDrag() {
+      if (isDown) {
+        isDown = false;
+        scroller.classList.remove("is-dragging");
+      }
+      if (resumeTimeout) clearTimeout(resumeTimeout);
+      // Brief pause after drag so the user can read what they landed on.
+      resumeTimeout = setTimeout(function () { paused = false; }, 1500);
+    }
+
+    scroller.addEventListener("pointerup", endDrag);
+    scroller.addEventListener("pointercancel", endDrag);
+    scroller.addEventListener("pointerleave", function () {
+      if (isDown) endDrag();
+    });
+
+    // ── Keyboard accessibility ──────────────────────────────────────────
+    scroller.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") {
+        scroller.scrollLeft -= 200;
+        paused = true;
+        endDrag();
+      } else if (e.key === "ArrowRight") {
+        scroller.scrollLeft += 200;
+        paused = true;
+        endDrag();
+      }
+    });
+
+    // ── Lazy-start: only animate when section enters the viewport so we
+    //    don't burn rAF on a far-down section. ───────────────────────────
+    var inView = false;
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          inView = entry.isIntersecting;
+          if (inView) startAuto();
+          else stopAuto();
+        });
+      },
+      { threshold: 0.1 }
+    );
+    io.observe(scroller);
+  })();
+</script>

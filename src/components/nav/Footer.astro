@@ -14,7 +14,7 @@ const year = new Date().getFullYear();
           m<em class="italic-accent">c</em>h
         </a>
         <p class="text-[13px] text-ink-soft leading-[1.65] max-w-[36ch]">
-          Dra. María Claudia Huertas — Ortodoncia y retratamientos en Pereira desde 2000. Atención clínica con la calidez que tu sonrisa merece.
+          Dra. María Claudia Huertas, Ortodoncia y retratamientos en Pereira desde 2000. Atención clínica con la calidez que tu sonrisa merece.
         </p>
         <div class="flex items-center gap-3 mt-6">
           <span class="chip">
@@ -96,10 +96,14 @@ const year = new Date().getFullYear();
   </div>
 </footer>
 
-<!-- Mobile sticky CTA -->
+<!-- Mobile sticky CTA — hidden while the hero CTAs (or the contact form)
+     are visible on screen, then fades in when both leave the viewport.
+     The script below toggles `data-visible` based on IntersectionObserver. -->
 <div
-  class="lg:hidden fixed bottom-3 left-3 right-3 z-40 flex gap-2 pointer-events-none"
-  aria-hidden="false"
+  id="mobile-sticky-cta"
+  class="lg:hidden fixed bottom-3 left-3 right-3 z-40 flex gap-2 pointer-events-none opacity-0 translate-y-3 transition-[opacity,transform] duration-300 ease-out data-[visible=true]:opacity-100 data-[visible=true]:translate-y-0"
+  data-visible="false"
+  aria-hidden="true"
 >
   <a
     href="#contacto"
@@ -116,3 +120,42 @@ const year = new Date().getFullYear();
     WhatsApp
   </a>
 </div>
+
+<script is:inline>
+  (function () {
+    var bar = document.getElementById("mobile-sticky-cta");
+    if (!bar) return;
+
+    // Watch the hero mobile CTAs and the contact form. The sticky bar is
+    // redundant when either of those is on screen, so we hide it then.
+    var heroCtas = document.querySelector("[data-hero-mobile-ctas]");
+    var contact = document.getElementById("contacto");
+    var watched = [heroCtas, contact].filter(Boolean);
+    if (!watched.length) return;
+
+    // Per-element visibility state, reduced to a single "any visible" flag.
+    var visibility = new Map();
+    watched.forEach(function (el) { visibility.set(el, false); });
+
+    function sync() {
+      var anyVisible = false;
+      visibility.forEach(function (v) { if (v) anyVisible = true; });
+      var shouldShow = !anyVisible;
+      bar.setAttribute("data-visible", shouldShow ? "true" : "false");
+      bar.setAttribute("aria-hidden", shouldShow ? "false" : "true");
+    }
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          visibility.set(e.target, e.isIntersecting);
+        });
+        sync();
+      },
+      // Trigger as soon as ~10% of the element peeks into the viewport so
+      // the sticky bar doesn't flicker on tiny scroll jitters.
+      { threshold: 0.1 }
+    );
+    watched.forEach(function (el) { observer.observe(el); });
+  })();
+</script>

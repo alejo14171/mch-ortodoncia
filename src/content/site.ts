@@ -1,4 +1,4 @@
-// Global site data — single source of truth for the landing.
+// Global site data, single source of truth for the landing.
 // Keep in sync with src/lib/schema.ts when changing structured data.
 
 export const SITE = {
@@ -73,12 +73,10 @@ export const SITE = {
 export type Site = typeof SITE;
 
 export const NAV_LINKS = [
-  { href: "/#retratamientos", label: "Retratamientos" },
-  { href: "/#salud", label: "Salud" },
-  { href: "/casos-destacados", label: "Casos sin cirugía" },
   { href: "/#tratamientos", label: "Tratamientos" },
-  { href: "/#sobre", label: "Sobre la doctora" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/#reviews", label: "Reseñas" },
+  { href: "/casos-destacados", label: "Casos sin cirugía" },
+  { href: "/#sobre", label: "La doctora" },
 ] as const;
 
 export const HERO = {
@@ -96,7 +94,7 @@ export const HERO = {
 export const AUTHORITY_ITEMS = [
   { icon: "graduation-cap", text: "Odontóloga · Universidad Nacional" },
   { icon: "graduation-cap", text: "Ortodoncista · Universidad El Bosque" },
-  { icon: "badge", text: "Miembro SCO — Soc. Colombiana de Ortodoncia" },
+  { icon: "badge", text: "Miembro SCO, Soc. Colombiana de Ortodoncia" },
   { icon: "globe", text: "Atención en español e inglés" },
 ] as const;
 
@@ -110,7 +108,7 @@ export const RETRATAMIENTOS = {
   closing: "Si tu boca ya tiene historia clínica, aquí escribimos un mejor capítulo.",
   bullets: [
     {
-      title: "Recidivas post-ortodoncia",
+      title: "Dientes que se torcieron de nuevo",
       text: "Apiñamiento o espacios que volvieron después de retirar el retenedor. Solucionable en muchos casos en menos de un año.",
     },
     {

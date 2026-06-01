@@ -1,9 +1,11 @@
 ---
+import { Image } from "astro:assets";
 import { CTA_FINAL, SITE } from "../../content/site";
 import LeadForm from "../forms/LeadForm.astro";
 import Button from "../ui/Button.astro";
 import Eyebrow from "../ui/Eyebrow.astro";
 import Icon from "../icons/Icon.astro";
+import portraitCutout from "../../assets/doctora/portrait-cutout.png";
 
 const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComponent("Hola Dra. Huertas, me gustaría agendar una valoración.")}`;
 ---
@@ -80,12 +82,30 @@ const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComp
 
       <!-- Right: form -->
       <div class="reveal reveal-delay-2">
-        <div class="bg-bone text-ink rounded-3xl p-7 md:p-10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.4)]">
+        <div class="relative bg-bone text-ink rounded-3xl p-7 md:p-10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.4)]">
+          <!-- Floating cutout avatar, "the person who replies" -->
+          <div
+            class="absolute -top-10 -right-3 md:-top-12 md:-right-6 w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden bg-bone-soft ring-4 ring-bone shadow-[0_15px_35px_-10px_rgba(26,34,56,0.35)]"
+            aria-hidden="true"
+          >
+            <Image
+              src={portraitCutout}
+              alt=""
+              widths={[112, 224]}
+              sizes="112px"
+              loading="lazy"
+              decoding="async"
+              format="webp"
+              quality={88}
+              class="w-full h-full object-cover object-[50%_18%] scale-[1.55]"
+            />
+          </div>
           <h3 class="font-display text-[26px] md:text-[30px] mb-2">
             Cuéntame de tu caso
           </h3>
-          <p class="text-[14px] text-ink-soft mb-7">
-            Te respondo personalmente — no es un formulario que va a un call center.
+          <p class="text-[14px] text-ink-soft mb-7 flex items-center gap-2">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-champagne-deep" aria-hidden="true"></span>
+            Te respondo personalmente, no es un formulario que va a un call center.
           </p>
           <LeadForm />
         </div>

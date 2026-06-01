@@ -26,7 +26,7 @@ const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComp
       {NAV_LINKS.map((l) => (
         <a
           href={l.href}
-          class="relative text-[14px] text-ink/80 hover:text-ink transition-colors group"
+          class="relative text-[14px] font-medium text-ink/85 hover:text-ink transition-colors group"
         >
           {l.label}
           <span class="absolute -bottom-1 left-0 right-0 h-px bg-champagne scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
@@ -71,7 +71,7 @@ const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComp
       {NAV_LINKS.map((l) => (
         <a
           href={l.href}
-          class="block py-2 text-[16px] font-medium text-ink/85 hover:text-champagne-deep border-b border-line/60"
+          class="block py-2 text-[16px] font-semibold text-ink hover:text-champagne-deep border-b border-line/60"
           data-mobile-link
         >
           {l.label}

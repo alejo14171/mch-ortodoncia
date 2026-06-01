@@ -37,7 +37,7 @@ const pairs = entry.data.pairs.map((p) => ({
 const heroAntes = findPhoto(entry.data.photos_dir, "antes", entry.data.hero_pair);
 const heroDespues = findPhoto(entry.data.photos_dir, "despues", entry.data.hero_pair);
 
-const title = `${entry.data.patient} — Caso destacado · MCH Ortodoncia`;
+const title = `${entry.data.patient}, Caso destacado · MCH Ortodoncia`;
 const description = entry.data.summary;
 ---
 
@@ -101,7 +101,7 @@ const description = entry.data.summary;
                 <figure class="relative aspect-[3/4] bg-bone-soft">
                   <Image
                     src={heroAntes}
-                    alt={`Antes — ${entry.data.diagnosis} (paciente con identidad anonimizada)`}
+                    alt={`Antes, ${entry.data.diagnosis} (paciente con identidad anonimizada)`}
                     widths={[300, 450, 600]}
                     sizes="(min-width: 1024px) 210px, 45vw"
                     loading="eager"
@@ -118,7 +118,7 @@ const description = entry.data.summary;
                 <figure class="relative aspect-[3/4] bg-bone-soft">
                   <Image
                     src={heroDespues}
-                    alt={`Después — armonía oclusal restablecida (paciente con identidad anonimizada)`}
+                    alt={`Después, armonía oclusal restablecida (paciente con identidad anonimizada)`}
                     widths={[300, 450, 600]}
                     sizes="(min-width: 1024px) 210px, 45vw"
                     loading="eager"
@@ -152,7 +152,7 @@ const description = entry.data.summary;
             El cambio, vista por vista.
           </h2>
           <p class="text-[15px] text-ink-soft leading-[1.65] mt-4 max-w-prose">
-            Cada par documenta la misma vista clínica antes y al final del tratamiento. Las fotografías no llevan retoque digital — solo el difuminado de la región ocular para preservar la identidad del paciente.
+            Cada par documenta la misma vista clínica antes y al final del tratamiento. Las fotografías no llevan retoque digital, solo el difuminado de la región ocular para preservar la identidad del paciente.
           </p>
         </header>
 
@@ -161,6 +161,13 @@ const description = entry.data.summary;
             if (!p.antes || !p.despues) return null;
             const textRight = i % 2 === 1;
             const num = String(i + 1).padStart(2, "0");
+            // Intraoral shots (teeth) are landscape, they need a wide frame
+            // and object-contain so the full bite stays visible. Face shots
+            // stay in the original 3/4 portrait crop.
+            const INTRAORAL_KEYS = new Set(["mordida", "lateral-derecho", "lateral-izquierdo"]);
+            const isIntraoral = INTRAORAL_KEYS.has(p.key);
+            const figureAspect = isIntraoral ? "aspect-[4/3]" : "aspect-[3/4]";
+            const imgFit = isIntraoral ? "object-contain" : "object-cover";
             return (
               <article class="grid md:grid-cols-12 gap-8 md:gap-12 items-center">
                 <!-- Text column -->
@@ -189,34 +196,43 @@ const description = entry.data.summary;
                   "md:col-span-7",
                   textRight ? "md:order-1 md:col-start-1" : "md:order-2",
                 ]}>
-                  <div class="grid grid-cols-2 gap-2 max-w-[460px] mx-auto md:mx-0">
-                    <figure class="relative aspect-[3/4] rounded-xl overflow-hidden bg-bone shadow-[0_14px_36px_-14px_rgba(26,34,56,0.2)]">
+                  <div class:list={[
+                    "grid grid-cols-2 gap-2 mx-auto md:mx-0",
+                    isIntraoral ? "max-w-[560px]" : "max-w-[460px]",
+                  ]}>
+                    <figure class:list={[
+                      "relative rounded-xl overflow-hidden bg-bone shadow-[0_14px_36px_-14px_rgba(26,34,56,0.2)]",
+                      figureAspect,
+                    ]}>
                       <Image
                         src={p.antes}
-                        alt={`Antes — ${p.title} · ${entry.data.patient} (con consentimiento; identidad anonimizada)`}
+                        alt={`Antes, ${p.title} · ${entry.data.patient} (con consentimiento; identidad anonimizada)`}
                         widths={[280, 420, 560]}
-                        sizes="(min-width: 1024px) 220px, 45vw"
+                        sizes="(min-width: 1024px) 260px, 45vw"
                         loading="lazy"
                         decoding="async"
                         format="webp"
                         quality={84}
-                        class="w-full h-full object-cover"
+                        class:list={["w-full h-full", imgFit]}
                       />
                       <span class="absolute top-2 left-2 inline-flex items-center px-1.5 py-0.5 rounded-full bg-ink/85 text-bone text-[8.5px] font-medium tracking-[0.2em] uppercase backdrop-blur-md">
                         Antes
                       </span>
                     </figure>
-                    <figure class="relative aspect-[3/4] rounded-xl overflow-hidden bg-bone shadow-[0_14px_36px_-14px_rgba(26,34,56,0.2)]">
+                    <figure class:list={[
+                      "relative rounded-xl overflow-hidden bg-bone shadow-[0_14px_36px_-14px_rgba(26,34,56,0.2)]",
+                      figureAspect,
+                    ]}>
                       <Image
                         src={p.despues}
-                        alt={`Después — ${p.title} · ${entry.data.patient} (con consentimiento; identidad anonimizada)`}
+                        alt={`Después, ${p.title} · ${entry.data.patient} (con consentimiento; identidad anonimizada)`}
                         widths={[280, 420, 560]}
-                        sizes="(min-width: 1024px) 220px, 45vw"
+                        sizes="(min-width: 1024px) 260px, 45vw"
                         loading="lazy"
                         decoding="async"
                         format="webp"
                         quality={84}
-                        class="w-full h-full object-cover"
+                        class:list={["w-full h-full", imgFit]}
                       />
                       <span class="absolute top-2 left-2 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-success/95 text-bone text-[8.5px] font-medium tracking-[0.2em] uppercase backdrop-blur-md">
                         <span class="w-1 h-1 rounded-full bg-champagne"></span>
@@ -256,7 +272,7 @@ const description = entry.data.summary;
           La valoración te dirá si <em class="italic-accent" style="color: var(--color-champagne);">aún estás a tiempo.</em>
         </h2>
         <p class="text-[16px] text-bone/70 leading-[1.65] mb-8 max-w-xl mx-auto">
-          Si tu hijo o hija tiene mordida cruzada, mandíbula adelantada, o "perfil cóncavo" — el momento del diagnóstico hace toda la diferencia.
+          Si tu hijo o hija tiene mordida cruzada, mandíbula adelantada, o "perfil cóncavo", el momento del diagnóstico hace toda la diferencia.
         </p>
         <div class="flex flex-wrap gap-3 justify-center">
           <Button href="/#contacto" variant="champagne" size="lg">

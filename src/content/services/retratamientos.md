@@ -7,4 +7,4 @@ duration: "Variable según caso · típicamente 8–18 meses"
 order: 1
 ---
 
-Llegas con un historial clínico, fotos previas, y una mordida que no quedó como debía. El plan se diseña sobre lo que ya tienes — no se borra el pasado, se trabaja con él.
+Llegas con un historial clínico, fotos previas, y una mordida que no quedó como debía. El plan se diseña sobre lo que ya tienes, no se borra el pasado, se trabaja con él.

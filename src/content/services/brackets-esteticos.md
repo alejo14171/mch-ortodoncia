@@ -1,7 +1,7 @@
 ---
 id: brackets-esteticos
 title: Brackets estéticos
-desc: Cerámicos del color del diente — discretos, igual de efectivos.
+desc: Cerámicos del color del diente, discretos, igual de efectivos.
 icon: brackets-clear
 duration: "18–30 meses"
 order: 4

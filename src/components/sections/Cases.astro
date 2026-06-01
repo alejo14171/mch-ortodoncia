@@ -81,8 +81,8 @@ function isRealPhoto(url: string): boolean {
                     src={portraitUrl}
                     alt={
                       isReal
-                        ? `Caso clínico real — ${c.data.title} (${c.data.patient})`
-                        : `Retrato esquemático del paciente — ${c.data.patient}`
+                        ? `Caso clínico real, ${c.data.title} (${c.data.patient})`
+                        : `Retrato esquemático del paciente, ${c.data.patient}`
                     }
                     width="400"
                     height="480"
@@ -141,7 +141,7 @@ function isRealPhoto(url: string): boolean {
                 <div class="bg-bone-soft rounded-lg p-3 border border-line/70 max-w-[360px] mx-auto">
                   <img
                     src={illoUrl}
-                    alt={`Esquema del caso ${c.data.order}: ${c.data.title} — antes y después`}
+                    alt={`Esquema del caso ${c.data.order}: ${c.data.title}, antes y después`}
                     width="400"
                     height="580"
                     loading="lazy"
@@ -169,7 +169,7 @@ function isRealPhoto(url: string): boolean {
 
               <!-- Per-card disclaimer -->
               <p class="text-[10px] text-slate-warm/70 leading-[1.55] mt-5 pt-4 border-t border-line/60 italic">
-                Esquema de referencia clínica. Cada caso es único — los resultados varían según diagnóstico y compromiso del paciente.
+                Esquema de referencia clínica. Cada caso es único, los resultados varían según diagnóstico y compromiso del paciente.
               </p>
             </div>
           </details>

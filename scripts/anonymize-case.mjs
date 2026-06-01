@@ -33,8 +33,7 @@ const NAMES = {
     mordida: "JOEL SANTIAGO MOYA BAQUERO TI 1014871454 MORDIDA.jpg",
     "lateral-derecho": "JOEL SANTIAGO  MOYA BAQUERO TI.1014871454 LATERAL DERCHO.jpg",
     "lateral-izquierdo": "JOEL SANTIAGO MOYA BAQUERO LATERAL IZ TI.1014871454.jpg",
-    "arcada-superior": "JOEL SANTIAGO MOYA BAQUERO MOLDE SUP  TI.jpg",
-    "arcada-inferior": "JOEL SANTIAGO MOYA BAQUERO ARCADA INF TI.1014871454.jpg",
+    // arcadas eliminadas — no rinden bien y no aportan al storytelling
   },
   despues: {
     frente: "JOEL SANTIAGO MOYA- TI 1014871454- FOTO DE FRENTE .jpg",
@@ -43,45 +42,51 @@ const NAMES = {
     mordida: "JOEL SANTIAGO MOYA- TI 1014871454- FOTO MORDIDA.jpg",
     "lateral-derecho": "JOEL SANTIAGO MOYA -TI 1014871454- FOTO LATERAL DERECHO .jpg",
     "lateral-izquierdo": "JOEL SANTIAGO MOYA - TI 1014871454- FOTO LATERAL IZQUIERDO .jpg",
-    "arcada-superior": "JOEL SANTIAGO MOYA- TI 1014871454- FOTO ARCADA SUPERIOR.jpg",
-    "arcada-inferior": "JOEL SANTIAGO MOTA- TI 1014871454- FOTO ARCADA INFERIOR .jpg",
   },
 };
 
 // Crop box per (phase, key) as fractions of original w/h.
-// Goal: face fills similar proportion in antes vs después.
-// Antes shoot framed face higher in frame → zoom in by trimming top hair + bottom shoulders.
-// Despues framing already tight enough — minimal trim.
+// Goal: face fills the frame consistently across antes/después so
+// pairs feel like the same shot at two moments in time.
+//
+// Measurements from reading the raw originals:
+//   antes/sonrisa: eyebrows ~0.27, eyes ~0.33, chin ~0.70
+//   antes/frente:  eyebrows ~0.30, eyes ~0.42, chin ~0.85 (face sits LOWER in frame)
+//   después/sonrisa+frente: eyebrows ~0.34, eyes ~0.42, chin ~0.88
 const CROPS = {
   antes: {
-    frente: { x: 0.05, y: 0.07, w: 0.90, h: 0.78 },
-    sonrisa: { x: 0.05, y: 0.07, w: 0.90, h: 0.78 },
-    perfil: { x: 0.05, y: 0.10, w: 0.90, h: 0.78 },
+    // Frente: kid is more reclined, face sits lower — need taller crop.
+    frente:  { x: 0.05, y: 0.08, w: 0.90, h: 0.82 },
+    // Sonrisa: leaning forward, face tighter — short crop just past chin.
+    sonrisa: { x: 0.05, y: 0.05, w: 0.90, h: 0.72 },
+    perfil:  { x: 0.05, y: 0.05, w: 0.90, h: 0.78 },
   },
   despues: {
-    frente: { x: 0.05, y: 0.10, w: 0.90, h: 0.80 },
-    sonrisa: { x: 0.05, y: 0.10, w: 0.90, h: 0.80 },
-    perfil: { x: 0.05, y: 0.10, w: 0.90, h: 0.80 },
+    // Looser at the bottom — keeps full chin instead of trimming it.
+    frente:  { x: 0.05, y: 0.05, w: 0.90, h: 0.92 },
+    sonrisa: { x: 0.05, y: 0.05, w: 0.90, h: 0.92 },
+    perfil:  { x: 0.05, y: 0.05, w: 0.90, h: 0.92 },
   },
 };
 
 // Eye region as fractions of the CROPPED image (not the original).
-// Bands intentionally OVER-cover: better a slightly bigger blur than
-// pupils leaking out the bottom of the bar.
+// Band sized to fully cover eyes WITH 5-7 pp of buffer above (to keep eyebrows
+// exposed) and below (to keep nostrils clear). Per-photo tuning because the
+// vertical eye position in each cropped frame varies by 5-10 pp.
 const EYE_BANDS = {
-  // After cropping antes, eyes land ~y=42-50% of the cropped frame.
   antes: {
-    frente: { x: 0.04, y: 0.32, w: 0.92, h: 0.24 },
-    sonrisa: { x: 0.04, y: 0.32, w: 0.92, h: 0.22 },
-    // Profile: eye is lower than I had it — push band down ~10%.
-    perfil: { x: 0.40, y: 0.42, w: 0.58, h: 0.20 },
+    // Eyes ~0.43 in cropped frame → band 0.36-0.56 covers with margin.
+    frente:  { x: 0.04, y: 0.36, w: 0.92, h: 0.20 },
+    // Eyes ~0.38 in cropped frame → band 0.32-0.50.
+    sonrisa: { x: 0.04, y: 0.32, w: 0.92, h: 0.18 },
+    // Profile: only the camera-side eye is visible.
+    perfil:  { x: 0.40, y: 0.42, w: 0.58, h: 0.18 },
   },
-  // Despues framed tighter and high-res — band extends well past eyes
-  // to allow heavy blur without pupils peeking out at the seam.
   despues: {
-    frente: { x: 0.03, y: 0.34, w: 0.94, h: 0.22 },
-    sonrisa: { x: 0.03, y: 0.34, w: 0.94, h: 0.22 },
-    perfil: { x: 0.33, y: 0.34, w: 0.64, h: 0.22 },
+    // Eyes ~0.40 in cropped frame → band 0.34-0.52.
+    frente:  { x: 0.04, y: 0.34, w: 0.92, h: 0.18 },
+    sonrisa: { x: 0.04, y: 0.34, w: 0.92, h: 0.18 },
+    perfil:  { x: 0.33, y: 0.36, w: 0.64, h: 0.18 },
   },
 };
 
