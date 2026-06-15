@@ -5,7 +5,7 @@ age_at_start: 13
 age_at_end: 15
 duration_months: 24
 diagnosis: "Mordida cruzada anterior con tendencia a Clase III esquelética. Caso candidato a evaluación quirúrgica si se hubiera diagnosticado en edad adulta."
-treatment: "Aparatología fija y removible sin máscara facial: brackets inferiores, plano de mordida y tornillo hyrax superior modificado para reproducir los efectos de tracción anterior del maxilar."
+treatment: "Aparatología fija y removible sin máscara facial: brackets inferiores, plano de mordida y tornillo hyrax superior modificado para reproducir los efectos que tendría una máscara de protracción maxilar."
 summary: "Caso de mordida cruzada y tendencia clase III resuelto sin cirugía gracias al diagnóstico oportuno y al manejo ortopédico-ortodóncico durante la ventana de crecimiento."
 consent_informed: true
 photos_dir: paciente-i
