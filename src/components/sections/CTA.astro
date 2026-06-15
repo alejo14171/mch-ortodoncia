@@ -75,8 +75,9 @@ const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComp
 
         <div class="text-[12px] text-bone/55 pt-6 border-t border-bone/15">
           <p class="mb-1 text-bone/70">Horario de atención</p>
-          <p>Lunes – Viernes: 8 a. m. – 6 p. m.</p>
-          <p>Sábados: 8 a. m. – 12 m.</p>
+          <p>Lunes y viernes: 8 a. m. – 11 a. m.</p>
+          <p>Miércoles: 2:20 p. m. – 6 p. m.</p>
+          <p>Sábados: 8 a. m. – 2 p. m.</p>
         </div>
       </div>
 
@@ -91,13 +92,13 @@ const waUrl = `https://wa.me/${SITE.contact.whatsappDigits}?text=${encodeURIComp
             <Image
               src={portraitCutout}
               alt=""
-              widths={[112, 224]}
-              sizes="112px"
+              widths={[300, 450, 600]}
+              sizes="(min-width: 768px) 300px, 250px"
               loading="lazy"
               decoding="async"
               format="webp"
-              quality={88}
-              class="w-full h-full object-cover object-[50%_18%] scale-[1.55]"
+              quality={92}
+              class="w-full h-full object-cover object-[center_25%] scale-[1.35] translate-x-3 translate-y-1"
             />
           </div>
           <h3 class="font-display text-[26px] md:text-[30px] mb-2">

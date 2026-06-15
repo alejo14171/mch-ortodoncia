@@ -1,10 +1,11 @@
 // Privacy-preserving anonymization + framing normalization for clinical photos.
 // Workflow per face photo:
 //   1. Read the un-anonymized original from /_assets/assets_joel/{antes|despues}/...
+//      (folder name kept on the local disk; never committed)
 //   2. CROP to a tight portrait framing so face fills the frame consistently
 //      across antes/después (the two shoots used different distances).
 //   3. BLUR the eye band heavily (sigma 55, idempotent on re-runs).
-//   4. Write JPEG quality 92 into src/assets/casos-destacados/joel/...
+//   4. Write JPEG quality 92 into src/assets/casos-destacados/paciente-i/...
 //
 // Intraoral photos (mordida/arcadas/laterales) need no blur and no recrop
 // — they're copied straight through.
@@ -22,7 +23,7 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(here, "..", "..");
 const srcRoot = join(projectRoot, "_assets", "assets_joel");
-const outRoot = join(here, "..", "src", "assets", "casos-destacados", "joel");
+const outRoot = join(here, "..", "src", "assets", "casos-destacados", "paciente-i");
 
 // Map clean keys → original filenames (original names are messy).
 const NAMES = {
