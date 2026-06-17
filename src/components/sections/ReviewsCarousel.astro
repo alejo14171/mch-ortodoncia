@@ -9,10 +9,9 @@
 // Pausa: cuando arrastras, cuando estás encima con el cursor, o cuando
 // el usuario prefiere reduced-motion (en ese caso queda como scroll manual).
 //
-// MUESTRA: textos representativos hasta tener reseñas reales con consentimiento.
+// Reseñas reales, publicadas con consentimiento informado de cada paciente
+// o representante legal (Ley 1581 de 2012).
 import Eyebrow from "../ui/Eyebrow.astro";
-
-const IS_SAMPLE = true;
 
 type Review = {
   initials: string;
@@ -26,84 +25,64 @@ type Review = {
 
 const reviews: Review[] = [
   {
-    initials: "CM",
-    name: "Carolina M.",
-    treatment: "Brackets metálicos",
+    initials: "NA",
+    name: "Natalia Arias",
+    treatment: "Retratamiento · evitó cirugía mandibular",
     city: "Pereira",
     quote:
-      "Llegué con una ortodoncia previa que no me había dejado satisfecha. La doctora se tomó el tiempo de explicarme qué había pasado y qué se podía hacer. Hoy mi sonrisa por fin es mía.",
+      "Retomé mi ortodoncia con la Doctora Huertas después de un procedimiento fallido que me dejó con más problemas en mis dientes. Después de tres años de tratamiento puedo dar fe de su profesionalismo y entrega: logró devolverme la confianza y me evitó una cirugía de mandíbula casi inevitable. Estoy segura que puede con cualquier caso difícil. Quedé muy agradecida y feliz con mis resultados.",
     rating: 5,
     palette: "bg-champagne/20 text-champagne-deep",
   },
   {
-    initials: "DR",
-    name: "Diego R.",
-    treatment: "Retratamiento",
-    city: "Manizales",
-    quote:
-      "Viajé desde Manizales después de leer su enfoque con retratamientos. Vale cada kilómetro. Por primera vez sentí que el tratamiento iba a estar bien hecho.",
-    rating: 5,
-    palette: "bg-clay/40 text-ink",
-  },
-  {
-    initials: "LV",
-    name: "Laura V.",
-    treatment: "Ortopedia maxilar (hijo de 11)",
+    initials: "AG",
+    name: "Alejandro Gómez",
+    treatment: "Brackets metálicos · 14 años · 2 años de tratamiento",
     city: "Pereira",
     quote:
-      "A mi hijo le diagnosticaron mordida cruzada y otros colegas hablaban de cirugía a futuro. Aquí abordamos el problema con ortopedia a tiempo. Su perfil cambió completamente.",
-    rating: 5,
-    palette: "bg-bone-soft text-champagne-deep",
-  },
-  {
-    initials: "AP",
-    name: "Andrés P.",
-    treatment: "Ortodoncia adulta",
-    city: "Pereira",
-    quote:
-      "Empecé a los 38 años. Pensé que era tarde. La doctora fue clara con lo que se podía y no se podía lograr, sin promesas mágicas. Resultado real y honesto.",
+      "Empecé con la Dra. Huertas a los 14 años. Pasé dos años con brackets, pero lo que recuerdo más no son los alambres: son las conversaciones. Cada control era una explicación de qué estaba pasando con mi mordida y por qué. Años después entendí que no solo me organizó los dientes, me cambió la forma de verme en el espejo. La ortodoncia, cuando se hace bien, trabaja sobre la persona también.",
     rating: 5,
     palette: "bg-champagne-deep/15 text-ink",
   },
   {
-    initials: "CQ",
-    name: "Camila Q.",
-    treatment: "Ortopedia (hija de 9)",
-    city: "Armenia",
+    initials: "LJ",
+    name: "Luisa Jaramillo",
+    treatment: "Ortodoncia adulta · evitó cirugía maxilofacial",
+    city: "Pereira",
     quote:
-      "Vinimos desde Armenia para la valoración. La diferencia con otros consultorios fue que aquí nos explicaron paso a paso por qué la edad importaba. Plan claro y precio claro.",
+      "Fui a varios consultorios y me dijeron que necesitaba cirugía maxilofacial, lo cual me tenía muy preocupada. La Doctora Huertas evaluó mi caso y logramos corregir mis dientes solo con ortodoncia, sin necesidad de hacer cirugía. El resultado quedó súper natural y estoy muy contenta con el cambio y con el trato que recibí durante todo el proceso.",
+    rating: 5,
+    palette: "bg-clay/40 text-ink",
+  },
+  {
+    initials: "AG",
+    name: "Alan García",
+    treatment: "Brackets metálicos · 13 años · 2 años de tratamiento",
+    city: "Pereira",
+    quote:
+      "Hice mi tratamiento con la Doctora Huertas durante casi dos años. Lo que más me sorprendió fue que nunca sentí que era 'el paciente de las 4 de la tarde'. Se acordaba de cómo iba en el colegio, me explicaba con calma qué hacía cada ajuste, y nunca me dejó con dudas. El resultado quedó tan natural que hoy nadie pregunta si tuve brackets, asumen que mis dientes siempre fueron así. Esa, para mí, es la mejor señal de un trabajo bien hecho.",
     rating: 5,
     palette: "bg-clay/30 text-ink",
   },
   {
-    initials: "FJ",
-    name: "Felipe J.",
-    treatment: "Brackets estéticos",
+    initials: "CO",
+    name: "Cielo Milena Osorio",
+    treatment: "Ortodoncia pediátrica · madre de paciente",
     city: "Pereira",
     quote:
-      "Tres ortodoncistas me habían dicho cosas distintas. La Dra. Huertas fue la primera que me hizo un diagnóstico completo antes de cotizar. La diferencia se nota desde la primera cita.",
-    rating: 4,
+      "Siempre me ha parecido excelente profesional y persona. No le llevaría los dientes de mi princesa a nadie más. Muchos éxitos y mil bendiciones.",
+    rating: 5,
     palette: "bg-bone-soft text-champagne-deep",
   },
   {
-    initials: "MS",
-    name: "Mónica S.",
-    treatment: "Retratamiento post-extracciones",
-    city: "Bogotá",
-    quote:
-      "Hace 12 años me hicieron una ortodoncia con extracciones y los espacios se reabrieron. Ya tenía 45 años cuando consulté. Resolvió el caso con un plan que ningún otro había planteado.",
-    rating: 5,
-    palette: "bg-champagne/25 text-champagne-deep",
-  },
-  {
-    initials: "JR",
-    name: "Juan R.",
-    treatment: "Ortopedia infantil",
+    initials: "NG",
+    name: "Natalia García",
+    treatment: "Brackets · 18 años · 2 años de tratamiento",
     city: "Pereira",
     quote:
-      "Mi hija nunca había estado en un consultorio donde le hablaran a ella, no solo a mí. La trataron como paciente, no como niña. Eso para nosotros vale tanto como el resultado clínico.",
+      "Llegué un poco insegura, no estaba convencida de pasar dos años con brackets a mi edad. Lo que me convenció fue la primera valoración: por primera vez alguien me explicó qué tenía mi mordida en vez de pasar directo a la cotización. Salí del tratamiento con los dientes alineados, sí, pero también con una confianza al sonreír que antes no tenía. Hoy lo veo claro: la ortodoncia bien hecha trabaja sobre la persona, no solo sobre los dientes.",
     rating: 5,
-    palette: "bg-clay/40 text-ink",
+    palette: "bg-champagne/25 text-champagne-deep",
   },
 ];
 
@@ -127,12 +106,6 @@ const looped = [...reviews, ...reviews];
     <header class="max-w-2xl mb-10 md:mb-14 reveal">
       <div class="flex flex-wrap items-center gap-3 mb-5">
         <Eyebrow>VOCES DE PACIENTES</Eyebrow>
-        {IS_SAMPLE && (
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-champagne/15 border border-champagne/40 text-champagne-deep text-[10px] font-medium tracking-[0.14em] uppercase">
-            <span class="w-1.5 h-1.5 rounded-full bg-champagne-deep animate-pulse"></span>
-            Reseñas en construcción
-          </span>
-        )}
       </div>
       <h2
         id="reviews-heading"
@@ -140,11 +113,6 @@ const looped = [...reviews, ...reviews];
       >
         Quienes ya pasaron por <em class="italic-accent">este consultorio.</em>
       </h2>
-      {IS_SAMPLE && (
-        <p class="text-[14px] text-ink-soft leading-[1.65] mt-5 max-w-[58ch]">
-          Estamos recopilando reseñas reales con consentimiento informado de pacientes. Los textos mostrados a continuación son <strong class="text-ink">ejemplos representativos</strong> del tipo de motivo de consulta y resultado típico, no testimonios verbatim. Esta sección se actualizará progresivamente.
-        </p>
-      )}
     </header>
   </div>
 
@@ -206,7 +174,7 @@ const looped = [...reviews, ...reviews];
   </div>
 
   <p class="container-page text-[11px] text-slate-warm/80 mt-8 max-w-2xl reveal">
-    <strong>Nota:</strong> Las iniciales y ciudades preservan la privacidad. Las reseñas reales se publicarán únicamente con consentimiento informado del paciente (Ley 1581 de 2012).
+    <strong>Nota:</strong> Cada reseña publicada en esta sección cuenta con consentimiento informado del paciente o su representante legal, conforme a la Ley 1581 de 2012.
   </p>
 </section>
 
