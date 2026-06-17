@@ -3,16 +3,15 @@ import { SITE } from "../../content/site";
 import Button from "../ui/Button.astro";
 import Icon from "../icons/Icon.astro";
 
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
-const calLink = import.meta.env.PUBLIC_CAL_COM_LINK || "mch-ortodoncia/valoracion";
-const enableCal = import.meta.env.PUBLIC_ENABLE_CAL_EMBED === "true";
+// On submit we redirect to wa.me with the form data prellenada en el mensaje.
+// No backend involved — la doctora recibe el lead directo en su WhatsApp.
+const whatsappDigits = SITE.contact.whatsappDigits;
 ---
 
 <form
   id="lead-form"
-  action="/api/lead"
-  method="POST"
   novalidate
+  data-wa-phone={whatsappDigits}
   class="grid grid-cols-1 md:grid-cols-2 gap-5"
 >
   <div class="md:col-span-2">
@@ -146,17 +145,11 @@ const enableCal = import.meta.env.PUBLIC_ENABLE_CAL_EMBED === "true";
     </label>
   </div>
 
-  {turnstileSiteKey && (
-    <div class="md:col-span-2">
-      <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light"></div>
-    </div>
-  )}
-
   <input type="hidden" name="hp" value="" tabindex="-1" autocomplete="off" />
 
   <div class="md:col-span-2 flex flex-wrap items-center gap-4 pt-2">
-    <Button type="submit" variant="primary" size="lg">
-      Enviar mensaje
+    <Button type="submit" variant="whatsapp" size="lg">
+      Enviar por WhatsApp
     </Button>
     <p class="text-[12px] text-slate-warm flex items-center gap-2">
       <Icon name="clock" size={13} strokeWidth={1.6} />
@@ -165,65 +158,22 @@ const enableCal = import.meta.env.PUBLIC_ENABLE_CAL_EMBED === "true";
   </div>
 
   <div
-    id="lf-success"
-    class="md:col-span-2 hidden bg-success/10 border border-success/30 text-success rounded-xl p-5"
-    role="status"
-    aria-live="polite"
-  >
-    <div class="flex items-start gap-3">
-      <span class="flex-shrink-0 w-7 h-7 rounded-full bg-success text-bone flex items-center justify-center">
-        <Icon name="check" size={16} strokeWidth={2.4} />
-      </span>
-      <div>
-        <p class="font-medium text-ink">Recibí tu mensaje.</p>
-        <p class="text-[14px] text-ink-soft mt-1">
-          Te responderé personalmente por WhatsApp en menos de 24 horas hábiles.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div
     id="lf-error"
     class="md:col-span-2 hidden bg-rosewood/10 border border-rosewood/30 text-rosewood rounded-xl p-5"
     role="alert"
   >
-    <p class="font-medium">No pudimos enviar tu mensaje.</p>
-    <p id="lf-error-msg" class="text-[14px] text-ink-soft mt-1">
-      Verifica tus datos e inténtalo de nuevo, o escríbeme directo por WhatsApp.
+    <p class="font-medium">No pudimos abrir WhatsApp.</p>
+    <p class="text-[14px] text-ink-soft mt-1">
+      Escríbeme directo por WhatsApp tocando el botón verde al inicio de esta sección.
     </p>
   </div>
 </form>
-
-{enableCal && calLink && (
-  <div class="mt-12 pt-10 border-t border-line">
-    <p class="text-[14px] text-ink-soft mb-4">¿Prefieres elegir tú la fecha y hora?</p>
-    <a
-      data-cal-link={calLink}
-      data-cal-config='{"layout":"month_view"}'
-      class="inline-flex items-center gap-2 text-champagne-deep font-medium hover:text-ink transition-colors cursor-pointer"
-    >
-      Ver disponibilidad en calendario →
-    </a>
-  </div>
-)}
-
-{turnstileSiteKey && (
-  <script
-    is:inline
-    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-    async
-    defer
-  ></script>
-)}
 
 <script is:inline>
   (function () {
     var form = document.getElementById("lead-form");
     if (!form) return;
-    var success = document.getElementById("lf-success");
     var errorBox = document.getElementById("lf-error");
-    var errorMsg = document.getElementById("lf-error-msg");
     var counter = document.getElementById("lf-reason-count");
     var reason = document.getElementById("lf-reason");
 
@@ -233,47 +183,76 @@ const enableCal = import.meta.env.PUBLIC_ENABLE_CAL_EMBED === "true";
       });
     }
 
-    form.addEventListener("submit", async function (e) {
+    var FOR_WHOM = {
+      self: "Para mí",
+      child: "Para mi hijo/a",
+      family: "Para otro familiar",
+    };
+    var INTEREST = {
+      "not-sure": "Aún no sé qué tratamiento necesito",
+      brackets: "Brackets",
+      retratamiento: "Retratamiento",
+      ortopedia: "Ortopedia maxilar (niños)",
+      prequirurgica: "Ortodoncia prequirúrgica",
+      other: "Otro",
+    };
+
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
-      success.classList.add("hidden");
       errorBox.classList.add("hidden");
 
       var fd = new FormData(form);
-      // Honeypot check
+      // Honeypot
       if (fd.get("hp")) return;
+
+      // Native HTML5 validation: shows tooltips on required/pattern fields.
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      var phone = form.getAttribute("data-wa-phone");
+      if (!phone) {
+        errorBox.classList.remove("hidden");
+        return;
+      }
+
+      var name = (fd.get("name") || "").toString().trim();
+      var whatsapp = (fd.get("whatsapp") || "").toString().trim();
+      var email = (fd.get("email") || "").toString().trim();
+      var forWhom = FOR_WHOM[fd.get("forWhom")] || "Para mí";
+      var age = (fd.get("patientAge") || "").toString().trim();
+      var interest = INTEREST[fd.get("interest")] || "Aún no sé qué tratamiento necesito";
+      var reasonText = (fd.get("reason") || "").toString().trim();
+
+      var lines = [
+        "Hola Dra. Huertas, me gustaría agendar una valoración.",
+        "",
+        "👤 Nombre: " + name,
+        "📱 WhatsApp: " + whatsapp,
+        "📧 Email: " + email,
+        "👥 " + forWhom,
+        "🎂 Edad: " + age,
+        "🦷 Interés: " + interest,
+      ];
+      if (reasonText) {
+        lines.push("", "📝 Motivo:", reasonText);
+      }
+
+      var url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(lines.join("\n"));
+
+      if (window.plausible) {
+        try { window.plausible("Lead Submitted"); } catch (_) {}
+      }
 
       var submitBtn = form.querySelector("button[type=submit]");
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = "Enviando…";
+        submitBtn.textContent = "Abriendo WhatsApp…";
       }
 
-      try {
-        var resp = await fetch("/api/lead", {
-          method: "POST",
-          body: fd,
-          headers: { Accept: "application/json" },
-        });
-        var data = await resp.json().catch(function () {
-          return {};
-        });
-        if (resp.ok && data.ok) {
-          form.reset();
-          success.classList.remove("hidden");
-          success.scrollIntoView({ behavior: "smooth", block: "center" });
-          if (window.plausible) window.plausible("Lead Submitted");
-        } else {
-          errorBox.classList.remove("hidden");
-          if (data && data.error && errorMsg) errorMsg.textContent = data.error;
-        }
-      } catch (err) {
-        errorBox.classList.remove("hidden");
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Enviar mensaje";
-        }
-      }
+      // Mobile: opens native WhatsApp app. Desktop: opens WA Web in same tab.
+      window.location.href = url;
     });
   })();
 </script>
