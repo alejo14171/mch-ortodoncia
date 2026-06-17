@@ -228,15 +228,15 @@ const whatsappDigits = SITE.contact.whatsappDigits;
       var lines = [
         "Hola Dra. Huertas, me gustaría agendar una valoración.",
         "",
-        "👤 Nombre: " + name,
-        "📱 WhatsApp: " + whatsapp,
-        "📧 Email: " + email,
-        "👥 " + forWhom,
-        "🎂 Edad: " + age,
-        "🦷 Interés: " + interest,
+        "*Nombre:* " + name,
+        "*WhatsApp:* " + whatsapp,
+        "*Email:* " + email,
+        "*Para:* " + forWhom,
+        "*Edad del paciente:* " + age,
+        "*Interés:* " + interest,
       ];
       if (reasonText) {
-        lines.push("", "📝 Motivo:", reasonText);
+        lines.push("", "*Motivo:*", reasonText);
       }
 
       var url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(lines.join("\n"));
