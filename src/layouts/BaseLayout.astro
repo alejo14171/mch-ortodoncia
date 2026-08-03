@@ -8,6 +8,7 @@ import {
   websiteSchema,
   breadcrumbSchema,
 } from "../lib/schema";
+import { inject } from "@vercel/analytics";
 
 interface Props {
   title: string;
@@ -48,6 +49,9 @@ const ldBreadcrumb = breadcrumbSchema(siteUrl, [
   { name: "Inicio", url: `${siteUrl}/` },
   ...(canonical && canonical !== "/" ? [{ name: title, url: canonicalUrl }] : []),
 ]);
+
+// Initialize Vercel Analytics
+inject();
 ---
 
 <!doctype html>
